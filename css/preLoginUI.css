@@ -25,6 +25,7 @@ table {
 }
 tr {
     width: 100%;
+    
 }
 td {
     background-color: #4791FF;
@@ -148,7 +149,7 @@ p {
 
 .prelogin-content {
     padding-top: 75px;
-    width: 50%;
+    width: 75%;
     min-width: 500px;
     margin-left: auto;
     margin-right: auto;
@@ -219,4 +220,12 @@ p {
 
 #HiddenSubmitLogin {
     display: none;
+}
+
+.tables {
+
+}
+
+.form-input {
+    width: 200px;
 }
