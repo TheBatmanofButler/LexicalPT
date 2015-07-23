@@ -22,11 +22,11 @@ h1 {
 
 table {
     width: 100%;
+
 }
 
 tr {
     width: 100%;
-    border: 1px solid black;
 }
 
 }
@@ -230,7 +230,7 @@ p {
 }
 
 #input-table {
-    border: 1px solid black;
+    border: none;
     border-collapse: collapse;
 }
 
