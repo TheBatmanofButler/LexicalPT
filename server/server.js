@@ -5,15 +5,13 @@
 
 var AWS = require('aws-sdk');
 var loginTools = require('./loginTools');
-var storageTools = require('./storageTools');
 
 //AWS config
 AWS.config.region = 'us-east-1';
-var userTable = new AWS.DynamoDB({params: {TableName: 'Users'}});
-var fileTable = new AWS.DynamoDB({params: {TableName: 'Files'}});
+var userTable = new AWS.DynamoDB({params: {TableName: 'PTUsers'}});
 
 //Sockets
-var io = require('socket.io').listen(5000);
+var io = require('socket.io').listen(4000);
 
 /**
 	Checks an input string to make sure it is sanitized for database input
@@ -49,20 +47,7 @@ function serverError(socket, message) {
 	@param: incomingObj; obj; data sent from client
 */
 function serverHandler(socket, incomingObj, callback) {
-	if(incomingObj.name === 'store') {	
-		storageTools.storeDataToDb(socket, fileTable, incomingObj);
-	}
-	else if(incomingObj.name === 'checkFile') {
-		storageTools.checkFile(socket, fileTable, incomingObj, callback);
-	}
-	else if(incomingObj.name === "retrieve") {
-		storageTools.retrieveFile(socket, fileTable, incomingObj, callback);
-	}
-	else if(incomingObj.name === "delete") {
-		console.log(incomingObj)
-		storageTools.deleteFile(socket, fileTable, incomingObj, callback);
-	}
-	else if(incomingObj.name === 'login') {
+	if(incomingObj.name === 'login') {
 
 		if(!isSanitized(incomingObj.username)) {
 			serverError(socket, "No or invalid username");
