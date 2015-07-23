@@ -23,9 +23,12 @@ h1 {
 table {
     width: 100%;
 }
+
 tr {
     width: 100%;
-    
+    border: 1px solid black;
+}
+
 }
 td {
     background-color: #4791FF;
@@ -222,10 +225,16 @@ p {
     display: none;
 }
 
-.tables {
-
-}
-
 .form-input {
     width: 200px;
+}
+
+#input-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#input-table input {
+    margin: 0;
+    width: 100%;
 }
