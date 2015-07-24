@@ -9,6 +9,7 @@ var loginTools = require('./loginTools');
 //AWS config
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'PTUsers'}});
+var fileTable = new AWS.DynamoDB({params: {TableName: 'PTClientData'}});
 
 //Sockets
 var io = require('socket.io').listen(4000);
@@ -39,6 +40,44 @@ function serverError(socket, message) {
 	});
 }
 
+
+/**
+	Stores patient data to dynamo. 
+
+	@param: socket; the user connection
+	@param: incomingObj
+		@param: timestamp; time in milliseconds from epoch
+		@param: '0-0', '1-5', etc.; coordinates keyed to values stored in tables
+	@param: table; where to store
+	@param: callback; what to do after
+*/
+function storeData(socket, incomingObj, table, callback) {
+	var dataObj = {};
+
+	for(key in incomingObj) {
+		if(key === 'name')
+			continue;
+
+		if(key === 'timestamp') {
+			dataObj[key] = {'N':incomingObj[key]};
+		}
+		else {
+			dataObj[key] = {'S':incomingObj[key]};
+		}
+	}
+	
+	var itemParams = {Item: dataObj};
+
+	table.putItem(itemParams, function(err, data) {
+		if(err) {
+			callback(null, err);
+		}
+		else {
+			callback(dataObj);
+		}
+    });
+}
+
 /**
 	Generally handles all client requests from a socket. Takes incoming requests, parses by name, and runs necessary checks
 	on function inputs before sending data to the requested function. 
@@ -47,7 +86,13 @@ function serverError(socket, message) {
 	@param: incomingObj; obj; data sent from client
 */
 function serverHandler(socket, incomingObj, callback) {
-	if(incomingObj.name === 'login') {
+	if(incomingObj.name === 'store') {
+
+		if(loginTools.checkUserKey(incomingObj['userKey']))
+			storeData(socket, incomingObj, fileTable, callback);
+
+	}
+	else if(incomingObj.name === 'login') {
 
 		if(!isSanitized(incomingObj.username)) {
 			serverError(socket, "No or invalid username");
