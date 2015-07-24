@@ -8,6 +8,21 @@ Runner file. Executes program, initializes available libraries, etc.
 
 //Event triggers
 
+$("#DataForm").submit(function(event) {
+	alert('bruh');
+	event.preventDefault();
+	// var $inputs = $('#TitlebarForm :input');
+	// 	var values = {};
+	//     $inputs.each(function() {
+	//         values[this.name] = $(this).val();
+	//     });
+	//     document.write(values);
+})
+
+$("#SubmitData").click(function() {
+	$("#DataForm").submit();
+})
+
 $("#SubmitLogin").click(function () {
 	alert('bitch2');
     $("#TitlebarForm").submit(function(event) {

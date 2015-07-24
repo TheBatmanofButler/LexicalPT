@@ -238,3 +238,11 @@ p {
     margin: 0;
     width: 100%;
 }
+
+#SubmitData {
+    padding-top: 40px;
+}
+
+#HiddenSubmitData {
+    display: none;
+}
