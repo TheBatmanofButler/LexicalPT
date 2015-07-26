@@ -13,21 +13,10 @@ $("#DataForm").submit(function(event) {
 
     var $inputs = $('#DataForm :input');
 	var values = {};
-	values.name = "dataSubmission"
-
     $inputs.each(function() {
         values[this.name] = $(this).val();
     });
-
-	socket.emit("clientToServer", values,
-		function(data, err, isAppError) {
-		if(err) {
-			errorHandler(err, isAppError);
-		} 
-		else {
-			login(data);
-		}
-	});
+    // console.log($("#DataForm").elements["PatientInput"]);
 });
 
 $("#SubmitData").click(function() {
