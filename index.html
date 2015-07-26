@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="css/postLoginUI.css" />
 		<script src="http://54.86.173.127:3000/socket.io/socket.io.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="https://apis.google.com/js/client.js"></script> 
 	</head>
 
@@ -49,155 +50,20 @@
 			    			<td>
 						    	<span>Patient: </span>
 						    	<input id="PatientInput" name="patientname" class="form-input" type="text">
+						    	<div class="ui-widget">
+									<label>Your preferred programming language: </label>
+									<select id="combobox">
+									</select>
+								</div>
 					    	</td>
 					    	<td>
-						    	<span>Precautions: </span>
-						    	<input class="form-input"  name="precautions" type="text">
+						    	<span>Date: </span>
+						    	<input id="DateInput" name="date" class="form-input" type="text">
 						    </td>
 				    	</tr>
 
-						<tr>
-							<td>
-						    	<span>Diagnosis: </span>
-						    	<input class="form-input" name="diagnosis" type="text">
-					    	</td>
-					    	<td>
-						    	<span>Doctor: </span>
-						    	<input class="form-input" name="doctorname" type="text">
-						    </td>
-						</tr>
-
 					</table>
 
-			    	<table id="input-table">
-			    		<tr>
-			    			<td>
-			    				Date:
-			    				<input name="date" type="text">
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Table Exercises
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="table_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_table_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_table_exercises" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Stretches
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="stretches" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_stretches" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_stretches" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Thera-band
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="theraband" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_theraband" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_theraband" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Machines
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="machines" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_machines" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_machines" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Floor Exercises
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-
-			    		<tr>
-			    			<td>
-			    				<input name="floor_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_floor_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_floor_exercises" type="text" />
-			    			</td>
-			    		</tr>
-		    		</table>
 		    		<div id="SubmitData" class="button">Submit</div>
 		    		<input type="submit" id="HiddenSubmitData">
 		    	</form>
