@@ -20,44 +20,6 @@ h1 {
     font-size: 22pt;
 }
 
-table {
-    width: 100%;
-
-}
-
-tr {
-    width: 100%;
-}
-
-}
-td {
-    background-color: #4791FF;
-    color: white;
-    height: 75px;
-    font-weight: bold;
-    width: 33%;
-    text-align: center;
-    font-size: 15pt;
-    border-radius: 1px;
-}
-
-input {
-    width: 400px;
-    height: 20px;
-    margin: 10px;
-}
-
-input[type="file"] {
-    margin-top: 50px;
-    width: 100%;
-}
-p {
-    text-align: left;
-    font-size: 10pt;
-    color: #666666;
-    line-height: 150%
-}
-
 .button {
     cursor: pointer;
 }
@@ -221,22 +183,24 @@ p {
     display: none;
 }
 
+    #UserCreator input {
+        width: 400px;
+        height: 20px;
+        margin: 10px;
+    }
+
+    #UserCreator input[type="file"] {
+        margin-top: 50px;
+        width: 100%;
+    }
+
+
 #HiddenSubmitLogin {
     display: none;
 }
 
 .form-input {
     width: 200px;
-}
-
-#input-table {
-    border: none;
-    border-collapse: collapse;
-}
-
-#input-table input {
-    margin: 0;
-    width: 100%;
 }
 
 #SubmitData {

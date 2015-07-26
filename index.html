@@ -42,167 +42,7 @@
 			</ul>
 		</div>
 		<div class="prelogin-content">
-		    <div class="tables">
-		    	<form id="DataForm" name="MedInfo">
-		    		<table>
-			    		<tr>
-			    			<td>
-						    	<span>Patient: </span>
-						    	<input id="PatientInput" name="patientname" class="form-input" type="text">
-					    	</td>
-					    	<td>
-						    	<span>Precautions: </span>
-						    	<input class="form-input"  name="precautions" type="text">
-						    </td>
-				    	</tr>
-
-						<tr>
-							<td>
-						    	<span>Diagnosis: </span>
-						    	<input class="form-input" name="diagnosis" type="text">
-					    	</td>
-					    	<td>
-						    	<span>Doctor: </span>
-						    	<input class="form-input" name="doctorname" type="text">
-						    </td>
-						</tr>
-
-					</table>
-
-			    	<table id="input-table">
-			    		<tr>
-			    			<td>
-			    				Date:
-			    				<input name="date" type="text">
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Table Exercises
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="table_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_table_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_table_exercises" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Stretches
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="stretches" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_stretches" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_stretches" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Thera-band
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="theraband" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_theraband" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_theraband" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Machines
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				<input name="machines" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_machines" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_machines" type="text" />
-			    			</td>
-			    		</tr>
-
-			    		<tr>
-			    			<td>
-			    				Floor Exercises
-			    			</td>
-			    			<td>
-			    				S/R/W
-			    			</td>
-			    			<td>
-			    				Min
-			    			</td>
-			    		</tr>
-
-
-			    		<tr>
-			    			<td>
-			    				<input name="floor_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="SRW_floor_exercises" type="text" />
-			    			</td>
-			    			<td>
-			    				<input name="min_floor_exercises" type="text" />
-			    			</td>
-			    		</tr>
-		    		</table>
-		    		<div id="SubmitData" class="button">Submit</div>
-		    		<input type="submit" id="HiddenSubmitData">
-		    	</form>
-		    </div>
-
+		    
 		    <div class="about" id="UserCreator">
 		    	<h2>Creating an account is fast and easy.</h2>
 		    	<br>
@@ -226,6 +66,398 @@
 		    	<br>
 		    	<span class="legal"><span class="small-link" id="CancelUserCreator">Cancel</span></span>
 		    </div>
+		</div>
+
+		<div class="postlogin-content">
+			<div class="tables">
+		    	<form id="DataForm" name="MedInfo">
+		    		<table class="form-header-info">
+			    		<tr>
+			    			<td>
+						    	<label>Patient: </label>
+						    	<input id="PatientInput" name="patientname" class="form-input" type="text">
+					    	</td>
+					    	<td>
+						    	<label>Precautions: </label>
+						    	<input class="form-input"  name="precautions" type="text">
+						    </td>
+				    	</tr>
+
+						<tr>
+							<td>
+						    	<label>Diagnosis: </label>
+						    	<input class="form-input" name="diagnosis" type="text">
+					    	</td>
+					    	<td>
+						    	<label>Doctor: </label>
+						    	<input class="form-input" name="doctorname" type="text">
+						    </td>
+						</tr>
+
+					</table>
+					<ul class="multi-day-form-exercises-info-container">
+						<li class="single-day-form-exercises-info-container">
+					    	<ul class="form-exercises-info-container">
+				    			<li class="date-info">
+				    				<label>Date: </label>
+				    				<br>
+				    				<input class="form-input" name="date" type="text">
+				    			</li>
+				    			<li class="exercise-info">
+				    				<label> Table Exercises</label>
+				    				<table>
+				    					<tr class="column-headers">
+				    						<td>
+				    							Exercises
+				    						</td>
+				    						<td>
+				    							S/R/W
+				    						</td>
+				    						<td>
+				    							Min
+				    						</td>
+				    					</tr>
+				    					<tr class="inputs default-table-input">
+				    						<td>
+				    							<input id="TableExercisesInput-1" type="text" name="TableExercisesInput-1">
+				    						</td>
+				    						<td>
+				    							<input id="TableSRWInput-1" type="text" name="TableSRWInput-1" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TableMinInput-1" type="text" name="TableMinInput-1" size='8'>
+				    						</td>
+				    					<tr>
+										<tr class="inputs">
+				    						<td>
+				    							<input id="TableExercisesInput-2" type="text" name="TableExercisesInput-2">
+				    						</td>
+				    						<td>
+				    							<input id="TableSRWInput-2" type="text" name="TableSRWInput-2" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TableMinInput-2" type="text" name="TableMinInput-2" size='8'>
+				    						</td>
+				    					<tr>
+				    					<tr class="inputs">
+				    						<td>
+				    							<input id="TableExercisesInput-3" type="text" name="TableExercisesInput-3">
+				    						</td>
+				    						<td>
+				    							<input id="TableSRWInput-3" type="text" name="TableSRWInput-3" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TableMinInput-3" type="text" name="TableMinInput-3" size='8'>
+				    						</td>
+				    					<tr>
+				    						<td>
+				    							<input id="TableExercisesInput-4" type="text" name="TableExercisesInput-4">
+				    						</td>
+				    						<td>
+				    							<input id="TableSRWInput-4" type="text" name="TableSRWInput-4" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TableMinInput-4" type="text" name="TableMinInput-4" size='8'>
+				    						</td>
+				    					</tr>
+				    					<tr>
+				    						<td>
+				    							<input id="TableExercisesInput-5" type="text" name="TableExercisesInput-5">
+				    						</td>
+				    						<td>
+				    							<input id="TableSRWInput-5" type="text" name="TableSRWInput-5" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TableMinInput-5" type="text" name="TableMinInput-5" size='8'>
+				    						</td>
+				    					</tr>
+				    				</table>
+
+				    				<label> Stretches </label>
+				    				<table>
+				    					<tr class="column-headers">
+				    						<td>
+				    							Exercises
+				    						</td>
+				    						<td>
+				    							S/R/W
+				    						</td>
+				    						<td>
+				    							Min
+				    						</td>
+				    					</tr>
+				    					<tr class="inputs default-stretch-input">
+				    						<td>
+				    							<input id="StretchExercisesInput-1" type="text" name="StretchExercisesInput-1">
+				    						</td>
+				    						<td>
+				    							<input id="StretchSRWInput-1" type="text" name="StretchSRWInput-1" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="StretchMinInput-1" type="text" name="StretchMinInput-1" size='8'>
+				    						</td>
+				    					<tr>
+										<tr class="inputs">
+				    						<td>
+				    							<input id="StretchExercisesInput-2" type="text" name="StretchExercisesInput-2">
+				    						</td>
+				    						<td>
+				    							<input id="StretchSRWInput-2" type="text" name="StretchSRWInput-2" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="StretchMinInput-2" type="text" name="StretchMinInput-2" size='8'>
+				    						</td>
+				    					<tr>
+				    					<tr class="inputs">
+				    						<td>
+				    							<input id="StretchExercisesInput-3" type="text" name="StretchExercisesInput-3">
+				    						</td>
+				    						<td>
+				    							<input id="StretchSRWInput-3" type="text" name="StretchSRWInput-3" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="StretchMinInput-3" type="text" name="StretchMinInput-3" size='8'>
+				    						</td>
+				    					<tr>
+				    						<td>
+				    							<input id="StretchExercisesInput-4" type="text" name="StretchExercisesInput-4">
+				    						</td>
+				    						<td>
+				    							<input id="StretchSRWInput-4" type="text" name="StretchSRWInput-4" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="StretchMinInput-4" type="text" name="StretchMinInput-4" size='8'>
+				    						</td>
+				    					</tr>
+				    					<tr>
+				    						<td>
+				    							<input id="StretchExercisesInput-5" type="text" name="StretchExercisesInput-5">
+				    						</td>
+				    						<td>
+				    							<input id="StretchSRWInput-5" type="text" name="StretchSRWInput-5" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="StretchMinInput-5" type="text" name="StretchMinInput-5" size='8'>
+				    						</td>
+				    					</tr>
+				    				</table>
+
+				    				<label> Thera-Band </label>
+				    				<table>
+				    					<tr class="column-headers">
+				    						<td>
+				    							Exercises
+				    						</td>
+				    						<td>
+				    							S/R/W
+				    						</td>
+				    						<td>
+				    							Min
+				    						</td>
+				    					</tr>
+				    					<tr class="inputs default-thera-input">
+				    						<td>
+				    							<input id="TheraExercisesInput-1" type="text" name="TheraExercisesInput-1">
+				    						</td>
+				    						<td>
+				    							<input id="TheraSRWInput-1" type="text" name="TheraSRWInput-1" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TheraMinInput-1" type="text" name="TheraMinInput-1" size='8'>
+				    						</td>
+				    					<tr>
+										<tr class="inputs">
+				    						<td>
+				    							<input id="TheraExercisesInput-2" type="text" name="TheraExercisesInput-2">
+				    						</td>
+				    						<td>
+				    							<input id="TheraSRWInput-2" type="text" name="TheraSRWInput-2" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TheraMinInput-2" type="text" name="TheraMinInput-2" size='8'>
+				    						</td>
+				    					<tr>
+				    					<tr class="inputs">
+				    						<td>
+				    							<input id="TheraExercisesInput-3" type="text" name="TheraExercisesInput-3">
+				    						</td>
+				    						<td>
+				    							<input id="TheraSRWInput-3" type="text" name="TheraSRWInput-3" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TheraMinInput-3" type="text" name="TheraMinInput-3" size='8'>
+				    						</td>
+				    					<tr>
+				    						<td>
+				    							<input id="TheraExercisesInput-4" type="text" name="TheraExercisesInput-4">
+				    						</td>
+				    						<td>
+				    							<input id="TheraSRWInput-4" type="text" name="TheraSRWInput-4" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TheraMinInput-4" type="text" name="TheraMinInput-4" size='8'>
+				    						</td>
+				    					</tr>
+				    					<tr>
+				    						<td>
+				    							<input id="TheraExercisesInput-5" type="text" name="TheraExercisesInput-5">
+				    						</td>
+				    						<td>
+				    							<input id="TheraSRWInput-5" type="text" name="TheraSRWInput-5" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="TheraMinInput-5" type="text" name="TheraMinInput-5" size='8'>
+				    						</td>
+				    					</tr>
+				    				</table>
+
+				    				<label> Machines </label>
+				    				<table>
+				    					<tr class="column-headers">
+				    						<td>
+				    							Exercises
+				    						</td>
+				    						<td>
+				    							S/R/W
+				    						</td>
+				    						<td>
+				    							Min
+				    						</td>
+				    					</tr>
+				    					<tr class="inputs default-machine-input">
+				    						<td>
+				    							<input id="MachineExercisesInput-1" type="text" name="MachineExercisesInput-1">
+				    						</td>
+				    						<td>
+				    							<input id="MachineSRWInput-1" type="text" name="MachineSRWInput-1" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="MachineMinInput-1" type="text" name="MachineMinInput-1" size='8'>
+				    						</td>
+				    					<tr>
+										<tr class="inputs">
+				    						<td>
+				    							<input id="MachineExercisesInput-2" type="text" name="MachineExercisesInput-2">
+				    						</td>
+				    						<td>
+				    							<input id="MachineSRWInput-2" type="text" name="MachineSRWInput-2" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="MachineMinInput-2" type="text" name="MachineMinInput-2" size='8'>
+				    						</td>
+				    					<tr>
+				    					<tr class="inputs">
+				    						<td>
+				    							<input id="MachineExercisesInput-3" type="text" name="MachineExercisesInput-3">
+				    						</td>
+				    						<td>
+				    							<input id="MachineSRWInput-3" type="text" name="MachineSRWInput-3" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="MachineMinInput-3" type="text" name="MachineMinInput-3" size='8'>
+				    						</td>
+				    					<tr>
+				    						<td>
+				    							<input id="MachineExercisesInput-4" type="text" name="MachineExercisesInput-4">
+				    						</td>
+				    						<td>
+				    							<input id="MachineSRWInput-4" type="text" name="MachineSRWInput-4" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="MachineMinInput-4" type="text" name="MachineMinInput-4" size='8'>
+				    						</td>
+				    					</tr>
+				    					<tr>
+				    						<td>
+				    							<input id="MachineExercisesInput-5" type="text" name="MachineExercisesInput-5">
+				    						</td>
+				    						<td>
+				    							<input id="MachineSRWInput-5" type="text" name="MachineSRWInput-5" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="MachineMinInput-5" type="text" name="MachineMinInput-5" size='8'>
+				    						</td>
+				    					</tr>
+				    				</table>
+
+				    				<label> Floor Exercises </label>
+				    				<table>
+				    					<tr class="column-headers">
+				    						<td>
+				    							Exercises
+				    						</td>
+				    						<td>
+				    							S/R/W
+				    						</td>
+				    						<td>
+				    							Min
+				    						</td>
+				    					</tr>
+				    					<tr class="inputs default-floor-input">
+				    						<td>
+				    							<input id="FloorExercisesInput-1" type="text" name="FloorExercisesInput-1">
+				    						</td>
+				    						<td>
+				    							<input id="FloorSRWInput-1" type="text" name="FloorSRWInput-1" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="FloorMinInput-1" type="text" name="FloorMinInput-1" size='8'>
+				    						</td>
+				    					<tr>
+										<tr class="inputs">
+				    						<td>
+				    							<input id="FloorExercisesInput-2" type="text" name="FloorExercisesInput-2">
+				    						</td>
+				    						<td>
+				    							<input id="FloorSRWInput-2" type="text" name="FloorSRWInput-2" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="FloorMinInput-2" type="text" name="FloorMinInput-2" size='8'>
+				    						</td>
+				    					<tr>
+				    					<tr class="inputs">
+				    						<td>
+				    							<input id="FloorExercisesInput-3" type="text" name="FloorExercisesInput-3">
+				    						</td>
+				    						<td>
+				    							<input id="FloorSRWInput-3" type="text" name="FloorSRWInput-3" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="FloorMinInput-3" type="text" name="FloorMinInput-3" size='8'>
+				    						</td>
+				    					<tr>
+				    						<td>
+				    							<input id="FloorExercisesInput-4" type="text" name="FloorExercisesInput-4">
+				    						</td>
+				    						<td>
+				    							<input id="FloorSRWInput-4" type="text" name="FloorSRWInput-4" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="FloorMinInput-4" type="text" name="FloorMinInput-4" size='8'>
+				    						</td>
+				    					</tr>
+				    					<tr>
+				    						<td>
+				    							<input id="FloorExercisesInput-5" type="text" name="FloorExercisesInput-5">
+				    						</td>
+				    						<td>
+				    							<input id="FloorSRWInput-5" type="text" name="FloorSRWInput-5" size='8'>
+				    						</td>
+				    						<td>
+				    							<input id="FloorMinInput-5" type="text" name="FloorMinInput-5" size='8'>
+				    						</td>
+				    					</tr>
+				    				</table>
+				    				<div id="SubmitData" class="button">Submit</div>
+		    						<input type="submit" id="HiddenSubmitData">
+				    			</li>
+
+				    		</ul>
+				    	</li>
+				    </ul>
+		    	</form>
+		    </div>
+
 		</div>
 
 

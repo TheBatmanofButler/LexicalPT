@@ -96,4 +96,3 @@ $("#HiddenSubmitLogin").submit(function() {
 	alert('bitch');
 	$("#SubmitLogin").trigger("click");
 })
-
