@@ -194,6 +194,16 @@ h1 {
         width: 100%;
     }
 
+    #SubmitNewUserButton {
+        cursor: pointer;
+    }
+    
+    #SubmitNewUserButton:active {
+        -webkit-box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
+        -moz-box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
+        box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
+    }
+
 
 #HiddenSubmitLogin {
     display: none;
