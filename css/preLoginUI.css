@@ -97,11 +97,14 @@ h1 {
                 display: none;
                 height: 12pt;
                 width: 100px;
+                float: right;
             }
             #PasswordField {
                 height: 12pt;
                 width: 100px;
                 display: none;
+                margin-left: 30px;
+                float: right;
             }
 
             #Cancel {
