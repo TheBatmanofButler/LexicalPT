@@ -27,6 +27,15 @@ function isSanitized(inputString) {
 	return true;
 }
 
+
+function checkUserKey(socket, userKey) { 
+	if(userKey === socket.userKey)
+		return true;
+	else
+		return false;
+}
+
+
 /**
 	Generic error reply function. Sends a message to a socket with error as message header
 
@@ -55,11 +64,11 @@ function storeData(socket, incomingObj, table, callback) {
 	var dataObj = {};
 
 	for(key in incomingObj) {
-		if(key === 'name')
+		if(key === 'name' || !incomingObj[key] || incomingObj[key] === '')
 			continue;
 
-		if(key === 'timestamp') {
-			dataObj[key] = {'N':incomingObj[key]};
+		if(key === 'date') {
+			dataObj[key] = {'N':incomingObj[key] + ""};
 		}
 		else {
 			dataObj[key] = {'S':incomingObj[key]};
@@ -67,6 +76,8 @@ function storeData(socket, incomingObj, table, callback) {
 	}
 	
 	var itemParams = {Item: dataObj};
+
+	console.log(itemParams)
 
 	table.putItem(itemParams, function(err, data) {
 		if(err) {
@@ -87,9 +98,10 @@ function storeData(socket, incomingObj, table, callback) {
 */
 function serverHandler(socket, incomingObj, callback) {
 	if(incomingObj.name === 'store') {
-
-		if(loginTools.checkUserKey(incomingObj['userKey']))
+		if(incomingObj['userKey'])
 			storeData(socket, incomingObj, fileTable, callback);
+		else
+			callback(null, {message: 'Login first'}, 'appError');
 
 	}
 	else if(incomingObj.name === 'login') {

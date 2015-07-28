@@ -169,14 +169,13 @@ $.each((FakePatients), function(index, PatientName) {
 $( "#combobox" ).combobox();
 
 
-
-
 $("#DataForm").submit(function(event) {
 	event.preventDefault();
 
     var $inputs = $('#DataForm :input');
-	var values = {};
-	values.name = "dataSubmission"
+    var values = {};
+    values.name = "store";
+    values.userKey = global_userKey;
 
     $inputs.each(function() {
         values[this.name] = $(this).val();
@@ -188,7 +187,7 @@ $("#DataForm").submit(function(event) {
 			errorHandler(err, isAppError);
 		} 
 		else {
-			login(data);
+			alert("Success?")
 		}
 	});
 });

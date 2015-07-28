@@ -10,9 +10,6 @@ User registration and login module
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 
-//User key that is used to check against security login
-var currentUserKey = null;
-
 
 //Helper functions--------------------------------------------------------------------------------------------------
 
@@ -27,13 +24,6 @@ var currentUserKey = null;
 function generateUserKey(username, password) {
 	return username+password;
 } 
-
-function checkUserKey(userKey) { 
-	if(userKey === currentUserKey)
-		return true;
-	else
-		return false;
-}
 
 /**
 	Checks database if the current username is already taken. If so, sends newUserResponseFailure message. 
@@ -74,6 +64,7 @@ module.exports = {
 		// Read the item from the table
 	  	table.getItem({Key: {'username':{'S':incomingObj.username}}}, function(err, data) {
 	  		if(err) {
+				console.log(err);
 				callback(null, err);
 			}	  		
 			else {
@@ -91,9 +82,7 @@ module.exports = {
 						dataObj[key] = {};
 						dataObj[key] = {'S':data.Item[key].S}
 					}
-
-					currentUserKey = dataObj.userKey.S;
-
+					
 		    		callback(dataObj); 	  	
 		    	}
 		    	else {
@@ -116,8 +105,8 @@ module.exports = {
 	*/
 	regNewUser: function(socket, table, incomingObj, callback) {
 		checkUser(socket, table, incomingObj.username, function(err, isAppError) {
-			console.log(err)
 			if(err) { 
+				console.log(err);
 				callback(null, err, isAppError);
 				return;
 			}
@@ -143,7 +132,6 @@ module.exports = {
 					callback(null, err);
 				}
 				else {
-					currentUserKey = dataObj.userKey.S;
 					callback(dataObj);
 				}
 		    });
