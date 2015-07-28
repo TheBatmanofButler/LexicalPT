@@ -1,4 +1,3 @@
-
 $("#LoginButton").click(function showInputLogin() {
     document.getElementById("NewUserButton").style.display = "none";
     document.getElementById("LoginButton").style.display = "none";
@@ -23,10 +22,6 @@ $('#NewUserButton, #CancelUserCreator').click(function toggleUserCreator() {
     $('#FlavorText, #UserCreator').slideToggle('fast');
 });
 
-$('#terms').click(function() { alert("bees")});
-
-$('#privacy').click(function() { alert("aaaaaa aaaaaaaaa")});
-
 $('#GetStartedButton').click(function() {
     this.parentNodes.submit();    
 });
@@ -44,4 +39,3 @@ $("#AddCloud").click(function(){
 $(".new-cloud-cover").click(function(){
     $(".new-cloud-panel").fadeOut();
 });
-
