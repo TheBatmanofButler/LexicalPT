@@ -29,6 +29,7 @@ function isSanitized(inputString) {
 
 
 function checkUserKey(socket, userKey) { 
+	console.log("CHECKING")
 	if(userKey === socket.userKey)
 		return true;
 	else
@@ -97,14 +98,7 @@ function storeData(socket, incomingObj, table, callback) {
 	@param: incomingObj; obj; data sent from client
 */
 function serverHandler(socket, incomingObj, callback) {
-	if(incomingObj.name === 'store') {
-		if(incomingObj['userKey'])
-			storeData(socket, incomingObj, fileTable, callback);
-		else
-			callback(null, {message: 'Login first'}, 'appError');
-
-	}
-	else if(incomingObj.name === 'login') {
+	if(incomingObj.name === 'login') {
 
 		if(!isSanitized(incomingObj.username)) {
 			serverError(socket, "No or invalid username");
@@ -116,7 +110,12 @@ function serverHandler(socket, incomingObj, callback) {
 			return;
 		}
 
-		loginTools.loginUser(socket, userTable, incomingObj, callback);
+		loginTools.loginUser(socket, userTable, incomingObj, function(data, err, key) {
+			if(data && data.userKey)
+				socket.userKey = data.userKey.S;
+
+			callback(data, err, key);
+		});
 	}
 	else if(incomingObj.name === 'newUser') {
 
@@ -136,10 +135,20 @@ function serverHandler(socket, incomingObj, callback) {
 			return;
 		}
 
-		loginTools.regNewUser(socket, userTable, incomingObj, callback);
+		loginTools.regNewUser(socket, userTable, incomingObj, function(data, err, key) {
+			if(data && data.userKey)
+				socket.userKey = data.userKey.S;
+
+			callback(data, err, key);
+		});
+	}
+	else if(incomingObj.userKey && checkUserKey(socket, incomingObj.userKey)) {
+		if(incomingObj.name === 'store') {
+			storeData(socket, incomingObj, fileTable, callback);
+		}
 	}
 	else {
-		serverError(socket, 'No Name match');
+		callback(null, {message: 'Login first'}, 'appError');
 	}
 }
 
