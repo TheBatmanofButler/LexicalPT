@@ -5,6 +5,8 @@
 
 var AWS = require('aws-sdk');
 var loginTools = require('./loginTools');
+var storageTools = require('./storageTools');
+
 
 //AWS config
 AWS.config.region = 'us-east-1';
@@ -48,46 +50,6 @@ function serverError(socket, message) {
 		name: 'Error',
 		message: message
 	});
-}
-
-
-/**
-	Stores patient data to dynamo. 
-
-	@param: socket; the user connection
-	@param: incomingObj
-		@param: timestamp; time in milliseconds from epoch
-		@param: '0-0', '1-5', etc.; coordinates keyed to values stored in tables
-	@param: table; where to store
-	@param: callback; what to do after
-*/
-function storeData(socket, incomingObj, table, callback) {
-	var dataObj = {};
-
-	for(key in incomingObj) {
-		if(key === 'name' || !incomingObj[key] || incomingObj[key] === '')
-			continue;
-
-		if(key === 'date') {
-			dataObj[key] = {'N':incomingObj[key] + ""};
-		}
-		else {
-			dataObj[key] = {'S':incomingObj[key]};
-		}
-	}
-	
-	var itemParams = {Item: dataObj};
-
-	console.log(itemParams)
-
-	table.putItem(itemParams, function(err, data) {
-		if(err) {
-			callback(null, err);
-		}
-		else {
-			callback(dataObj);
-		}
-    });
 }
 
 /**
@@ -144,7 +106,11 @@ function serverHandler(socket, incomingObj, callback) {
 	}
 	else if(incomingObj.userKey && checkUserKey(socket, incomingObj.userKey)) {
 		if(incomingObj.name === 'store') {
-			storeData(socket, incomingObj, fileTable, callback);
+			storageTools.storeData(socket, incomingObj, fileTable, callback);
+		}
+		else if(incomingObj.name === 'retrieve') {
+			console.log("check")
+			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
 	}
 	else {

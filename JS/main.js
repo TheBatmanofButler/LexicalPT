@@ -258,3 +258,19 @@ $("#HiddenSubmitLogin").submit(function() {
 	alert('bitch');
 	$("#SubmitLogin").trigger("click");
 })
+
+
+$("#RetrieveInfoTest").click(function() {
+    patient = prompt("PatientName?");
+    date = prompt("date?");
+
+    socket.emit("clientToServer", {
+        name: 'retrieve',
+        userKey: global_userKey,
+        patient: patient,
+        date: date
+    }, function(data, err, appError) {
+        console.log(data);
+        alert(data);
+    });
+});
