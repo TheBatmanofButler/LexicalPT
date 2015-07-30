@@ -9,27 +9,27 @@ Runner file. Executes program, initializes available libraries, etc.
 //Event triggers
 
 var FakePatients = [
-	"Trudie Hills",
-	"Branden Pannell",
-	"Beryl Gondek",
-	"Latricia Balas",
-	"Tawanna Fairman",
-	"Lanie Mckinny",
-	"Arica Hockman",
-	"Marivel Lamer",
-	"Maddie Westray",
-	"Maryrose Heier",
-	"Kandy Travis",
-	"Ladonna Yohn",
-	"Karima Mcadams",
-	"Ja Hedden",
-	"Elaine Baver",
-	"Caridad Najera",
-	"Hien Serpa",
-	"Drusilla Beech",
-	"Kathlene Hemsley",
-	"Dalila Merola"
-	]
+    "Trudie Hills",
+    "Branden Pannell",
+    "Beryl Gondek",
+    "Latricia Balas",
+    "Tawanna Fairman",
+    "Lanie Mckinny",
+    "Arica Hockman",
+    "Marivel Lamer",
+    "Maddie Westray",
+    "Maryrose Heier",
+    "Kandy Travis",
+    "Ladonna Yohn",
+    "Karima Mcadams",
+    "Ja Hedden",
+    "Elaine Baver",
+    "Caridad Najera",
+    "Hien Serpa",
+    "Drusilla Beech",
+    "Kathlene Hemsley",
+    "Dalila Merola"
+    ]
 
 $.widget( "custom.combobox", {
       _create: function() {
@@ -169,108 +169,40 @@ $.each((FakePatients), function(index, PatientName) {
 $( "#combobox" ).combobox();
 
 
+//The only default function that should be here: default error handler
+function errorHandler(data, isAppError) {
+    console.log(data);
+    alert(data.message);
+}
+
 $("#DataForm").submit(function(event) {
-	event.preventDefault();
-
-    var $inputs = $('#DataForm :input');
-    var values = {};
-    values.name = "store";
-    values.userKey = global_userKey;
-
-    $inputs.each(function() {
-        values[this.name] = $(this).val();
-    });
-
-	socket.emit("clientToServer", values,
-		function(data, err, isAppError) {
-		if(err) {
-			errorHandler(err, isAppError);
-		} 
-		else {
-			alert("Success?")
-		}
-	});
+    event.preventDefault();
+    loadFormToDB();
 });
 
 $("#SubmitData").click(function() {
-	$("#DataForm").submit();
+    $("#DataForm").submit();
 });
 
 $("#SubmitLogin").click(function () {
-	alert('bitch2');
-    $("#TitlebarForm").submit(function(event) {
-		event.preventDefault();
-
-	    var $inputs = $('#TitlebarForm :input');
-		var values = {};
-	    $inputs.each(function() {
-	        values[this.name] = $(this).val();
-	    });
-	    console.log(values);
-		socket.emit("clientToServer", {
-	        name: "login",
-	        username: values.username,
-			password: values.password
-		}, function(data, err, isAppError) {
-			if(err) {
-				errorHandler(err, isAppError);
-			} 
-			else {
-				login(data);
-			}
-		});
-	});
-
-	$("#TitlebarForm").submit();
+    submitLogin();
 });
 
 $("#LogoutButton").click(function() {   
-	alert("Not logged in");
+    alert("Not logged in");
 });
 
 $("#RegisterNewUser").submit(function(event) {
-	event.preventDefault();
-
-    var $inputs = $('#RegisterNewUser :input');
-    console.log($inputs);
-	var values = {};
-    $inputs.each(function() {
-        values[this.name] = $(this).val();
-    });
-    console.log(values)
-	socket.emit("clientToServer", {
-		name: "newUser",
-		username: values.username,
-		password: values.password,
-		email: values.email, 
-		fullname: values.firstname + " " + values.lastname
-	}, function(data, err, appError) {
-		if(err) {
-			errorHandler(err, appError);
-		}		
-		else {
-			login(data);
-		}
-	});
+    event.preventDefault();
+    registerNewUser();
 });
 
 $("#HiddenSubmitLogin").submit(function() {
-	alert('bitch');
-	$("#SubmitLogin").trigger("click");
+    alert('bitch');
+    $("#SubmitLogin").trigger("click");
 })
 
 
 $("#RetrieveInfoTest").click(function() {
-    patient = prompt("PatientName?");
-    date = prompt("date?");
-
-    socket.emit("clientToServer", {
-        name: 'retrieve',
-        userKey: global_userKey,
-        patient: patient,
-        date: date
-    }, function(data, err, appError) {
-        console.log(data);
-        alert(data);
-    });
+  loadFormFromDB();
 });

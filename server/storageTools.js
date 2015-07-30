@@ -63,7 +63,18 @@ module.exports = {
 				callback(null, err);
 			}
 			else if(data.Item) {
-				callback(data.Item);
+				returnObj = {};
+
+				for(key in data.Item) {
+
+					if(key === 'date') {
+						returnObj[key] = data.Item[key].N;
+						continue;
+					}
+
+					returnObj[key] = data.Item[key].S
+				}
+				callback(returnObj);
 			}
 			else {
 				callback(null);
