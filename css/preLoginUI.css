@@ -27,6 +27,10 @@ h1 {
 .button {
     cursor: pointer;
 }
+
+.spacer-15 {
+    height: 15%;
+}
     
     .button-prelogin {
         padding: 5px;
@@ -211,19 +215,3 @@ h1 {
         box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
     }
 
-
-#HiddenSubmitLogin {
-    display: none;
-}
-
-.form-input {
-    width: 200px;
-}
-
-#SubmitData {
-    padding-top: 40px;
-}
-
-#HiddenSubmitData {
-    display: none;
-}

@@ -35,7 +35,7 @@ function _loadFormFromDB(data) {
 	for(ID in data) {
 		$("#" + ID).val(data[ID]);
 	}
-
+    $(".tables").fadeIn();
 }
 
 /**

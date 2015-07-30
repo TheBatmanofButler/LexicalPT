@@ -1,69 +1,110 @@
 .postlogin-content {
     padding-top: 75px;
     width: 75%;
+    height: 100%;
     min-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
-
-    .form-header-info {
+    
+    .search {
         width: 100%;
     }
 
-        .form-header-info tr td {
-            padding-right: 10%;
-            padding-left: 10%;
+        .search .search-containers {
+            width: 100%;
         }
 
-            .form-header-info tr td label {
-                float: left;
-            }
-            .form-header-info tr td input {
-                float: right;
-            }
-
-    .multi-day-form-exercises-info-container {
-        text-align: center;
-        width: 100%;
-    }
-
-       .multi-day-form-exercises-info-container .single-day-form-exercises-info-container {
-            display: inline-block;
-            width: 30%
-        } 
-
-            .form-exercises-info-container {
+            .search .search-containers li {
+                display: inline-block;
+                width: 49%;
                 text-align: center;
             }
 
-                .form-exercises-info-container li {
-                    padding-top: 3%;
+            .search .search-containers li label {
+                font-size: 30px;
+            }
+
+    .tables {
+        display: none;
+    }
+
+        .multi-day-form-exercises-info-container {
+            text-align: center;
+            width: 100%;
+        }
+
+           .multi-day-form-exercises-info-container .single-day-form-exercises-info-container {
+                display: inline-block;
+                width: 30%
+            } 
+
+                .single-day-form-exercises-info-container .patient-info label {
+                    font-size: 30px;
                 }
 
-                    .form-exercises-info-container li label {
-                        font-size: 20px;
-                        padding-bottom: 1%;
+                .single-day-form-exercises-info-container .patient-info input {
+                    width: 99%;
+                }
+
+                .form-exercises-info-container {
+                    text-align: center;
+                }
+
+                    .form-exercises-info-container li {
+                        padding-top: 3%;
                     }
 
-                    .form-exercises-info-container .date-info label {
-                        padding-right: 5%;
+                    #HiddenSubmitLogin {
+                        display: none;
                     }
 
-                    .form-exercises-info-container table {
+                    .form-input {
                         width: 100%;
-                        padding-top: 2%;
-                        padding-bottom: 2%;
                     }
 
-                        .form-exercises-info-container .column-headers {
-                            width: 33%;
-                            text-align: center;
+                    #SubmitData {
+                        padding-top: 40px;
+                    }
+
+                    #HiddenSubmitData {
+                        display: none;
+                    }
+
+                        .form-exercises-info-container li label {
+                            font-size: 20px;
+                            padding-bottom: 1%;
+                            float: left;
                         }
 
-#HiddenUploadButton 
-{
-    display: none;
-}
+                            .form-header-info {
+                                width: 100%;
+                            }
+
+                                .form-header-info tr td {
+                                }
+
+                                    .form-header-info tr td label {
+                                        float: left;
+                                    }
+                                    .form-header-info tr td input {
+                                        float: right;
+                                    }
+
+                        .form-exercises-info-container .date-info label {
+                            padding-right: 5%;
+                        }
+
+                        .form-exercises-info-container table {
+                            width: 100%;
+                            padding-top: 2%;
+                            padding-bottom: 2%;
+                        }
+
+                            .form-exercises-info-container .column-headers {
+                                width: 33%;
+                                text-align: center;
+                            }
 
 .custom-combobox {
     position: relative;

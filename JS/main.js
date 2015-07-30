@@ -202,7 +202,14 @@ $("#HiddenSubmitLogin").submit(function() {
     $("#SubmitLogin").trigger("click");
 })
 
-
 $("#RetrieveInfoTest").click(function() {
-  loadFormFromDB();
+    loadFormFromDB();
+});
+
+$("#NewDataTest").click(function(){
+    $(".tables").fadeIn();
+
+    $('html, body').animate({
+        scrollTop: $("#BreakOne").offset().top
+    }, 400);
 });

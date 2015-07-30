@@ -66,48 +66,62 @@
 		</div>
 
 		<div class="postlogin-content">
-			<div style="background: red; width: 100px; height: 100px" id="RetrieveInfoTest">
-			</div>
+			<div style="background: red; width: 100px; height: 100px" id="RetrieveInfoTest"> </div>
+			<div style="background: green; width: 100px; height: 100px" id="NewDataTest"> </div>
 			<div class="search">
-				<div class="ui-widget">
-					<label>Search for a Patient: </label>
-					<select id="combobox">
-					</select>
-				</div>
+				<ul class="search-containers">
+					<li>
+						<label>Search for a Patient: </label>
+						<br>
+						<select id="combobox">
+						</select>
+					</li>
+					<li>
+						<label>Search for a Date: </label>
+						<br>
+						<select id="combobox">
+						</select>
+					</li>
+				</ul>
 			</div>
+			<div class="spacer-15"></div>
+			<hr id="BreakOne">
+			<div class="spacer-15"></div>
 			<div class="tables">
-		    	<form id="DataForm" name="MedInfo">
-		    		<table class="form-header-info">
-			    		<tr>
-			    			<td>
-						    	<label>Patient: </label>
-						    	<input id="patient" name="patient" class="form-input" type="text">
-					    	</td>
-					    	<td>
-						    	<label>Precautions: </label>
-						    	<input id="precautions" class="form-input"  name="precautions" type="text">
-						    </td>
-				    	</tr>
-
-						<tr>
-							<td>
-						    	<label>Diagnosis: </label>
-						    	<input id="diagnosis" class="form-input" name="diagnosis" type="text">
-					    	</td>
-					    	<td>
-						    	<label>Doctor: </label>
-						    	<input id="doctorname" class="form-input" name="doctorname" type="text">
-						    </td>
-						</tr>
-
-					</table>
+		    	<form id="DataForm" name="MedInfo">		    		
 					<ul class="multi-day-form-exercises-info-container">
 						<li class="single-day-form-exercises-info-container">
+							<div class="patient-info">
+								<label>Patient: </label>
+								<br>
+								<input id="patient" name="patient" class="form-input" type="text">
+							</div>
 					    	<ul class="form-exercises-info-container">
-				    			<li class="date-info">
-				    				<label>Date: </label>
-				    				<br>
-				    				<input id="date" class="form-input" name="date" type="text">
+				    			<li>
+				    				<table class="form-header-info">
+							    		<tr>
+							    			<td>
+							    				<label>Date: </label>
+				    							<input id="date" class="form-input" name="date" type="text">
+									    	</td>
+									    	<td>
+										    	<label>Precautions: </label>
+										    	<input id="precautions" class="form-input"  name="precautions" type="text">
+										    </td>
+								    	</tr>
+
+										<tr>
+											<td>
+										    	<label>Diagnosis: </label>
+										    	<input id="diagnosis" class="form-input" name="diagnosis" type="text">
+									    	</td>
+									    	<td>
+										    	<label>Doctor: </label>
+										    	<input id="doctorname" class="form-input" name="doctorname" type="text">
+										    </td>
+										</tr>
+
+									</table>
 				    			</li>
 				    			<li class="exercise-info">
 				    				<label> Table Exercises</label>
