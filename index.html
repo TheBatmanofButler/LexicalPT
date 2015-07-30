@@ -81,22 +81,22 @@
 			    		<tr>
 			    			<td>
 						    	<label>Patient: </label>
-						    	<input id="PatientInput" name="patient" class="form-input" type="text">
+						    	<input id="patient" name="patient" class="form-input" type="text">
 					    	</td>
 					    	<td>
 						    	<label>Precautions: </label>
-						    	<input class="form-input"  name="precautions" type="text">
+						    	<input id="precautions" class="form-input"  name="precautions" type="text">
 						    </td>
 				    	</tr>
 
 						<tr>
 							<td>
 						    	<label>Diagnosis: </label>
-						    	<input class="form-input" name="diagnosis" type="text">
+						    	<input id="diagnosis" class="form-input" name="diagnosis" type="text">
 					    	</td>
 					    	<td>
 						    	<label>Doctor: </label>
-						    	<input class="form-input" name="doctorname" type="text">
+						    	<input id="doctorname" class="form-input" name="doctorname" type="text">
 						    </td>
 						</tr>
 
@@ -107,7 +107,7 @@
 				    			<li class="date-info">
 				    				<label>Date: </label>
 				    				<br>
-				    				<input class="form-input" name="date" type="text">
+				    				<input id="date" class="form-input" name="date" type="text">
 				    			</li>
 				    			<li class="exercise-info">
 				    				<label> Table Exercises</label>
@@ -468,7 +468,9 @@
 
 
 		<script src="JS/global.js"></script>
+		<script src="JS/widgets.js"></script>
 		<script src="JS/user.js"></script>
+		<script src="JS/files.js"></script>
 		<!--All the actual function calls are in here-->
 		<script src="JS/serverToClientHandler.js"></script>
 		<script src="JS/mainUI.js"></script>

@@ -7,10 +7,5 @@ Handles incoming/outgoing server connections
 */
 
 socket.on('serverToClient', function(data) {
-	if(data.name === 'Error') {
-		errorHandler(data);
-	}
-	else {
-		alert("no name found");
-	}
+	
 });
