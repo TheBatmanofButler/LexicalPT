@@ -8,29 +8,6 @@ Runner file. Executes program, initializes available libraries, etc.
 
 //Event triggers
 
-var FakePatients = [
-	"Trudie Hills",
-	"Branden Pannell",
-	"Beryl Gondek",
-	"Latricia Balas",
-	"Tawanna Fairman",
-	"Lanie Mckinny",
-	"Arica Hockman",
-	"Marivel Lamer",
-	"Maddie Westray",
-	"Maryrose Heier",
-	"Kandy Travis",
-	"Ladonna Yohn",
-	"Karima Mcadams",
-	"Ja Hedden",
-	"Elaine Baver",
-	"Caridad Najera",
-	"Hien Serpa",
-	"Drusilla Beech",
-	"Kathlene Hemsley",
-	"Dalila Merola"
-	]
-
 $.widget( "custom.combobox", {
       _create: function() {
         this.wrapper = $( "<span>" )
@@ -159,15 +136,21 @@ $.widget( "custom.combobox", {
       }
     });
 
-$.each((FakePatients), function(index, PatientName) {   
-  $('#combobox')
-    .append($("<option></option>")
-    .attr("value",PatientName)
-    .text(PatientName)); 
+$( "#patient_combobox" ).combobox();
+
+function PatientDateInput(FakePatients) {
+  $.each((FakePatients), function(index, PatientName) {   
+    $('#patient_combobox')
+      .append($("<option></option>")
+      .attr("value",PatientName)
+      .text(PatientName));
+  });
+}
+
+var $PatientInput = $("label[for='patient_combobox']").next("span").children("input")
+$PatientInput.click( function() {
+  alert($PatientInput.val());
 });
-
-$( "#combobox" ).combobox();
-
 
 $("#DataForm").submit(function(event) {
 	event.preventDefault();
@@ -187,7 +170,7 @@ $("#DataForm").submit(function(event) {
 			errorHandler(err, isAppError);
 		} 
 		else {
-			alert("Success?")
+			// alert("data.FakeNames")
 		}
 	});
 });
@@ -197,7 +180,6 @@ $("#SubmitData").click(function() {
 });
 
 $("#SubmitLogin").click(function () {
-	alert('bitch2');
     $("#TitlebarForm").submit(function(event) {
 		event.preventDefault();
 
@@ -217,6 +199,7 @@ $("#SubmitLogin").click(function () {
 			} 
 			else {
 				login(data);
+        PatientDateInput(Object.keys(data.FakeNames));
 			}
 		});
 	});
@@ -255,7 +238,6 @@ $("#RegisterNewUser").submit(function(event) {
 });
 
 $("#HiddenSubmitLogin").submit(function() {
-	alert('bitch');
 	$("#SubmitLogin").trigger("click");
 })
 
