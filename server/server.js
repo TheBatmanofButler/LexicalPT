@@ -2,6 +2,28 @@
 //export AWS_ACCESS_KEY_ID
 //export AWS_SECRET_ACCESS_KEY
 
+var FakePatients = {
+	"Trudie Hills":"1420444921",
+	"Branden Pannell":"1420444922",
+	"Beryl Gondek":"1420444923",
+	"Latricia Balas":"1420444924",
+	"Tawanna Fairman":"1420444925",
+	"Lanie Mckinny":"1420444926",
+	"Arica Hockman":"1420444927",
+	"Marivel Lamer":"1420444928",
+	"Maddie Westray":"1420444929",
+	"Maryrose Heier":"1420444930",
+	"Kandy Travis":"1420434921",
+	"Ladonna Yohn":"1420424921",
+	"Karima Mcadams":"1421444921",
+	"Ja Hedden":"1420444941",
+	"Elaine Baver":"1420454921",
+	"Caridad Najera":"1426444921",
+	"Hien Serpa":"1420444721",
+	"Drusilla Beech":"1428444921",
+	"Kathlene Hemsley":"1420444111",
+	"Dalila Merola":"1420444121"
+	}
 
 var AWS = require('aws-sdk');
 var loginTools = require('./loginTools');
@@ -73,10 +95,11 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 
 		loginTools.loginUser(socket, userTable, incomingObj, function(data, err, key) {
-			if(data && data.userKey)
+			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
-
-			callback(data, err, key);
+				data.FakeNames = FakePatients;
+				callback(data, err, key);
+			}
 		});
 	}
 	else if(incomingObj.name === 'newUser') {

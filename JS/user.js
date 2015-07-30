@@ -33,7 +33,6 @@ function displayCurrentUser(username) {
 		@param: userKey
 */
 function login(data) {
-	alert()
 	global_userKey = data.userKey.S;
 	global_username = data.username.S;
 	global_userEmail = data.email.S;
@@ -99,6 +98,7 @@ function submitLogin() {
 			} 
 			else {
 				login(data);
+				PatientDateInput(data.FakeNames);
 			}
 		});
 	});
