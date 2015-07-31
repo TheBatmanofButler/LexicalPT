@@ -18,8 +18,8 @@ $("#Cancel").click(function hideInputLogin() {
     document.getElementById("Cancel").style.display = "none";
 });
 
-$('#NewUserButton, #CancelUserCreator').click(function toggleUserCreator() {
-    $('#FlavorText, #UserCreator').slideToggle('fast');
+$('#NewUserButton, #CancelUserCreator, #landingpagebutton').click(function toggleUserCreator() {
+    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
 });
 
 $('#GetStartedButton').click(function() {
