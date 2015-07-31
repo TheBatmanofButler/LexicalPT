@@ -1,3 +1,6 @@
+$("#date").value = new Date();
+
+
 $("#LoginButton").click(function showInputLogin() {
     document.getElementById("NewUserButton").style.display = "none";
     document.getElementById("LoginButton").style.display = "none";

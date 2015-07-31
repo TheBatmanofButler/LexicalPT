@@ -19,6 +19,8 @@ function loadFormToDB() {
         values[this.name] = $(this).val();
     });
 
+    values['date'] = new Date(values['date']).getTime();
+
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
 		if(err) {
