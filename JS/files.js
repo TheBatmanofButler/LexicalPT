@@ -35,6 +35,11 @@ function loadFormToDB() {
 function _loadFormFromDB(data) {
 	console.log(data);
 	for(ID in data) {
+        if(ID === 'date') {
+            $("#date").val(new Date(parseInt(data[ID])).toISOString().substring(0, 10));
+            continue;
+        }
+
 		$("#" + ID).val(data[ID]);
 	}
     $(".tables").fadeIn();
