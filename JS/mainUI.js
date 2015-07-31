@@ -39,3 +39,5 @@ $("#AddCloud").click(function(){
 $(".new-cloud-cover").click(function(){
     $(".new-cloud-panel").fadeOut();
 });
+
+//aaaaaaaaa aaaaaaaaa
