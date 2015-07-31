@@ -19,7 +19,7 @@ $("#Cancel").click(function hideInputLogin() {
 });
 
 $('#NewUserButton, #CancelUserCreator, #landingpagebutton').click(function toggleUserCreator() {
-    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
+    $('#FlavorText, #UserCreator, #landingpagebutton, .postlogin-content').slideToggle('fast');
 });
 
 $('#GetStartedButton').click(function() {
