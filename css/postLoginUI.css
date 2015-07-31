@@ -33,6 +33,10 @@
         .multi-day-form-exercises-info-container {
             text-align: center;
             width: 100%;
+
+            display: block;
+            white-space: nowrap;
+            overflow: auto;
         }
 
            .multi-day-form-exercises-info-container .single-day-form-exercises-info-container {

@@ -33,7 +33,7 @@ var storageTools = require('./storageTools');
 //AWS config
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'PTUsers'}});
-var fileTable = new AWS.DynamoDB({params: {TableName: 'PTClientData'}});
+var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
 
 //Sockets
 var io = require('socket.io').listen(4000);

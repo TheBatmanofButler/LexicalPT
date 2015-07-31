@@ -24,6 +24,10 @@ h1 {
     font-size: 22pt;
 }
 
+.hidden {
+    display: none;
+}
+
 .button {
     cursor: pointer;
 }

@@ -31,7 +31,7 @@ module.exports = {
 			if(key === 'name' || !incomingObj[key] || incomingObj[key] === '')
 				continue;
 
-			if(key === 'date') {
+			if(key === 'apptDate') {
 				dataObj[key] = {'N':incomingObj[key] + ""};
 			}
 			else {
@@ -54,27 +54,22 @@ module.exports = {
 	},
 
 	retrieveData: function(socket, incomingObj, table, callback) {
-		console.log("check")
-
-		table.getItem({Key: {'patient':{'S':incomingObj['patient']}, 'date':{'N':incomingObj['date']}}}, function(err, data)  {
+		table.query({
+			ScanIndexForward: false,
+			Limit: 5,
+			ExpressionAttributeValues: {
+				":hashval": {"S": incomingObj['patient']},
+				":rangeval": {"N": incomingObj['apptDate']}
+			},
+			KeyConditionExpression: "patient = :hashval AND apptDate <= :rangeval"
+		}, function(err, data)  {
 			console.log(err)
 			console.log(data)
 			if(err) {
 				callback(null, err);
 			}
-			else if(data.Item) {
-				returnObj = {};
-
-				for(key in data.Item) {
-
-					if(key === 'date') {
-						returnObj[key] = data.Item[key].N;
-						continue;
-					}
-
-					returnObj[key] = data.Item[key].S
-				}
-				callback(returnObj);
+			else if(data.Items && date.Items.length > 0) {				
+				callback(data.Items);
 			}
 			else {
 				callback(null);

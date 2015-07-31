@@ -1,6 +1,6 @@
 /**
 @author: Amol Kapoor
-@date: 6-30-15
+@`: 6-30-15
 @version: 0.1
 
 Runner file. Executes program, initializes available libraries, etc. 
@@ -45,6 +45,9 @@ $("#RetrieveInfoTest").click(function() {
 });
 
 $("#NewDataTest").click(function(){
+
+    createForm();
+
     $(".tables").fadeIn();
 
     $('html, body').animate({

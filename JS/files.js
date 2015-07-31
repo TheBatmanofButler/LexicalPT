@@ -6,6 +6,20 @@
 File manipulation functions
 */
 
+var global_formCount = 0;
+
+function createForm() {
+    var $form = $("#form-default").clone();
+
+    $form.attr("id","form-" + global_formCount);
+
+    $form.removeClass("hidden");
+
+    global_formCount++;
+    
+    $(".multi-day-form-exercises-info-container").append($form);
+}
+
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
@@ -19,7 +33,7 @@ function loadFormToDB() {
         values[this.name] = $(this).val();
     });
 
-    values['date'] = new Date(values['date']).getTime();
+    values['apptDate'] = new Date(values['apptDate']).getTime();
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -34,29 +48,44 @@ function loadFormToDB() {
 
 function _loadFormFromDB(data) {
 	console.log(data);
-	for(ID in data) {
-        if(ID === 'date') {
-            $("#date").val(new Date(parseInt(data[ID])).toISOString().substring(0, 10));
-            continue;
+
+    for(var i = 0; i < data.length; i++) {
+
+        if(i > global_formCount - 1) {
+            createForm();
         }
 
-		$("#" + ID).val(data[ID]);
-	}
+        for(classnames in data[i]) {      
+            console.log(classnames);
+
+            if(classnames === 'apptDate') {
+                $("#apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                continue;
+            }
+
+            console.log(data[i][classnames].S)
+
+            console.log($("#form-" + i + " ." + classnames))
+
+            $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+        }
+    }
+	
     $(".tables").fadeIn();
 }
 
 /**
-	Triggered on form request, (currently) prompts for patient name and date 	
+	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
 function loadFormFromDB() {
 	patient = prompt("PatientName?");
-    date = prompt("date?");
+    apptDate = prompt("apptDate?");
 
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         patient: patient,
-        date: date
+        apptDate: apptDate
     }, function(data, err, appError) {
       if(err) {
         errorHandler(err, appError);
