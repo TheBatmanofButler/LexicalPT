@@ -59,7 +59,7 @@ function _loadFormFromDB(data) {
             console.log(classnames);
 
             if(classnames === 'apptDate') {
-                $("#apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
                 continue;
             }
 
