@@ -20,8 +20,8 @@ $("#Cancel").click(function hideInputLogin() {
     document.getElementById("Cancel").style.display = "none";
 });
 
-$('#NewUserButton, #CancelUserCreator, #landingpagebutton').click(function toggleUserCreator() {
-    $('#FlavorText, #UserCreator, #landingpagebutton, .postlogin-content').slideToggle('fast');
+$('#NewUserButton, #CancelUserCreator').click(function toggleUserCreator() {
+    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
 });
 
 $('#GetStartedButton').click(function() {
@@ -32,6 +32,9 @@ $('#logo').click(function() {
     location.reload();
 });
 
+$('#landingpagebutton').click(function() {
+    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
+});
 
 //-----------------------------
 $("#AddCloud").click(function(){
@@ -41,5 +44,3 @@ $("#AddCloud").click(function(){
 $(".new-cloud-cover").click(function(){
     $(".new-cloud-panel").fadeOut();
 });
-
-//aaaaaaaaa aaaaaaaaa
