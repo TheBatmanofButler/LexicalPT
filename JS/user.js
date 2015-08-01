@@ -98,7 +98,7 @@ function submitLogin() {
 			} 
 			else {
 				login(data);
-				PatientDateInput(data.FakeNames);
+				PatientDateInput(data);
 			}
 		});
 	});
