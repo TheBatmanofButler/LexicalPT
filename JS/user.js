@@ -96,9 +96,20 @@ function submitLogin() {
 			} 
 			else {
 				login(data);
-				PatientDateInput(data);
 			}
 		});
+
+		socket.emit("clientToServer", {
+		    name: "comboboxes",
+		}, function(data, err, isAppError) {
+		if(err) {
+		  errorHandler(err, isAppError);
+		} 
+		else {
+		  PatientDateInput(data);
+		}
+		});
+
 	});
 
 	$("#TitlebarForm").submit();

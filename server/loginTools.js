@@ -66,7 +66,7 @@ module.exports = {
 	  		if(err) {
 				console.log(err);
 				callback(null, err);
-			}	  		
+			}
 			else {
 
 	  			if(Object.keys(data).length === 0) {
@@ -83,7 +83,7 @@ module.exports = {
 						dataObj[key] = {'S':data.Item[key].S}
 					}
 					
-		    		callback(dataObj); 	  	
+		    		callback(dataObj);
 		    	}
 		    	else {
 					callback(null, {message: 'Username already taken'}, 'appError');
@@ -91,7 +91,27 @@ module.exports = {
 		    	}	
 	  		}
 	  	});
-	}, 
+	},
+
+	populateComboboxes: function(socket, table, incomingObj, callback) {
+		table.scan({
+			Limit: 50
+		}, function(err, data) {
+	  		if(err) {
+				console.log(err);
+				callback(null, err);
+			} else {
+				callback(data);
+			}
+		});
+	},
+
+			// For querying in populateComboboxes^^^:
+			// ExpressionAttributeValues: {
+			// 	":hashval": {"S": 'patientone'},
+			// 	":rangeval": {"N": '1356998400000'}
+			// },
+			// KeyConditionExpression: "patient = :hashval AND apptDate = :rangeval"
 
 	/**
 		Creates new account and runs proper checks, sending info back as appropriate (either error or userkey)

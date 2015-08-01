@@ -83,7 +83,7 @@ function serverError(socket, message) {
 */
 function serverHandler(socket, incomingObj, callback) {
 	if(incomingObj.name === 'login') {
-
+		console.log('login');
 		if(!isSanitized(incomingObj.username)) {
 			serverError(socket, "No or invalid username");
 			return;
@@ -101,6 +101,9 @@ function serverHandler(socket, incomingObj, callback) {
 				callback(data, err, key);
 			}
 		});
+	}
+	else if(incomingObj.name === 'comboboxes') {
+		loginTools.populateComboboxes(socket, fileTable, incomingObj, callback);
 	}
 	else if(incomingObj.name === 'newUser') {
 
