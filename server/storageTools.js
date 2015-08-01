@@ -55,7 +55,7 @@ module.exports = {
 
 	retrieveData: function(socket, incomingObj, table, callback) {
 		table.query({
-			ScanIndexForward: false,
+			ScanIndexForward: true,
 			Limit: 5,
 			ExpressionAttributeValues: {
 				":hashval": {"S": incomingObj['patient']},
@@ -68,7 +68,7 @@ module.exports = {
 			if(err) {
 				callback(null, err);
 			}
-			else if(data.Items && date.Items.length > 0) {				
+			else if(data.Items && data.Items.length > 0) {				
 				callback(data.Items);
 			}
 			else {

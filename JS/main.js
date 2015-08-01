@@ -14,15 +14,6 @@ function errorHandler(data, isAppError) {
     alert(data.message);
 }
 
-$("#DataForm").submit(function(event) {
-    event.preventDefault();
-    loadFormToDB();
-});
-
-$("#SubmitData").click(function() {
-    $("#DataForm").submit();
-});
-
 $("#SubmitLogin").click(function () {
     submitLogin();
 });
@@ -44,13 +35,15 @@ $("#RetrieveInfoTest").click(function() {
     loadFormFromDB();
 });
 
-$("#NewDataTest").click(function(){
+$("#CreateNewForm").click(function(){
+    
+    removeForms(function() {
+        createForm();
+        $(".tables").fadeIn(function() {
+            $('html, body').animate({
+                scrollTop: $("#BreakOne").offset().top
+            }, 400);
+        });
+    });
 
-    createForm();
-
-    $(".tables").fadeIn();
-
-    $('html, body').animate({
-        scrollTop: $("#BreakOne").offset().top
-    }, 400);
 });
