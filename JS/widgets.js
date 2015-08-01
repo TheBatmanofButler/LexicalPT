@@ -1,12 +1,13 @@
 function PatientDateInput(IncomingData) {
-  console.log(IncomingData);
-  console.log(IncomingData.fullname)
-  PatientNames = IncomingData.fullname
-  PatientNames = IncomingData.fullname
-  alert("kkkk")
+
+  var PatientData = {}
+  $.each(IncomingData.Items, function() {
+    PatientData[this['patient']['S']] = [this['apptDate']['N']];
+  });
+
   $("#patient_combobox").select2({
     placeholder: "Select a Patient",
-    data: Object.keys(IncomingData)
+    data: Object.keys(PatientData)
   });
 
   // var dateList = []
@@ -22,11 +23,16 @@ function PatientDateInput(IncomingData) {
   $("#patient_combobox").change( function() {
     var $patientName = $("#patient_combobox").val();
     $("#date_combobox").children().remove().end();
+
+    var dateData = [];
+    for (var date in PatientData[$patientName]) {
+        t_ms = PatientData[$patientName][date];
+        var t_utc = new Date(parseInt(t_ms));
+        dateData.push(t_utc.toDateString());
+      }
+
     $("#date_combobox").select2({
-      data:
-        $.each(IncomingData[$patientName], function() {
-          [Date($(this))];
-        })
+      data: dateData
     });
   });
 
