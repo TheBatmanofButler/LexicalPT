@@ -8,32 +8,61 @@ File manipulation functions
 
 var global_formCount = 0;
 
-function createForm() {
-    var $form = $("#form-default").clone();
+function removeForms(callback) {
+    $(".multi-day-form-exercises-info-container").fadeOut(function() {
+        $(".multi-day-form-exercises-info-container").empty();
+        global_formCount = 0;
 
-    $form.attr("id","form-" + global_formCount);
+        if(callback)
+            callback();
+    });
+}
+
+function createForm() {
+
+    var globalCount = global_formCount;
+
+    var $form = $("#form-default").clone(true);
+
+    $form.attr("id","form-" + globalCount);
 
     $form.removeClass("hidden");
+    
+    $form.find(".data-form").submit(function(event) {
+        event.preventDefault();
+        loadFormToDB("#form-" + globalCount);
+    });
+
+    $form.find(".submit-data").click(function() {
+        $form.find(".hidden-submit-data").click();
+    });
+
+    $(".multi-day-form-exercises-info-container").append($form);
+
+    $(".multi-day-form-exercises-info-container").fadeIn();
 
     global_formCount++;
-    
-    $(".multi-day-form-exercises-info-container").append($form);
 }
 
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
-function loadFormToDB() {
-    var $inputs = $('#DataForm :input');
+function loadFormToDB(form) {
+    console.log(form)
+    var $inputs = $(form +' :input');
     var values = {};
     values.name = "store";
     values.userKey = global_userKey;
+
+    console.log($inputs);
 
     $inputs.each(function() {
         values[this.name] = $(this).val();
     });
 
     values['apptDate'] = new Date(values['apptDate']).getTime();
+
+    console.log(values)
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -49,29 +78,34 @@ function loadFormToDB() {
 function _loadFormFromDB(data) {
 	console.log(data);
 
-    for(var i = 0; i < data.length; i++) {
+    removeForms(function() {
+        for(var i = 0; i < data.length; i++) {
 
-        if(i > global_formCount - 1) {
-            createForm();
-        }
-
-        for(classnames in data[i]) {      
-            console.log(classnames);
-
-            if(classnames === 'apptDate') {
-                $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
-                continue;
+            if(i > global_formCount - 1) {
+                createForm();
             }
 
-            console.log(data[i][classnames].S)
+            for(classnames in data[i]) {      
+                console.log(classnames);
 
-            console.log($("#form-" + i + " ." + classnames))
+                if(classnames === 'apptDate') {
+                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                    continue;
+                }
 
-            $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+                console.log(data[i][classnames].S)
+
+                console.log($("#form-" + i + " ." + classnames))
+
+                $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+            }
         }
-    }
-	
-    $(".tables").fadeIn();
+    
+        $(".tables").fadeIn();
+        $('html, body').animate({
+                scrollTop: $("#BreakOne").offset().top
+        }, 400);
+    });
 }
 
 /**

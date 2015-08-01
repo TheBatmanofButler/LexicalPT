@@ -26,6 +26,12 @@
                 font-size: 30px;
             }
 
+        .search .new-form {
+            text-align: center;
+            font-size: 30px;
+            width: 100%;
+        }
+
     .tables {
         display: none;
     }
@@ -72,7 +78,7 @@
                         padding-top: 40px;
                     }
 
-                    #HiddenSubmitData {
+                    .hidden-submit-data {
                         display: none;
                     }
 

@@ -68,7 +68,7 @@ module.exports = {
 			if(err) {
 				callback(null, err);
 			}
-			else if(data.Items && date.Items.length > 0) {				
+			else if(data.Items && data.Items.length > 0) {				
 				callback(data.Items);
 			}
 			else {

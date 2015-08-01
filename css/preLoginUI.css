@@ -32,6 +32,10 @@ h1 {
     cursor: pointer;
 }
 
+.spacer-5 {
+    height: 15%;
+}
+
 .spacer-15 {
     height: 15%;
 }

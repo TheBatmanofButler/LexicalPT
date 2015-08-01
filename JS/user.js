@@ -48,8 +48,6 @@ function login(data) {
 
 function registerNewUser() {
 	var $inputs = $('#RegisterNewUser :input');
-
-    console.log($inputs);
 	
 	var values = {};
     
