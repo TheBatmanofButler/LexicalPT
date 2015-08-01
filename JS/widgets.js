@@ -1,3 +1,11 @@
+/**
+@author: Ganesh Ravichandran
+@`: 8-1-15
+@version: 0.1
+
+Set up for selection box widget
+*/
+
 function PatientDateInput(FakePatients) {
   $("#patient_combobox").select2({
     placeholder: "Select a Patient",
