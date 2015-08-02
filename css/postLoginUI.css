@@ -1,4 +1,4 @@
-.postlogin-content {
+    .postlogin-content {
     display: none;
     padding-top: 75px;
     width: 75%;
@@ -133,3 +133,6 @@
     padding: 5px 10px;
 }
 
+#queryResetButton {
+    display: none;
+}
