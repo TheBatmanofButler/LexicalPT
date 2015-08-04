@@ -46,11 +46,11 @@ $(".new-cloud-cover").click(function(){
 });
 
 $("#patient_combobox, #date_combobox").change(function() {
-    document.getElementById("queryresetbutton").style.display = "inline";
+    document.getElementById("queryResetButton").style.display = "inline";
 ;})
 
-$("##queryresetbutton").click(function() {
-    document.getElementById("queryresetbutton").style.display="none";
+$("#queryResetButton").click(function() {
+    document.getElementById("queryResetButton").style.display="none";
     document.getElementById("patient_combobox").val("");
     document.getElementById("date_combobox").val("");
 });
