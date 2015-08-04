@@ -9,7 +9,7 @@ File manipulation functions
 var global_formCount = 0;
 
 function removeForms(callback) {
-    $(".multi-day-form-exercises-info-container").fadeOut(function() {
+    $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = 0;
 
@@ -38,6 +38,9 @@ function createForm() {
     });
 
     $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+
+    if(globalCount > 0) 
+        $("#CopyForward").fadeIn();
 
     $(".multi-day-form-exercises-info-container").append($form);
 
@@ -78,7 +81,6 @@ function loadFormToDB(form) {
 }
 
 function _loadFormFromDB(data) {
-	console.log(data);
 
     removeForms(function() {
 
@@ -89,16 +91,11 @@ function _loadFormFromDB(data) {
             }
 
             for(classnames in data[i]) {      
-                console.log(classnames);
 
                 if(classnames === 'apptDate') {
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
                     continue;
                 }
-
-                console.log(data[i][classnames].S)
-
-                console.log($("#form-" + i + " ." + classnames))
 
                 $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
             }
