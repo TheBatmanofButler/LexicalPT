@@ -39,7 +39,11 @@ h1 {
 .spacer-15 {
     height: 15%;
 }
-    
+ 
+.spacer-30 {
+    height: 30%;
+}
+
     .button-prelogin {
         padding: 5px;
         margin: 10px;
