@@ -32,12 +32,12 @@
 				</li>
 				<li class="header-container-right">
 				    <form id="TitlebarForm">
-                        <input type="password" name="password" id="PasswordField" placeholder="Password"/>
-                        <input type="text" name="username" id="UsernameField" placeholder="Username"/>
-                        <input id="HiddenSubmitLogin" type="submit"/>
+                        <input type="password" name="password" id="PasswordField" placeholder="Password" tabindex=2 />
+                        <input type="text" name="username" id="UsernameField" placeholder="Username" tabindex=1 />
+                        <input id="HiddenSubmitLogin" type="submit" />
                     </form>
-					<div id="Cancel" class="button button-prelogin">Cancel</div>
-				    <div id="SubmitLogin" class="button button-prelogin">Submit</div>
+				    <div id="SubmitLogin" class="button button-prelogin" tabindex=3>Submit</div>
+					<div id="Cancel" class="button button-prelogin" tabindex=4>Cancel</div>
 				    <div id="NewUserButton" class="button button-prelogin">Create Account</div>
 				    <div id="LoginButton" class="button button-prelogin">Login</div>
 				</li>
