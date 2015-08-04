@@ -50,7 +50,7 @@ $("#patient_combobox, #date_combobox").change(function() {
 ;})
 
 $("#queryResetButton").click(function() {
-    document.getElementById("queryResetButton").style.display="none";
-    document.getElementById("patient_combobox").val("");
-    document.getElementById("date_combobox").val("");
+    $("#queryResetButton").style({"display":"none"});
+    $("#patient_combobox").val("");
+    $("#date_combobox").val("");
 });
