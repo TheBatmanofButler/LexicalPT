@@ -6,18 +6,58 @@
 Set up for selection box widget
 */
 
-var IncomingData_global;
+function DateSorter(dateStringArray) {
+
+    monthArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+    splitArray = []
+    for (each_str in dateStringArray) {
+        if (dateStringArray[each_str] != '') {
+            splitArray.push(dateStringArray[each_str].split(" "));
+        }
+    }
+
+    splitArray.sort(function compare(a,b) {
+        if (a[3] < b[3]) {
+            return -1;
+        } else if (a[3] > b[3]) {
+            return 1;
+        } else {
+            if (monthArray.indexOf(a[3]) < monthArray.indexOf(b[2])) {
+                return -1;
+            } else if (monthArray.indexOf(a[3]) > monthArray.indexOf(b[2])) {
+                return 1;
+            } else {
+                if (a[2] < b[2]) {
+                    return -1;
+                } else if (a[2] > b[2]) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    });
+
+    returnableArray = []
+    for (each_str in splitArray) {
+        returnableArray.push(splitArray[each_str].join(' '));
+    }
+    returnableArray.unshift('');
+
+    return returnableArray;
+
+}
 
 function PatientDateInput(IncomingData) {
-    IncomingData_global = IncomingData
 	var PatientData = {['']:['']}
 	var DateData = ['']
 	$.each(IncomingData.Items, function() {
 		t_ms = this['apptDate']['N']
 		patientName = this['patient']['S']
 
-		var t_utc = new Date(parseInt(t_ms));
-		var t_formatted = t_utc.toDateString()
+		var t_utc = new Date(parseInt(t_ms)+14400000);
+		var t_formatted = t_utc.toDateString();
+
 		if (patientName in PatientData) {
 			PatientData[patientName].push(t_formatted);
 		} else {
@@ -29,12 +69,14 @@ function PatientDateInput(IncomingData) {
 
 	$("#patient_combobox").select2({
 		placeholder: "Select a Patient",
-		data: Object.keys(PatientData)
+		data: Object.keys(PatientData).sort(function (a, b) {
+            return a.toLowerCase().localeCompare(b.toLowerCase());
+        })
 	});
-
+    DateSorter(DateData);
 	$("#date_combobox").select2({
 		placeholder: "Select a Date",
-		data: DateData
+		data: DateSorter(DateData)
 	});
 
 	// var dateList = []
@@ -60,16 +102,15 @@ function PatientDateInput(IncomingData) {
         $("#date_combobox").children().remove().end();
 		$("#date_combobox").select2({
 			placeholder: "Select a Date",
-			data: dateData
+			data: DateSorter(dateData)
 		});
 
 		if ($("#date_combobox").val() != '') {
 			$("#patient_combobox, #date_combobox").prop( "disabled", true );
-            $(".tables").fadeIn(function() {
-                $('html, body').animate({
-                    scrollTop: $("#BreakOne").offset().top
-                }, 400);
-            });
+            var human_date = new Date($("#date_combobox").val());
+            var machine_date = human_date.getTime();
+            console.log({patient: $("#patient_combobox").val(), apptDate: machine_date});
+            loadFormFromDB(patient = $("#patient_combobox").val(), apptDate = String(machine_date));
 			$("#queryResetButton").show();
 		}
 
@@ -90,16 +131,17 @@ function PatientDateInput(IncomingData) {
         $("#patient_combobox").children().remove().end();
 		$("#patient_combobox").select2({
 			placeholder: "Select a Patient",
-			data: patientData
+			data: patientData.sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            })
 		});
 
 		if ($("#patient_combobox").val() != '') {
 			$("#patient_combobox, #date_combobox").prop( "disabled", true );
-            $(".tables").fadeIn(function() {
-                $('html, body').animate({
-                    scrollTop: $("#BreakOne").offset().top
-                }, 400);
-            });
+            var human_date = new Date($("#date_combobox").val());
+            var machine_date = human_date.getTime();
+            console.log($("#patient_combobox").val(), machine_date);
+            loadFormFromDB(patient = $("#patient_combobox").val(), apptDate = String(machine_date));
 			$("#queryResetButton").show();
 		}
 
@@ -120,13 +162,15 @@ function PatientDateInput(IncomingData) {
         $("#patient_combobox").children().remove().end();
         $("#patient_combobox").select2({
             placeholder: "Select a Patient",
-            data: Object.keys(PatientData)
+            data: Object.keys(PatientData).sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            })
         });
 
         $("#date_combobox").children().remove().end();
         $("#date_combobox").select2({
             placeholder: "Select a Date",
-            data: DateData
+            data: DateSorter(DateData)
         });
 
         $("#patient_combobox, #date_combobox").prop( "disabled", false );
