@@ -37,6 +37,8 @@ function createForm() {
         $form.find(".hidden-submit-data").click();
     });
 
+    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
@@ -79,6 +81,7 @@ function _loadFormFromDB(data) {
 	console.log(data);
 
     removeForms(function() {
+
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount - 1) {
@@ -100,6 +103,9 @@ function _loadFormFromDB(data) {
                 $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
             }
         }
+
+        //creates empty form
+        createForm();
     
         $(".tables").fadeIn();
         $('html, body').animate({
