@@ -38,7 +38,7 @@ function login(data) {
 	global_userEmail = data.email.S;
 
 	displayCurrentUser(global_username);
-	$(".prelogin-content").fadeOut( function() {	
+	$(".prelogin-content, #landingpagebutton").fadeOut( function() {	
 		$(".postlogin-content").fadeIn();
 	});
 }
