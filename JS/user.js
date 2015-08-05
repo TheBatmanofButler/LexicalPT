@@ -51,7 +51,7 @@ function logout() {
 	global_userEmail = null;
 	displayCurrentUser();
 
-	$(".postlogin-content, .login-show").fadeOut( function() {	
+	$(".postlogin-content, .login-show, #UserCreator").fadeOut( function() {	
 		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
 	});
 }
