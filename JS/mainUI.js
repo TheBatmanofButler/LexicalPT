@@ -1,5 +1,3 @@
-$("#apptDate").val(new Date().toISOString().substring(0, 10));
-
 $("#LoginButton").click(function showInputLogin() {
     document.getElementById("NewUserButton").style.display = "none";
     document.getElementById("LoginButton").style.display = "none";
