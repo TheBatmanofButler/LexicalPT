@@ -24,7 +24,8 @@ $("#SubmitLogin").click(function () {
     submitLogin();
 });
 
-$("#HiddenSubmitLogin").submit(function() {
+$("#TitlebarForm").submit(function(event) {
+    event.preventDefault();
     $("#SubmitLogin").trigger("click");
 });
 

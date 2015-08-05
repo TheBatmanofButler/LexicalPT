@@ -98,30 +98,27 @@ function registerNewUser() {
 	Triggered on login submit button, sends user/password info for cross checking from server/dbs
 */
 function submitLogin() {
-    $("#TitlebarForm").submit(function(event) {
-		event.preventDefault();
+    var $inputs = $('#TitlebarForm :input');
+	var values = {};
+    $inputs.each(function() {
+        values[this.name] = $(this).val();
+    });
+    console.log(values);
 
-	    var $inputs = $('#TitlebarForm :input');
-		var values = {};
-	    $inputs.each(function() {
-	        values[this.name] = $(this).val();
-	    });
-	    console.log(values);
+	socket.emit("clientToServer", {
+        name: "login",
+        username: values.username,
+		password: values.password
+	}, function(data, err, isAppError) {
+		if(err) {
+			errorHandler(err, isAppError);
+		} 
+		else {
+			login(data);
+		}
+	});
 
-		socket.emit("clientToServer", {
-	        name: "login",
-	        username: values.username,
-			password: values.password
-		}, function(data, err, isAppError) {
-			if(err) {
-				errorHandler(err, isAppError);
-			} 
-			else {
-				login(data);
-			}
-		});
-
-		socket.emit("clientToServer", {
+	socket.emit("clientToServer", {
 		    name: "comboboxes",
 		}, function(data, err, isAppError) {
 		if(err) {
@@ -130,9 +127,5 @@ function submitLogin() {
 		else {
 		  PatientDateInput(data);
 		}
-		});
-
 	});
-
-	$("#TitlebarForm").submit();
 }
