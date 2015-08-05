@@ -83,7 +83,6 @@ function loadFormToDB(form) {
 function _loadFormFromDB(data) {
 
     removeForms(function() {
-
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount - 1) {
@@ -114,9 +113,9 @@ function _loadFormFromDB(data) {
 /**
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
-function loadFormFromDB() {
-	patient = prompt("PatientName?");
-    apptDate = prompt("apptDate?");
+function loadFormFromDB(patient,apptDate) {
+	// patient = prompt("PatientName?");
+ //    apptDate = prompt("apptDate?");
 
     socket.emit("clientToServer", {
         name: 'retrieve',

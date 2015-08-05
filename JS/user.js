@@ -85,7 +85,7 @@ function submitLogin() {
 	        values[this.name] = $(this).val();
 	    });
 	    console.log(values);
-		
+
 		socket.emit("clientToServer", {
 	        name: "login",
 	        username: values.username,

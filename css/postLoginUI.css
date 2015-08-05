@@ -146,3 +146,13 @@
 #queryResetButton {
     display: none;
 }
+
+#patient_combobox {
+    position: inline;
+    z-index: 1;
+}
+
+#date_combobox {
+    position: inline;
+    z-index: 1;
+}

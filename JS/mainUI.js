@@ -44,13 +44,3 @@ $("#AddCloud").click(function(){
 $(".new-cloud-cover").click(function(){
     $(".new-cloud-panel").fadeOut();
 });
-
-$("#patient_combobox, #date_combobox").change(function() {
-    document.getElementById("queryResetButton").style.display = "inline";
-;})
-
-$("#queryResetButton").click(function() {
-    $("#queryResetButton").style({"display":"none"});
-    $("#patient_combobox").val("");
-    $("#date_combobox").val("");
-});
