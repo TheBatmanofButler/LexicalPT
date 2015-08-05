@@ -53,7 +53,6 @@ function createForm() {
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
 function loadFormToDB(form) {
-    console.log(form)
     var $inputs = $(form +' :input');
     var values = {};
     values.name = "store";
@@ -65,9 +64,11 @@ function loadFormToDB(form) {
         values[this.name] = $(this).val();
     });
 
-    values['apptDate'] = new Date(values['apptDate']).getTime();
+    console.log(values['apptDate']);
 
-    console.log(values)
+    values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
+
+    console.log(values) 
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -150,3 +151,4 @@ function copyForward() {
         $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
     });
 }
+ 
