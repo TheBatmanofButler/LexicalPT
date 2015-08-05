@@ -28,8 +28,8 @@ $("#HiddenSubmitLogin").submit(function() {
     $("#SubmitLogin").trigger("click");
 });
 
-$("#LogoutButton").click(function() {   
-    alert("Not logged in");
+$("#Logout").click(function() {   
+    submitLogout();
 });
 
 //Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click(), and retrieve is under widget)
