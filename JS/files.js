@@ -143,12 +143,17 @@ function copyForward() {
 
     var prevFormCount = global_formCount - 1;
     $('#form-' + prevFormCount + ' :input').each(function(){
-        var classes = $(this).attr("class")     
-        classes = classes.split(" ");
 
-        classes[0] = "." + classes[0];
+        if($(this).val()) {
+            var classes = $(this).attr("class")     
+            classes = classes.split(" ");
 
-        $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
+            classes[0] = "." + classes[0];
+
+            if(classes[0] !== 'apptDate')
+                $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
+        }
+    
     });
 }
  
