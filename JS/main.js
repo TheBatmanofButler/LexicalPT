@@ -32,11 +32,7 @@ $("#LogoutButton").click(function() {
     alert("Not logged in");
 });
 
-//Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click())
-$("#RetrieveInfoTest").click(function() {
-    loadFormFromDB();
-});
-
+//Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click(), and retrieve is under widget)
 $("#CreateNewForm").click(function(){
     
     removeForms(function() {
@@ -47,4 +43,9 @@ $("#CreateNewForm").click(function(){
             }, 400);
         });
     });
+});
+
+//Copy forward
+$("#CopyForward").click(function() {
+    copyForward();
 });

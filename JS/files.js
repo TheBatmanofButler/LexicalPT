@@ -6,12 +6,12 @@
 File manipulation functions
 */
 
-var global_formCount = 0;
+var global_formCount = -1;
 
 function removeForms(callback) {
     $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
-        global_formCount = 0;
+        global_formCount = -1;
 
         if(callback)
             callback();
@@ -19,6 +19,8 @@ function removeForms(callback) {
 }
 
 function createForm() {
+
+    global_formCount++;
 
     var globalCount = global_formCount;
 
@@ -45,8 +47,6 @@ function createForm() {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-
-    global_formCount++;
 }
 
 /**
@@ -85,7 +85,7 @@ function _loadFormFromDB(data) {
     removeForms(function() {
         for(var i = 0; i < data.length; i++) {
 
-            if(i > global_formCount - 1) {
+            if(i > global_formCount) {
                 createForm();
             }
 
@@ -136,10 +136,17 @@ function loadFormFromDB(patient,apptDate) {
     Copies all of the data from the last day to the current day
 */
 function copyForward() {
-    if(global_formCount < 2)
+    alert();
+    if(global_formCount < 1)
         return;
 
-    $('#form-' + global_formCount + " *").filter(':input').each(function(){
-        $(this).val(console.log(this));
+    var prevFormCount = global_formCount - 1;
+    $('#form-' + prevFormCount + ' :input').each(function(){
+        var classes = $(this).attr("class")     
+        classes = classes.split(" ");
+
+        classes[0] = "." + classes[0];
+
+        $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
     });
 }
