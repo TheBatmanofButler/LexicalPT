@@ -14,27 +14,25 @@ function errorHandler(data, isAppError) {
     alert(data.message);
 }
 
-$("#SubmitLogin").click(function () {
-    submitLogin();
-});
-
-$("#LogoutButton").click(function() {   
-    alert("Not logged in");
-});
-
+//Login/logout/reg
 $("#RegisterNewUser").submit(function(event) {
     event.preventDefault();
     registerNewUser();
 });
 
-$("#HiddenSubmitLogin").submit(function() {
-	$("#SubmitLogin").trigger("click");
-})
-
-$("#RetrieveInfoTest").click(function() {
-    loadFormFromDB();
+$("#SubmitLogin").click(function () {
+    submitLogin();
 });
 
+$("#HiddenSubmitLogin").submit(function() {
+    $("#SubmitLogin").trigger("click");
+});
+
+$("#Logout").click(function() {   
+    submitLogout();
+});
+
+//Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click(), and retrieve is under widget)
 $("#CreateNewForm").click(function(){
     
     removeForms(function() {
@@ -45,5 +43,9 @@ $("#CreateNewForm").click(function(){
             }, 400);
         });
     });
+});
 
+//Copy forward
+$("#CopyForward").click(function() {
+    copyForward();
 });

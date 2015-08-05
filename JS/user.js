@@ -38,8 +38,30 @@ function login(data) {
 	global_userEmail = data.email.S;
 
 	displayCurrentUser(global_username);
-	$(".prelogin-content, #landingpagebutton").fadeOut( function() {	
+	$(".prelogin-content, #landingpagebutton, .login-hide").fadeOut( function() {	
 		$(".postlogin-content").fadeIn();
+
+		$(".login-show").fadeIn().css("display","inline");
+	});
+}
+
+function logout() {
+	global_userKey = null;
+	global_username = null;
+	global_userEmail = null;
+	displayCurrentUser();
+
+	$(".postlogin-content, .login-show, #UserCreator").fadeOut( function() {	
+		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
+	});
+}
+
+function submitLogout() {
+	socket.emit("clientToServer", {
+		name: "logout",
+		userKey: global_userKey
+	}, function() {
+		logout();
 	});
 }
 

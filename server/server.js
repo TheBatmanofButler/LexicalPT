@@ -114,6 +114,11 @@ function serverHandler(socket, incomingObj, callback) {
 			console.log("check")
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
+		else if(incomingObj.name === 'logout') {
+			socket.userKey = null; 
+
+			callback();
+		}
 	}
 	else {
 		callback(null, {message: 'Login first'}, 'appError');

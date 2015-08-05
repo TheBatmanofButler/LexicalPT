@@ -6,12 +6,12 @@
 File manipulation functions
 */
 
-var global_formCount = 0;
+var global_formCount = -1;
 
 function removeForms(callback) {
-    $(".multi-day-form-exercises-info-container").fadeOut(function() {
+    $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
-        global_formCount = 0;
+        global_formCount = -1;
 
         if(callback)
             callback();
@@ -19,6 +19,8 @@ function removeForms(callback) {
 }
 
 function createForm() {
+
+    global_formCount++;
 
     var globalCount = global_formCount;
 
@@ -37,18 +39,20 @@ function createForm() {
         $form.find(".hidden-submit-data").click();
     });
 
+    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+
+    if(globalCount > 0) 
+        $("#CopyForward").fadeIn();
+
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-
-    global_formCount++;
 }
 
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
 function loadFormToDB(form) {
-    console.log(form)
     var $inputs = $(form +' :input');
     var values = {};
     values.name = "store";
@@ -60,9 +64,11 @@ function loadFormToDB(form) {
         values[this.name] = $(this).val();
     });
 
-    values['apptDate'] = new Date(values['apptDate']).getTime();
+    console.log(values['apptDate']);
 
-    console.log(values)
+    values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
+
+    console.log(values) 
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -76,31 +82,27 @@ function loadFormToDB(form) {
 }
 
 function _loadFormFromDB(data) {
-	console.log(data);
 
     removeForms(function() {
-        console.log('BLERG', data);
         for(var i = 0; i < data.length; i++) {
 
-            if(i > global_formCount - 1) {
+            if(i > global_formCount) {
                 createForm();
             }
 
             for(classnames in data[i]) {      
-                console.log(classnames);
 
                 if(classnames === 'apptDate') {
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
                     continue;
                 }
 
-                console.log(data[i][classnames].S)
-
-                console.log($("#form-" + i + " ." + classnames))
-
                 $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
             }
         }
+
+        //creates empty form
+        createForm();
     
         $(".tables").fadeIn();
         $('html, body').animate({
@@ -131,3 +133,22 @@ function loadFormFromDB(patient,apptDate) {
     });
 }
 
+/**
+    Copies all of the data from the last day to the current day
+*/
+function copyForward() {
+    alert();
+    if(global_formCount < 1)
+        return;
+
+    var prevFormCount = global_formCount - 1;
+    $('#form-' + prevFormCount + ' :input').each(function(){
+        var classes = $(this).attr("class")     
+        classes = classes.split(" ");
+
+        classes[0] = "." + classes[0];
+
+        $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
+    });
+}
+ 

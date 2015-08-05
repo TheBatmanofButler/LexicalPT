@@ -1,4 +1,4 @@
-    .postlogin-content {
+.postlogin-content {
     display: none;
     padding-top: 75px;
     width: 75%;
@@ -35,7 +35,16 @@
 
     .tables {
         display: none;
+        height: 100%;
     }
+
+        .copy-forward {
+            display: none;
+            text-align: center;
+            font-size: 30px;
+            width: 100%;
+            height: 15%;
+        }
 
         .multi-day-form-exercises-info-container {
             text-align: center;

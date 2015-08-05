@@ -33,7 +33,7 @@ h1 {
 }
 
 .spacer-5 {
-    height: 15%;
+    height: 5%;
 }
 
 .spacer-15 {
@@ -125,6 +125,10 @@ h1 {
             }
 
             #Cancel {
+                display: none;
+            }
+
+            #Logout {
                 display: none;
             }
 
