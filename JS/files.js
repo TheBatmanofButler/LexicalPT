@@ -133,3 +133,14 @@ function loadFormFromDB() {
     });
 }
 
+/**
+    Copies all of the data from the last day to the current day
+*/
+function copyForward() {
+    if(global_formCount < 2)
+        return;
+
+    $('#form-' + global_formCount + " *").filter(':input').each(function(){
+        $(this).val(console.log(this));
+    });
+}

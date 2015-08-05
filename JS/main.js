@@ -14,23 +14,25 @@ function errorHandler(data, isAppError) {
     alert(data.message);
 }
 
+//Login/logout/reg
+$("#RegisterNewUser").submit(function(event) {
+    event.preventDefault();
+    registerNewUser();
+});
+
 $("#SubmitLogin").click(function () {
     submitLogin();
+});
+
+$("#HiddenSubmitLogin").submit(function() {
+    $("#SubmitLogin").trigger("click");
 });
 
 $("#LogoutButton").click(function() {   
     alert("Not logged in");
 });
 
-$("#RegisterNewUser").submit(function(event) {
-    event.preventDefault();
-    registerNewUser();
-});
-
-$("#HiddenSubmitLogin").submit(function() {
-	$("#SubmitLogin").trigger("click");
-})
-
+//Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click())
 $("#RetrieveInfoTest").click(function() {
     loadFormFromDB();
 });
@@ -45,5 +47,4 @@ $("#CreateNewForm").click(function(){
             }, 400);
         });
     });
-
 });
