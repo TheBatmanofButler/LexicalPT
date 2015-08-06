@@ -65,7 +65,7 @@ function _loadFormFromDB(data) {
 
                     for(var j = 5; j <= classInfo[1]; j++) {
                         if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length) {
-                            var DOMelement = $("#form-" + i + " " + classInfo[0] + '-' + (j - 1)).closest("tr");
+                            var DOMelement = $("#form-" + i + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
                             createNewRow(DOMelement);
                         }
                     }
