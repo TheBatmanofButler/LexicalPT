@@ -1,6 +1,6 @@
 $("#LoginButton").click(function showInputLogin() {
     $("#NewUserButton").css("display", "none");
-    $("#LoginButton").css("display", "inline");
+    $("#LoginButton").css("display", "none");
     $("#SubmitLogin").css("display", "inline");
     $("#UsernameField").css("display", "inline");
     $("#PasswordField").css("display", "inline");
@@ -13,7 +13,7 @@ $("#LoginButton").click(function showInputLogin() {
     document.getElementById("SubmitLogin").style.display = "inline";
     document.getElementById("UsernameField").style.display = "inline";
     document.getElementById("PasswordField").style.display = "inline";
-    document.getElementById("Cancel").style.display = "inline"; /*
+    document.getElementById("Cancel").style.display = "inline"; */
 
     $("#UsernameField").focus();
 });
@@ -21,11 +21,11 @@ $("#LoginButton").click(function showInputLogin() {
 
 $("#Cancel").click(function hideInputLogin() {
     $("#NewUserButton").css("display", "inline");
-    $("#NewUserButton").css("display", "inline");
-    $("#NewUserButton").css("display", "none");
-    $("#NewUserButton").css("display", "none");
-    $("#NewUserButton").css("display", "none");
-    $("#NewUserButton").css("display", "none");
+    $("#LoginButton").css("display", "inline");
+    $("#SubmitLogin").css("display", "none");
+    $("#UsernameField").css("display", "none");
+    $("#PasswordField").css("display", "none");
+    $("#Cancel").css("display", "none");
     
     /*
     document.getElementById("NewUserButton").style.display = "inline";
