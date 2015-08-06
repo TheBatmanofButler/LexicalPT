@@ -63,9 +63,12 @@ function _loadFormFromDB(data) {
                 else {
                     var classInfo = classnames.split('-');
 
+                    var rowCount = 5;
+
                     for(var j = 5; j <= classInfo[1]; j++) {
-                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length) {
+                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length && j > rowCount) {
                             var DOMelement = $("#form-" + i + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
+                            rowCount++;
                             createNewRow(DOMelement);
                         }
                     }
@@ -200,6 +203,7 @@ function copyForward() {
 
  function createNewRow(DOMelement) {
     var $newRow = $(DOMelement).clone();
+
     $(DOMelement).removeClass("create-new-row-on-click");
     $(DOMelement).unbind( "click" );
 
