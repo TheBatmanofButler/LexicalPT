@@ -1,23 +1,40 @@
 $("#LoginButton").click(function showInputLogin() {
+    $("#NewUserButton").css("display", "none");
+    $("#LoginButton").css("display", "inline");
+    $("#SubmitLogin").css("display", "inline");
+    $("#UsernameField").css("display", "inline");
+    $("#PasswordField").css("display", "inline");
+    $("#Cancel").css("display", "inline");
+    
+    /* old stuff because i'm coding at work inside the gitlab editor
+    and don't want to fuck things up too badly
     document.getElementById("NewUserButton").style.display = "none";
     document.getElementById("LoginButton").style.display = "none";
     document.getElementById("SubmitLogin").style.display = "inline";
     document.getElementById("UsernameField").style.display = "inline";
     document.getElementById("PasswordField").style.display = "inline";
-    document.getElementById("Cancel").style.display = "inline";
+    document.getElementById("Cancel").style.display = "inline"; /*
 
     $("#UsernameField").focus();
 });
 
 
 $("#Cancel").click(function hideInputLogin() {
+    $("#NewUserButton").css("display", "inline");
+    $("#NewUserButton").css("display", "inline");
+    $("#NewUserButton").css("display", "none");
+    $("#NewUserButton").css("display", "none");
+    $("#NewUserButton").css("display", "none");
+    $("#NewUserButton").css("display", "none");
+    
+    /*
     document.getElementById("NewUserButton").style.display = "inline";
     document.getElementById("LoginButton").style.display = "inline";
     document.getElementById("SubmitLogin").style.display = "none";
     document.getElementById("UsernameField").style.display = "none";
     document.getElementById("PasswordField").style.display = "none";
 
-    document.getElementById("Cancel").style.display = "none";
+    document.getElementById("Cancel").style.display = "none"; */
 });
 
 $('#NewUserButton, #CancelUserCreator').click(function toggleUserCreator() {
