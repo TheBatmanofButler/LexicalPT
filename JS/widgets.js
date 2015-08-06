@@ -28,6 +28,7 @@ function stringDate2UTC(stringDate) {
 }
 
 function PatientDateInput(IncomingData) {
+	console.log(IncomingData.Items);
 	var Patient2Date = {}
 	var Date2Patient = {}
 	for (var item in IncomingData.Items) {

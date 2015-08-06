@@ -71,15 +71,12 @@ function serverHandler(socket, incomingObj, callback) {
 			return;
 		}
 
-		loginTools.loginUser(socket, userTable, incomingObj, function(data, err, key) {
+		loginTools.loginUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
 				callback(data, err, key);
 			}
 		});
-	}
-	else if(incomingObj.name === 'comboboxes') {
-		loginTools.populateComboboxes(socket, fileTable, incomingObj, callback);
 	}
 	else if(incomingObj.name === 'newUser') {
 
@@ -99,10 +96,11 @@ function serverHandler(socket, incomingObj, callback) {
 			return;
 		}
 
-		loginTools.regNewUser(socket, userTable, incomingObj, function(data, err, key) {
-			if(data && data.userKey)
+		loginTools.regNewUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
+			if(data && data.userKey) {
+				console.log('asdf')
 				socket.userKey = data.userKey.S;
-
+			}
 			callback(data, err, key);
 		});
 	}
@@ -121,6 +119,7 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 	}
 	else {
+		console.log(incomingObj);
 		callback(null, {message: 'Login first'}, 'appError');
 	}
 }

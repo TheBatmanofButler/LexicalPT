@@ -43,6 +43,8 @@ function login(data) {
 
 		$(".login-show").fadeIn().css("display","inline");
 	});
+	console.log(data);
+	PatientDateInput(data['dataFromScan']);
 }
 
 function logout() {
@@ -90,6 +92,7 @@ function registerNewUser() {
 			errorHandler(err, appError);
 		}		
 		else {
+			console.log(data);
 			login(data);
 		}
 	});
@@ -114,18 +117,9 @@ function submitLogin() {
 			errorHandler(err, isAppError);
 		} 
 		else {
+			console.log('dddddd');
 			login(data);
-		}
-	});
-
-	socket.emit("clientToServer", {
-		    name: "comboboxes",
-		}, function(data, err, isAppError) {
-		if(err) {
-		  errorHandler(err, isAppError);
-		} 
-		else {
-		  PatientDateInput(data);
+			console.log('bbbbbbb');
 		}
 	});
 }

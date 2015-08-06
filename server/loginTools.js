@@ -47,6 +47,20 @@ function checkUser(socket, table, username, callback) {
 	});
 }
 
+function patientScan(patientsTable, callback) {
+	patientsTable.scan({
+		Limit: 50,
+		ProjectionExpression: "patient,apptDate"
+	}, function(err, dataFromScan) {
+			if(err) {
+			console.log(err);
+			callback(null, err);
+		} else {
+			return dataFromScan;
+		}
+	});
+}
+
 //Exposed functions
 module.exports = {
 	/**
@@ -59,33 +73,34 @@ module.exports = {
 			@param: password; string; password for account login
 		@param: callback; function; the function to call if successfull login 
 	*/
-	loginUser: function(socket, table, incomingObj, callback) {
+	loginUser: function(socket, usersTable, patientsTable, incomingObj, callback) {
 
 		// Read the item from the table
-	  	table.getItem({Key: {'username':{'S':incomingObj.username}}}, function(err, data) {
+	  	usersTable.getItem({Key: {'username':{'S':incomingObj.username}}}, function(err, dataFromgetItem) {
 	  		if(err) {
 				console.log(err);
 				callback(null, err);
 			}
 			else {
 
-	  			if(Object.keys(data).length === 0) {
+	  			if(Object.keys(dataFromgetItem).length === 0) {
 	  				callback(null, {message: 'Username already taken'}, 'appError');
 	  				return;
 	  			}
 
-	  			if(data.Item.password.S === incomingObj.password) {
-
-	  				dataObj = {};
-
-					for(key in data.Item) {
-						dataObj[key] = {};
-						dataObj[key] = {'S':data.Item[key].S}
-					}
+	  			if(dataFromgetItem.Item.password.S === incomingObj.password) {
 					
-		    		callback(dataObj);
-		    	}
-		    	else {
+	  				dataObj = {};
+	  				for(key in dataFromgetItem.Item) {
+						dataObj[key] = {};
+						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
+					}
+
+					dataObj['dataFromScan'] = patientScan(patientsTable, callback);
+
+					callback(dataObj);
+
+		    	} else {
 					callback(null, {message: 'Username already taken'}, 'appError');
 					return;
 		    	}	
@@ -93,18 +108,6 @@ module.exports = {
 	  	});
 	},
 
-	populateComboboxes: function(socket, table, incomingObj, callback) {
-		table.scan({
-			Limit: 50
-		}, function(err, data) {
-	  		if(err) {
-				console.log(err);
-				callback(null, err);
-			} else {
-				callback(data);
-			}
-		});
-	},
 
 			// For querying in populateComboboxes^^^:
 			// ExpressionAttributeValues: {
@@ -123,8 +126,8 @@ module.exports = {
 			@param: password; string; password for account login
 		@param: callback; function; the function to call if successfull login (default = loginResponseSuccess)
 	*/
-	regNewUser: function(socket, table, incomingObj, callback) {
-		checkUser(socket, table, incomingObj.username, function(err, isAppError) {
+	regNewUser: function(socket, userTable, patientsTable, incomingObj, callback) {
+		checkUser(socket, usersTable, incomingObj.username, function(err, isAppError) {
 			if(err) { 
 				console.log(err);
 				callback(null, err, isAppError);
@@ -144,10 +147,11 @@ module.exports = {
 
 			dataObj['userKey'] = {'S': userKey};
 
+			dataObj['dataFromScan'] = patientScan(patientsTable, callback);
 
 			var itemParams = {Item: dataObj};
 			
-			table.putItem(itemParams, function(err, data) {
+			usersTable.putItem(itemParams, function(err, data) {
 				if(err) {
 					callback(null, err);
 				}
