@@ -155,7 +155,7 @@ function createForm() {
 
     $(".multi-day-form-exercises-info-container").append($form);
 
-    $(".multi-day-form-exercises-info-container").fadeIn();
+    $(".tables, .multi-day-form-exercises-info-container").fadeIn();
 }
 
 
@@ -173,9 +173,8 @@ function copyForward() {
             var classes = $(this).attr("class")     
             classes = classes.split(" ");
 
-            classes[0] = "." + classes[0];
-
             if(classes[0] !== 'apptDate') {
+                classes[0] = "." + classes[0];
 
                 if ($("#form-" + global_formCount + " " + classes[0]).length) {
                     $("#form-" + global_formCount + " " + classes[0]).val($(this).val());

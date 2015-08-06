@@ -47,6 +47,13 @@ function checkUser(socket, table, username, callback) {
 	});
 }
 
+
+/**
+	Scans dynamo table for patient name and appointment dates, with a limit of 50 patients
+
+	@param: patientsTable; dynamodb table; where to get data
+	@param: callback; function(data, err)
+*/
 function patientScan(patientsTable, callback) {
 	patientsTable.scan({
 		Limit: 50,
@@ -95,6 +102,7 @@ module.exports = {
 						dataObj[key] = {};
 						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
 					}
+
 					patientScan(patientsTable, function(dataFromScan, err) {
 						dataObj['dataFromScan'] = dataFromScan;
 						callback(dataObj);
@@ -107,14 +115,6 @@ module.exports = {
 	  		}
 	  	});
 	},
-
-
-			// For querying in populateComboboxes^^^:
-			// ExpressionAttributeValues: {
-			// 	":hashval": {"S": 'patientone'},
-			// 	":rangeval": {"N": '1356998400000'}
-			// },
-			// KeyConditionExpression: "patient = :hashval AND apptDate = :rangeval"
 
 	/**
 		Creates new account and runs proper checks, sending info back as appropriate (either error or userkey)

@@ -9,7 +9,7 @@ var storageTools = require('./storageTools');
 
 //AWS config
 AWS.config.region = 'us-east-1';
-var userTable = new AWS.DynamoDB({params: {TableName: 'PTUsers'}});
+var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
 var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
 
 //Sockets
@@ -28,7 +28,12 @@ function isSanitized(inputString) {
 	return true;
 }
 
+/**
+	Checks if the userkey equals the login key stored on the server
 
+	@param: socket; socket.io connection; should have socket.userkey has sub param
+	@param: userKey; string; 
+*/
 function checkUserKey(socket, userKey) { 
 	console.log("CHECKING")
 	if(userKey === socket.userKey)
@@ -59,65 +64,57 @@ function serverError(socket, message) {
 	@param: incomingObj; obj; data sent from client
 */
 function serverHandler(socket, incomingObj, callback) {
+	//Login pipe
 	if(incomingObj.name === 'login') {
-		console.log('login');
-		if(!isSanitized(incomingObj.username)) {
-			serverError(socket, "No or invalid username");
-			return;
-		}
-
-		if(!isSanitized(incomingObj.password)) {
-			serverError(socket, "No or invalid password");
-			return;
-		}
 
 		loginTools.loginUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
 				callback(data, err, key);
+			} 
+			else {
+				callback(null, {message: "Userkey not generated, login failed"}, "appError")
 			}
 		});
+
 	}
+	//User reg pip
 	else if(incomingObj.name === 'newUser') {
-
-		if(!isSanitized(incomingObj.username)) {
-			serverError(socket, "No or invalid username");
-			return;
-		}
-
-		if(!isSanitized(incomingObj.password)) {
-			serverError(socket, "No or invalid password");
-			return;
-		}
-
-		var testEmail = incomingObj.email.replace('@', '').replace('.', '');
-		if(!isSanitized(testEmail)) {
-			serverError(socket, "No or invalid email");
-			return;
-		}
 
 		loginTools.regNewUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
-				console.log('asdf')
 				socket.userKey = data.userKey.S;
+				callback(data, err, key);
+			} 
+			else {
+				callback(null, {message: "Userkey not generated, login failed"}, "appError")				
 			}
-			callback(data, err, key);
 		});
+
 	}
-	else if(incomingObj.userKey && checkUserKey(socket, incomingObj.userKey)) {
+	//Post login
+	else if(incomingObj.userKey) {
+
+		if(!checkUserKey(socket, incomingObj.userKey)) {
+			callback(null, {message: "Userkey incorrect, command failed"})
+		}
+
+		//store data
 		if(incomingObj.name === 'store') {
 			storageTools.storeData(socket, incomingObj, fileTable, callback);
 		}
+		//pull data
 		else if(incomingObj.name === 'retrieve') {
-			console.log("check")
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
+		//logout
 		else if(incomingObj.name === 'logout') {
 			socket.userKey = null; 
 
 			callback();
 		}
 	}
+	//Error pipe
 	else {
 		callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 	}

@@ -41,8 +41,6 @@ module.exports = {
 		
 		var itemParams = {Item: dataObj};
 
-		console.log(itemParams)
-
 		table.putItem(itemParams, function(err, data) {
 			if(err) {
 				callback(null, err);
@@ -53,6 +51,17 @@ module.exports = {
 	    });
 	},
 
+	/**
+		Retrieves data of a specific user using table.query
+		Pulls down last 5 days in order of most recent
+
+		@param: socket; socket.io connection; 
+		@param: incomingObj; {}
+			@param: patient; string; the patient name (hash)
+			@param: apptDate; string; the date in milliseconds to search from
+		@param: table; dynamo db table; where to get data
+		@param: callback; function(data, err)
+	*/
 	retrieveData: function(socket, incomingObj, table, callback) {
 		table.query({
 			ScanIndexForward: true,
@@ -63,8 +72,6 @@ module.exports = {
 			},
 			KeyConditionExpression: "patient = :hashval AND apptDate <= :rangeval"
 		}, function(err, data)  {
-			console.log(err)
-			console.log(data)
 			if(err) {
 				callback(null, err);
 			}
