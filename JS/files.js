@@ -37,6 +37,7 @@ function loadFormToDB(form) {
 		} 
 		else {
 			alert("Success?")
+            console.log(data);
 		}
 	});
 }
