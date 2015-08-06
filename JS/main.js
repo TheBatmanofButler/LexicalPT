@@ -34,6 +34,10 @@ $("#Logout").click(function() {
 });
 
 //Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click(), and retrieve is under widget)
+$("#RetrieveInfoTest").click(function() {
+    loadFormFromDB();
+});
+
 $("#CreateNewForm").click(function(){
     
     removeForms(function() {

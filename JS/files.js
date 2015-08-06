@@ -8,47 +8,7 @@ File manipulation functions
 
 var global_formCount = -1;
 
-function removeForms(callback) {
-    $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
-        $(".multi-day-form-exercises-info-container").empty();
-        global_formCount = -1;
-
-        if(callback)
-            callback();
-    });
-}
-
-function createForm() {
-
-    global_formCount++;
-
-    var globalCount = global_formCount;
-
-    var $form = $("#form-default").clone(true);
-
-    $form.attr("id","form-" + globalCount);
-
-    $form.removeClass("hidden");
-    
-    $form.find(".data-form").submit(function(event) {
-        event.preventDefault();
-        loadFormToDB("#form-" + globalCount);
-    });
-
-    $form.find(".submit-data").click(function() {
-        $form.find(".hidden-submit-data").click();
-    });
-
-    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
-
-    if(globalCount > 0) 
-        $("#CopyForward").fadeIn();
-
-    $(".multi-day-form-exercises-info-container").append($form);
-
-    $(".multi-day-form-exercises-info-container").fadeIn();
-}
-
+//SERVER FUNCTIONS
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
@@ -97,7 +57,21 @@ function _loadFormFromDB(data) {
                     continue;
                 }
 
-                $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+                if ($("#form-" + i + " ." + classnames).length) {
+                    $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+                }
+                else {
+                    var classInfo = classnames.split('-');
+
+                    for(var j = 5; j <= classInfo[1]; j++) {
+                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length) {
+                            var DOMelement = $("#form-" + i + " " + classInfo[0] + '-' + (j - 1)).closest("tr");
+                            createNewRow(DOMelement);
+                        }
+                    }
+
+                    $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
+                }
             }
         }
 
@@ -115,8 +89,8 @@ function _loadFormFromDB(data) {
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
 function loadFormFromDB(patient,apptDate) {
-	// patient = prompt("PatientName?");
- //    apptDate = prompt("apptDate?");
+	patient = prompt("PatientName?");
+    apptDate = prompt("apptDate?");
 
     socket.emit("clientToServer", {
         name: 'retrieve',
@@ -133,11 +107,58 @@ function loadFormFromDB(patient,apptDate) {
     });
 }
 
+//LOCAL FUNCTIONS
+function removeForms(callback) {
+    $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
+        $(".multi-day-form-exercises-info-container").empty();
+        global_formCount = -1;
+
+        if(callback)
+            callback();
+    });
+}
+
+function createForm() {
+
+    global_formCount++;
+
+    var globalCount = global_formCount;
+
+    var $form = $("#form-default").clone(true);
+
+    $form.attr("id","form-" + globalCount);
+
+    $form.removeClass("hidden");
+    
+    $form.find(".data-form").submit(function(event) {
+        event.preventDefault();
+        loadFormToDB("#form-" + globalCount);
+    });
+
+    $form.find(".submit-data").click(function() {
+        $form.find(".hidden-submit-data").click();
+    });
+
+    //Dynamic rows
+    $form.find(".create-new-row-on-click").click(function() {
+        createNewRow(this);
+    });
+
+    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+
+    if(globalCount > 0) 
+        $("#CopyForward").fadeIn();
+
+    $(".multi-day-form-exercises-info-container").append($form);
+
+    $(".multi-day-form-exercises-info-container").fadeIn();
+}
+
+
 /**
     Copies all of the data from the last day to the current day
 */
 function copyForward() {
-    alert();
     if(global_formCount < 1)
         return;
 
@@ -150,10 +171,57 @@ function copyForward() {
 
             classes[0] = "." + classes[0];
 
-            if(classes[0] !== 'apptDate')
-                $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
+            if(classes[0] !== 'apptDate') {
+
+                if ($("#form-" + global_formCount + " " + classes[0]).length) {
+                    $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
+                }
+                else {
+                    console.log(classes[0])
+
+                    var classInfo = classes[0].split('-');
+
+                    for(var j = 5; j <= classInfo[1]; j++) {
+                        console.log(j)
+                        if(!$("#form-" + global_formCount + " " + classInfo[0] + '-' + j).length) {
+                            console.log('firing on: ' + j)
+                            var DOMelement = $("#form-" + global_formCount + " " + classInfo[0] + '-' + (j - 1)).closest("tr");
+                            createNewRow(DOMelement);
+                        }
+                    }
+
+                    $("#form-" + global_formCount + " ." + classnames).val($(this).val());
+                }
+            }   
         }
-    
     });
 }
  
+
+ function createNewRow(DOMelement) {
+    var $newRow = $(DOMelement).clone();
+    $(DOMelement).removeClass("create-new-row-on-click");
+    $(DOMelement).unbind( "click" );
+
+    table = $(DOMelement).closest("table");
+
+    $newRow.find('input').each(function(){
+        var oldId = $(this).attr('class');
+        console.log(oldId)
+        var idInfo = oldId.split('-');
+
+        var newId = idInfo[0] + '-' + (parseInt(idInfo[1]) + 1);
+        $(this).attr('class', newId);
+        $(this).attr('name', newId);
+    });
+
+    //Dynamic rows
+    $newRow.click(function() {
+        createNewRow(this);
+    });
+
+    console.log(DOMelement)
+    console.log(table);
+
+    $(table).append($newRow);
+ }
