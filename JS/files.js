@@ -89,8 +89,8 @@ function _loadFormFromDB(data) {
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
 function loadFormFromDB(patient,apptDate) {
-	patient = prompt("PatientName?");
-    apptDate = prompt("apptDate?");
+	// patient = prompt("PatientName?");
+ //    apptDate = prompt("apptDate?");
 
     socket.emit("clientToServer", {
         name: 'retrieve',
