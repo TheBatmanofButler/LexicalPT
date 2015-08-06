@@ -154,7 +154,7 @@ function createForm() {
 
     $(".multi-day-form-exercises-info-container").append($form);
 
-    $(".multi-day-form-exercises-info-container").fadeIn();
+    $(".tables .multi-day-form-exercises-info-container").fadeIn();
 }
 
 

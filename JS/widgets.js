@@ -6,13 +6,23 @@
 Set up for selection box widget
 */
 
+/**
+	Does what you think: capitalizes the first letter of the string
+*/
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+/**
+	Converts a utc datetime to a string
+
+	@param: UTCtime; date;
+
+	@return: an array of strings for each part of the datetime
+*/
 function UTC2stringDate(UTCtime) {
-	formattedArray = []
-	for (eachTime in UTCtime) {
+	var formattedArray = [];
+	for (var eachTime in UTCtime) {
 		if (UTCtime[eachTime] != '') {
 			formattedArray.push(new Date(parseInt(UTCtime[eachTime])).toDateString());
 		}
@@ -20,6 +30,12 @@ function UTC2stringDate(UTCtime) {
 	return formattedArray;
 }
 
+/**
+	Converts a string to a utc datetime
+
+	@param: stringDate; string
+	@return: the stringdate in milliseconds 
+*/
 function stringDate2UTC(stringDate) {
 	if (stringDate != '') {
 		var dateConvert = new Date(stringDate)
@@ -27,16 +43,27 @@ function stringDate2UTC(stringDate) {
 	}
 }
 
+/**
+	Combobox class. Sets up the comboboxes with incoming data so they interact correctly. 
+
+	@param: IncomingData; {}
+		@param: .Items; {}
+			@param: apptDate; string; dates of apointments
+			@param: patient; string; names of patients
+*/
 function PatientDateInput(IncomingData) {
 	console.log(IncomingData.Items);
+
+	//Generates objects of patient keys -> date values, and date keys -> patient values
 	var Patient2Date = {}
 	var Date2Patient = {}
 	for (var item in IncomingData.Items) {
+		
 		// time in UTC milliseconds
-		tMS = IncomingData.Items[item]['apptDate']['N']
+		var tMS = IncomingData.Items[item]['apptDate']['N']
 
 		// capitalized patient name
-		patientName = IncomingData.Items[item]['patient']['S'].capitalize()
+		var patientName = IncomingData.Items[item]['patient']['S'].capitalize()
 
 		// populate Patient2Date
 		if (patientName in Patient2Date) {

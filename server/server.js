@@ -28,7 +28,12 @@ function isSanitized(inputString) {
 	return true;
 }
 
+/**
+	Checks if the userkey equals the login key stored on the server
 
+	@param: socket; socket.io connection; should have socket.userkey has sub param
+	@param: userKey; string; 
+*/
 function checkUserKey(socket, userKey) { 
 	console.log("CHECKING")
 	if(userKey === socket.userKey)
@@ -59,6 +64,7 @@ function serverError(socket, message) {
 	@param: incomingObj; obj; data sent from client
 */
 function serverHandler(socket, incomingObj, callback) {
+	//Login pipe
 	if(incomingObj.name === 'login') {
 
 		loginTools.loginUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
@@ -72,6 +78,7 @@ function serverHandler(socket, incomingObj, callback) {
 		});
 
 	}
+	//User reg pip
 	else if(incomingObj.name === 'newUser') {
 
 		loginTools.regNewUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
@@ -85,23 +92,29 @@ function serverHandler(socket, incomingObj, callback) {
 		});
 
 	}
+	//Post login
 	else if(incomingObj.userKey) {
-		if(checkUserKey(socket, incomingObj.userKey)) {
+
+		if(!checkUserKey(socket, incomingObj.userKey)) {
 			callback(null, {message: "Userkey incorrect, command failed"})
 		}
 
+		//store data
 		if(incomingObj.name === 'store') {
 			storageTools.storeData(socket, incomingObj, fileTable, callback);
 		}
+		//pull data
 		else if(incomingObj.name === 'retrieve') {
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
+		//logout
 		else if(incomingObj.name === 'logout') {
 			socket.userKey = null; 
 
 			callback();
 		}
 	}
+	//Error pipe
 	else {
 		callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 	}

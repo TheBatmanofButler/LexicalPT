@@ -39,14 +39,11 @@ $("#Logout").click(function() {
 });*/
 
 $("#CreateNewForm").click(function(){
-    
     removeForms(function() {
         createForm();
-        $(".tables").fadeIn(function() {
-            $('html, body').animate({
-                scrollTop: $("#BreakOne").offset().top
-            }, 400);
-        });
+        $('html, body').animate({
+            scrollTop: $("#BreakOne").offset().top
+        }, 400);
     });
 });
 
