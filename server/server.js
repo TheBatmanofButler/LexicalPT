@@ -9,7 +9,7 @@ var storageTools = require('./storageTools');
 
 //AWS config
 AWS.config.region = 'us-east-1';
-var userTable = new AWS.DynamoDB({params: {TableName: 'PTUsers'}});
+var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
 var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
 
 //Sockets
@@ -60,56 +60,40 @@ function serverError(socket, message) {
 */
 function serverHandler(socket, incomingObj, callback) {
 	if(incomingObj.name === 'login') {
-		console.log('login');
-		if(!isSanitized(incomingObj.username)) {
-			serverError(socket, "No or invalid username");
-			return;
-		}
-
-		if(!isSanitized(incomingObj.password)) {
-			serverError(socket, "No or invalid password");
-			return;
-		}
 
 		loginTools.loginUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
 				callback(data, err, key);
+			} 
+			else {
+				callback(null, {message: "Userkey not generated, login failed"}, "appError")
 			}
 		});
+
 	}
 	else if(incomingObj.name === 'newUser') {
 
-		if(!isSanitized(incomingObj.username)) {
-			serverError(socket, "No or invalid username");
-			return;
-		}
-
-		if(!isSanitized(incomingObj.password)) {
-			serverError(socket, "No or invalid password");
-			return;
-		}
-
-		var testEmail = incomingObj.email.replace('@', '').replace('.', '');
-		if(!isSanitized(testEmail)) {
-			serverError(socket, "No or invalid email");
-			return;
-		}
-
 		loginTools.regNewUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
-				console.log('asdf')
 				socket.userKey = data.userKey.S;
+				callback(data, err, key);
+			} 
+			else {
+				callback(null, {message: "Userkey not generated, login failed"}, "appError")				
 			}
-			callback(data, err, key);
 		});
+
 	}
-	else if(incomingObj.userKey && checkUserKey(socket, incomingObj.userKey)) {
+	else if(incomingObj.userKey) {
+		if(checkUserKey(socket, incomingObj.userKey)) {
+			callback(null, {message: "Userkey incorrect, command failed"})
+		}
+
 		if(incomingObj.name === 'store') {
 			storageTools.storeData(socket, incomingObj, fileTable, callback);
 		}
 		else if(incomingObj.name === 'retrieve') {
-			console.log("check")
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
 		else if(incomingObj.name === 'logout') {
