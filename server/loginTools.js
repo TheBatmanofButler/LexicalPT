@@ -56,7 +56,7 @@ function patientScan(patientsTable, callback) {
 			console.log(err);
 			callback(null, err);
 		} else {
-			return dataFromScan;
+			callback(dataFromScan);
 		}
 	});
 }
@@ -83,7 +83,7 @@ module.exports = {
 			}
 			else {
 
-	  			if(Object.keys(data).length === 0) {
+	  			if(Object.keys(dataFromgetItem).length === 0) {
 	  				callback(null, {message: 'Username/Password incorrect'}, 'appError');
 	  				return;
 	  			}
@@ -95,8 +95,10 @@ module.exports = {
 						dataObj[key] = {};
 						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
 					}
-					dataObj['dataFromScan'] = patientScan(patientsTable, callback);
-		    		callback(dataObj);
+					patientScan(patientsTable, function(dataFromScan, err) {
+						dataObj['dataFromScan'] = dataFromScan;
+						callback(dataObj);
+					});
 		    	}
 		    	else {
 					callback(null, {message: 'Username/Password incorrect'}, 'appError');
@@ -124,7 +126,7 @@ module.exports = {
 			@param: password; string; password for account login
 		@param: callback; function; the function to call if successfull login (default = loginResponseSuccess)
 	*/
-	regNewUser: function(socket, userTable, patientsTable, incomingObj, callback) {
+	regNewUser: function(socket, usersTable, patientsTable, incomingObj, callback) {
 		checkUser(socket, usersTable, incomingObj.username, function(err, isAppError) {
 			if(err) { 
 				console.log(err);
@@ -145,8 +147,6 @@ module.exports = {
 
 			dataObj['userKey'] = {'S': userKey};
 
-			dataObj['dataFromScan'] = patientScan(patientsTable, callback);
-
 			var itemParams = {Item: dataObj};
 			
 			usersTable.putItem(itemParams, function(err, data) {
@@ -154,7 +154,10 @@ module.exports = {
 					callback(null, err);
 				}
 				else {
-					callback(dataObj);
+					patientScan(patientsTable, function(dataFromScan, err) {
+						dataObj['dataFromScan'] = dataFromScan;
+						callback(dataObj);
+					});
 				}
 		    });
 		});
