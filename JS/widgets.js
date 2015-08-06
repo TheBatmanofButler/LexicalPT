@@ -72,11 +72,12 @@ function PatientDateInput(IncomingData) {
 		var $patientName = $("#patient_combobox").val();
 
 		if ($("#date_combobox").val() == '') {
+
 			// remove children
 	        $("#date_combobox").children().remove().end();
 
 			// repopulate date combobox
-	        dateList = UTC2stringDate(Patient2Date[$patientName]).sort().reverse()
+	        var dateList = UTC2stringDate(Patient2Date[$patientName]).sort().reverse()
 	        if (dateList.length > 1) {
 	        	dateList.unshift('');
 	        }
@@ -84,11 +85,14 @@ function PatientDateInput(IncomingData) {
 				placeholder: "Select a Date",
 				data: dateList
 			});
-		} else {
+		}
+
+		if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length == 1) {
 			$("#patient_combobox, #date_combobox").prop( "disabled", true );
 			var $patientDate = stringDate2UTC($("#date_combobox").val())
             loadFormFromDB(patient = $patientName, apptDate = String($patientDate));
 			$("#queryResetButton").show();
+			console.log('blergg')
 		}
 
 	});
@@ -102,7 +106,7 @@ function PatientDateInput(IncomingData) {
 	        $("#patient_combobox").children().remove().end();
 
 	        // repopulate patient combobox
-	        patientList = Date2Patient[stringDate2UTC([$patientDate])].sort()
+	        var patientList = Date2Patient[stringDate2UTC([$patientDate])].sort()
 	        if (patientList.length > 1) {
 	        	patientList.unshift('');
 	        }
@@ -110,11 +114,14 @@ function PatientDateInput(IncomingData) {
 				placeholder: "Select a Patient",
 				data: patientList
 			});
-		} else {
+		} 
+
+		if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC([$patientDate])].length == 1) {
 			$("#patient_combobox, #date_combobox").prop( "disabled", true );
 			var $patientName = $("#patient_combobox").val()
             loadFormFromDB(patient = $patientName, apptDate = String(stringDate2UTC($patientDate)));
 			$("#queryResetButton").show();
+			console.log('blergg2')
 		}
 
 	});
