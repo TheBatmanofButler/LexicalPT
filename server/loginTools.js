@@ -70,7 +70,7 @@ module.exports = {
 			else {
 
 	  			if(Object.keys(data).length === 0) {
-	  				callback(null, {message: 'Username already taken'}, 'appError');
+	  				callback(null, {message: 'Username/Password incorrect'}, 'appError');
 	  				return;
 	  			}
 
@@ -86,7 +86,7 @@ module.exports = {
 		    		callback(dataObj);
 		    	}
 		    	else {
-					callback(null, {message: 'Username already taken'}, 'appError');
+					callback(null, {message: 'Username/Password incorrect'}, 'appError');
 					return;
 		    	}	
 	  		}
