@@ -83,8 +83,8 @@ module.exports = {
 			}
 			else {
 
-	  			if(Object.keys(dataFromgetItem).length === 0) {
-	  				callback(null, {message: 'Username already taken'}, 'appError');
+	  			if(Object.keys(data).length === 0) {
+	  				callback(null, {message: 'Username/Password incorrect'}, 'appError');
 	  				return;
 	  			}
 
@@ -95,13 +95,11 @@ module.exports = {
 						dataObj[key] = {};
 						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
 					}
-
 					dataObj['dataFromScan'] = patientScan(patientsTable, callback);
-
-					callback(dataObj);
-
-		    	} else {
-					callback(null, {message: 'Username already taken'}, 'appError');
+		    		callback(dataObj);
+		    	}
+		    	else {
+					callback(null, {message: 'Username/Password incorrect'}, 'appError');
 					return;
 		    	}	
 	  		}

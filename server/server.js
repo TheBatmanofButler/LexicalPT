@@ -119,8 +119,7 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 	}
 	else {
-		console.log(incomingObj);
-		callback(null, {message: 'Login first'}, 'appError');
+		callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 	}
 }
 
