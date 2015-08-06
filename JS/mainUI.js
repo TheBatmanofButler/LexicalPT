@@ -5,6 +5,8 @@ $("#LoginButton").click(function showInputLogin() {
     document.getElementById("UsernameField").style.display = "inline";
     document.getElementById("PasswordField").style.display = "inline";
     document.getElementById("Cancel").style.display = "inline";
+
+    $("#UsernameField").focus();
 });
 
 
