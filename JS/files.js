@@ -172,9 +172,8 @@ function copyForward() {
             var classes = $(this).attr("class")     
             classes = classes.split(" ");
 
-            classes[0] = "." + classes[0];
-
             if(classes[0] !== 'apptDate') {
+                classes[0] = "." + classes[0];
 
                 if ($("#form-" + global_formCount + " " + classes[0]).length) {
                     $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
