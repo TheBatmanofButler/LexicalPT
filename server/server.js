@@ -101,7 +101,7 @@ function serverHandler(socket, incomingObj, callback) {
 
 		//store data
 		if(incomingObj.name === 'store') {
-			storageTools.storeData(socket, incomingObj, fileTable, callback);
+			storageTools.storeData(socket, incomingObj, fileTable, io, callback);
 		}
 		//pull data
 		else if(incomingObj.name === 'retrieve') {

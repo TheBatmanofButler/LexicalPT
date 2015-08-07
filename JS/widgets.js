@@ -55,15 +55,15 @@ function PatientDateInput(IncomingData) {
 	console.log(IncomingData.Items);
 
 	//Generates objects of patient keys -> date values, and date keys -> patient values
-	var Patient2Date = {}
-	var Date2Patient = {}
+	Patient2Date = {}
+	Date2Patient = {}
 	for (var item in IncomingData.Items) {
 		
 		// time in UTC milliseconds
 		var tMS = IncomingData.Items[item]['apptDate']['N']
 
 		// capitalized patient name
-		var patientName = IncomingData.Items[item]['patient']['S'].capitalize()
+		var patientName = IncomingData.Items[item]['patient']['S']
 
 		// populate Patient2Date
 		if (patientName in Patient2Date) {
@@ -81,7 +81,9 @@ function PatientDateInput(IncomingData) {
 	}
 
 	// populate patient combobox
-	patientList = Object.keys(Patient2Date).sort()
+	patientList = Object.keys(Patient2Date).sort(function (a, b) {
+	    return a.toLowerCase().localeCompare(b.toLowerCase());
+	});
 	patientList.unshift('');
 	$("#patient_combobox").select2({
 		placeholder: "Select a Patient",
@@ -89,7 +91,7 @@ function PatientDateInput(IncomingData) {
 	});
 
 	// populate date combobox
-	dateList = UTC2stringDate(Object.keys(Date2Patient).sort().reverse())
+	var dateList = UTC2stringDate(Object.keys(Date2Patient).sort().reverse())
 	dateList.unshift('');
 	$("#date_combobox").select2({
 		placeholder: "Select a Date",
@@ -134,7 +136,9 @@ function PatientDateInput(IncomingData) {
 	        $("#patient_combobox").children().remove().end();
 
 	        // repopulate patient combobox
-	        var patientList = Date2Patient[stringDate2UTC([$patientDate])].sort()
+	        var patientList = Date2Patient[stringDate2UTC([$patientDate])].sort(function (a, b) {
+			    return a.toLowerCase().localeCompare(b.toLowerCase());
+			})
 	        if (patientList.length > 1) {
 	        	patientList.unshift('');
 	        }
@@ -155,10 +159,12 @@ function PatientDateInput(IncomingData) {
 	});
 
     $("#queryResetButton").click( function() {
-
+    	console.log(Patient2Date);
 		// // populate patient combobox
 		$("#patient_combobox").children().remove().end();
-		patientList = Object.keys(Patient2Date).sort()
+		patientList = Object.keys(Patient2Date).sort(function (a, b) {
+		    return a.toLowerCase().localeCompare(b.toLowerCase());
+		})
 		patientList.unshift('');
 		$("#patient_combobox").select2({
 			placeholder: "Select a Patient",
@@ -179,3 +185,24 @@ function PatientDateInput(IncomingData) {
     });
 
 }
+
+function addNewFormData(newData) {
+	var patientName = newData.patient.S;
+	var tMS = newData.apptDate.N;
+
+	// populate Patient2Date
+	if (patientName in Patient2Date) {
+		Patient2Date[patientName].push(tMS);
+	} else {
+		Patient2Date[patientName] = [tMS];
+	}
+
+	// populate Date2Patient
+	if (tMS in Date2Patient) {
+		Date2Patient[tMS].push(patientName);
+	} else {
+		Date2Patient[tMS] = [patientName];
+	}
+
+	$("#queryResetButton").trigger('click');
+};

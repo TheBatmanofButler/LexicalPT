@@ -24,7 +24,7 @@ module.exports = {
 		@param: table; where to store
 		@param: callback; what to do after
 	*/
-	storeData: function(socket, incomingObj, table, callback) {
+	storeData: function(socket, incomingObj, table, io, callback) {
 		var dataObj = {};
 
 		for(key in incomingObj) {
@@ -47,6 +47,7 @@ module.exports = {
 			}
 			else {
 				callback(dataObj);
+				io.sockets.emit('serverToClient', dataObj);
 			}
 	    });
 	},
