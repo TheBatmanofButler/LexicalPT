@@ -96,6 +96,8 @@ function serverHandler(socket, incomingObj, callback) {
 	else if(incomingObj.userKey) {
 
 		if(!checkUserKey(socket, incomingObj.userKey)) {
+			console.log(socket.userKey)
+			console.log(incomingObj.userKey)
 			callback(null, {message: "Userkey incorrect, command failed"})
 		}
 
@@ -109,6 +111,7 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 		//logout
 		else if(incomingObj.name === 'logout') {
+			console.log("???")
 			socket.userKey = null; 
 
 			callback();
@@ -124,6 +127,11 @@ function serverHandler(socket, incomingObj, callback) {
 //Main
 io.sockets.on('connection', function(socket) {
 	console.log("CONNECTED")
+
+	socket.on('disconnect', function() {
+     	console.log('Got disconnect!');
+   	});
+
 	socket.on('clientToServer', function(data, callback) {
 		if(!(data && data.name))
 			serverError(socket, 'Data did not have a name');

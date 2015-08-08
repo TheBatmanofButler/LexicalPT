@@ -73,6 +73,7 @@ module.exports = {
 			},
 			KeyConditionExpression: "patient = :hashval AND apptDate <= :rangeval"
 		}, function(err, data)  {
+			console.log("callback")
 			if(err) {
 				callback(null, err);
 			}

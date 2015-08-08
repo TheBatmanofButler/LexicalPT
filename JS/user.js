@@ -43,6 +43,7 @@ function login(data) {
 
 		$(".login-show").fadeIn().css("display","inline");
 	});
+
 	PatientDateInput(data['dataFromScan']);
 }
 

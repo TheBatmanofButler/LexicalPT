@@ -99,7 +99,6 @@ module.exports = {
 					
 	  				dataObj = {};
 	  				for(key in dataFromgetItem.Item) {
-						dataObj[key] = {};
 						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
 					}
 

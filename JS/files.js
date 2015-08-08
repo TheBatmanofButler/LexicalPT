@@ -12,18 +12,22 @@ var global_formCount = -1;
 //HELPER FUNCTIONS
 function openFormData(formSelector, className, value) {
 
+    console.log("what");
+
     //If DOM element doesn't exist, we need to create it
     if (!$(formSelector + " ." + className).length) {
         var classInfo = className.split('-');
 
         for(var j = 5; j <= classInfo[1]; j++) {
-            if(!$(formSelector + " " + classInfo[0] + '-' + j).length) {
+            if(!$(formSelector + " ." + classInfo[0] + '-' + j).length) {
                 var DOMelement = $(formSelector + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
                 createNewRow(DOMelement);
             }
         }
     }
 
+    console.log(className)
+    console.log(value)
     $(formSelector + " ." + className).val(value);
 }
 
@@ -63,27 +67,36 @@ function loadFormToDB(form) {
 */
 function _loadFormFromDB(data) {
     removeForms(function() { 
+        console.log('check 2', socket.connected);
         for(var i = 0; i < data.length; i++) {
+            console.log('check 2', socket.connected);
 
             if(i > global_formCount) {
                 createForm();
             }
+            console.log('check 2', socket.connected);
+            console.log(data[i])
 
             for(classnames in data[i]) {
+                console.log('check 2', socket.connected);
+                console.log(classnames)
 
-                if(className === 'apptDate') {
-                    $(formSelector + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                if(classnames === 'apptDate') {
+                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
                 }  
                 else {
-                    openFormData("#form-" + i, classnames, data[i][classnames].S);
+                    openFormData(("#form-" + i), classnames, data[i][classnames].S);
                 }  
-
+                console.log('check 2', socket.connected);
             }
         }
+        
+        console.log('check 2', socket.connected);
 
         //creates empty form
         createForm();
-    
+                console.log('check 2', socket.connected);
+
         $(".tables").fadeIn();
         $('html, body').animate({
                 scrollTop: $("#BreakOne").offset().top
@@ -101,12 +114,14 @@ function loadFormFromDB(patient,apptDate) {
         patient: patient,
         apptDate: apptDate
     }, function(data, err, appError) {
-      if(err) {
-        errorHandler(err, appError);
-      }   
-      else {
-        _loadFormFromDB(data);
-      }    
+        if(err) {
+            errorHandler(err, appError);
+        }   
+        else {
+            console.log('check 2', socket.connected);
+
+            _loadFormFromDB(data);
+        }    
     });
 }
 
@@ -182,14 +197,14 @@ function copyForward() {
             classes = classes.split(" ");
 
             if(classes[0] !== 'apptDate') {
-                openFormData("#form-" + global_formCount, classes[0], data[i][classnames].S);  
+                openFormData("#form-" + global_formCount, classes[0], $(this).val());  
             }
         }
     });
 }
  
 /**
-    Takes a DOMElement that represents a row, copies it and adds it to the document
+    Takes a DOMElement that represents a row, copies it and adds it to the document. Clears out the row on the copy.
 
     @param: DOMelement; DOM row; a row inside an HTML form - see HTML form structure
 */
@@ -204,6 +219,8 @@ function createNewRow(DOMelement) {
     $newRow.find('input').each(function(){
         var oldId = $(this).attr('class');
         var idInfo = oldId.split('-');
+
+        $(this).val("");
 
         var newId = idInfo[0] + '-' + (parseInt(idInfo[1]) + 1);
         $(this).attr('class', newId);
