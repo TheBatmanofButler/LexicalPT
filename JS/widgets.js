@@ -6,6 +6,10 @@
 Set up for selection box widget
 */
 
+//Objects that store combobox data
+var Patient2Date = {}
+var Date2Patient = {}
+
 /**
 	Converts a utc datetime to a string
 
@@ -47,8 +51,6 @@ function stringDate2UTC(stringDate) {
 function PatientDateInput(IncomingData) {
 	// Generates objects of patient keys -> date values, and date keys -> patient values
 	// global vars used in addNewFormData
-	Patient2Date = {}
-	Date2Patient = {}
 	for (var item in IncomingData.Items) {
 		
 		// time in UTC milliseconds

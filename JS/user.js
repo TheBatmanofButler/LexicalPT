@@ -43,21 +43,27 @@ function login(data) {
 
 		$(".login-show").fadeIn().css("display","inline");
 	});
-	console.log(data['dataFromScan']);
 	PatientDateInput(data['dataFromScan']);
 }
 
+/**
+	Resets all variables and sends the user back to the home screen
+*/
 function logout() {
 	global_userKey = null;
 	global_username = null;
 	global_userEmail = null;
 	displayCurrentUser();
+	removeForms();
 
 	$(".postlogin-content, .login-show, #UserCreator").fadeOut( function() {	
 		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
 	});
 }
 
+/**
+	Calls the lougout function on the server
+*/
 function submitLogout() {
 	socket.emit("clientToServer", {
 		name: "logout",
@@ -70,6 +76,9 @@ function submitLogout() {
 
 //Pre Login------------------------------------------------------------------------------------------
 
+/**
+	Adds a new user to the db
+*/
 function registerNewUser() {
 	var $inputs = $('#RegisterNewUser :input');
 	
@@ -78,8 +87,6 @@ function registerNewUser() {
     $inputs.each(function() {
         values[this.name] = $(this).val();
     });
-
-    console.log(values)
 	
 	socket.emit("clientToServer", {
 		name: "newUser",
@@ -92,11 +99,11 @@ function registerNewUser() {
 			errorHandler(err, appError);
 		}		
 		else {
-			console.log(data);
 			login(data);
 		}
 	});
 }
+
 /**
 	Triggered on login submit button, sends user/password info for cross checking from server/dbs
 */
@@ -106,7 +113,6 @@ function submitLogin() {
     $inputs.each(function() {
         values[this.name] = $(this).val();
     });
-    console.log(values);
 
 	socket.emit("clientToServer", {
         name: "login",
@@ -117,9 +123,7 @@ function submitLogin() {
 			errorHandler(err, isAppError);
 		} 
 		else {
-			console.log('dddddd');
 			login(data);
-			console.log('bbbbbbb');
 		}
 	});
 }

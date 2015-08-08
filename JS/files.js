@@ -8,7 +8,24 @@ File manipulation functions
 
 var global_formCount = -1;
 
-//
+
+//HELPER FUNCTIONS
+function openFormData(formSelector, className, value) {
+
+    //If DOM element doesn't exist, we need to create it
+    if (!$(formSelector + " ." + className).length) {
+        var classInfo = className.split('-');
+
+        for(var j = 5; j <= classInfo[1]; j++) {
+            if(!$(formSelector + " " + classInfo[0] + '-' + j).length) {
+                var DOMelement = $(formSelector + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
+                createNewRow(DOMelement);
+            }
+        }
+    }
+
+    $(formSelector + " ." + className).val(value);
+}
 
 //SERVER FUNCTIONS
 /**
@@ -34,12 +51,16 @@ function loadFormToDB(form) {
 			errorHandler(err, isAppError);
 		} 
 		else {
-			alert("Success?")
-            console.log(data);
+            alert("Success");
 		}
 	});
 }
 
+/**
+    Takes in data and creats an actual form with that data
+
+    @param: data; [] of objects like {}
+*/
 function _loadFormFromDB(data) {
     removeForms(function() { 
         for(var i = 0; i < data.length; i++) {
@@ -48,25 +69,15 @@ function _loadFormFromDB(data) {
                 createForm();
             }
 
-            for(classnames in data[i]) {      
+            for(classnames in data[i]) {
 
-                if(classnames === 'apptDate') {
-                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
-                    continue;
-                }
+                if(className === 'apptDate') {
+                    $(formSelector + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                }  
+                else {
+                    openFormData("#form-" + i, classnames, data[i][classnames].S);
+                }  
 
-                if (!$("#form-" + i + " ." + classnames).length) {
-                    var classInfo = classnames.split('-');
-
-                    for(var j = 5; j <= classInfo[1]; j++) {
-                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length) {
-                            var DOMelement = $("#form-" + i + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
-                            createNewRow(DOMelement);
-                        }
-                    }
-                }
-
-                $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
             }
         }
 
@@ -100,6 +111,12 @@ function loadFormFromDB(patient,apptDate) {
 }
 
 //LOCAL FUNCTIONS
+
+/**
+    Removes all forms and sets global_formCount to -1. 
+
+    @param: callback; function()
+*/
 function removeForms(callback) {
     $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
@@ -110,6 +127,10 @@ function removeForms(callback) {
     });
 }
 
+
+/**
+    Creates a form and increases the global form count by one
+*/
 function createForm() {
 
     global_formCount++;
@@ -161,28 +182,18 @@ function copyForward() {
             classes = classes.split(" ");
 
             if(classes[0] !== 'apptDate') {
-                continue;   
-
-            if (!$("#form-" + global_formCount + " ." + classes[0]).length) {
-                var classInfo = classes[0].split('-');
-
-                for(var j = 5; j <= classInfo[1]; j++) {
-
-                    if(!$("#form-" + global_formCount + " ." + classInfo[0] + '-' + j).length) {
-                        var DOMelement = $("#form-" + global_formCount + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
-                        createNewRow(DOMelement);
-                    }
-
-                }
+                openFormData("#form-" + global_formCount, classes[0], data[i][classnames].S);  
             }
-
-            $("#form-" + global_formCount + " ." + classnames).val($(this).val());
         }
     });
 }
  
+/**
+    Takes a DOMElement that represents a row, copies it and adds it to the document
 
- function createNewRow(DOMelement) {
+    @param: DOMelement; DOM row; a row inside an HTML form - see HTML form structure
+*/
+function createNewRow(DOMelement) {
     var $newRow = $(DOMelement).clone();
 
     $(DOMelement).removeClass("create-new-row-on-click");
