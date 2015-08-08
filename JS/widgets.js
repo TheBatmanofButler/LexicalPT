@@ -60,9 +60,13 @@ function PatientDateInput(IncomingData) {
 		var patientName = IncomingData.Items[item]['patient']['S']
 
 		// populate Patient2Date
+
+		// for patients with multiple appt dates
 		if (patientName in Patient2Date) {
-			// for patients with multiple appt dates
-			Patient2Date[patientName].push(tMS);
+			// ensures same data is not duplicated
+			if(Patient2Date[patientName].indexOf(tMS) == -1){
+				Patient2Date[patientName].push(tMS);
+			}
 		} else {
 			// for new patients
 			Patient2Date[patientName] = [tMS];
@@ -70,7 +74,9 @@ function PatientDateInput(IncomingData) {
 
 		// populate Date2Patient
 		if (tMS in Date2Patient) {
-			Date2Patient[tMS].push(patientName);
+			if(Date2Patient[tMS].indexOf(patientName) == -1){
+				Date2Patient[tMS].push(patientName);
+			}
 		} else {
 			Date2Patient[tMS] = [patientName];
 		}
@@ -239,9 +245,12 @@ function addNewFormData(newData) {
 	var tMS = newData.apptDate.N;
 
 	// populate Patient2Date
+	// for patients with multiple appt dates
 	if (patientName in Patient2Date) {
-		// for patients with multiple appt dates
-		Patient2Date[patientName].push(tMS);
+		// ensures same data is not duplicated
+		if(Patient2Date[patientName].indexOf(tMS) == -1){
+			Patient2Date[patientName].push(tMS);
+		}
 	} else {
 		// for new patients
 		Patient2Date[patientName] = [tMS];
@@ -249,7 +258,9 @@ function addNewFormData(newData) {
 
 	// populate Date2Patient
 	if (tMS in Date2Patient) {
-		Date2Patient[tMS].push(patientName);
+		if(Date2Patient[tMS].indexOf(patientName) == -1){
+			Date2Patient[tMS].push(patientName);
+		}
 	} else {
 		Date2Patient[tMS] = [patientName];
 	}

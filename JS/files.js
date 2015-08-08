@@ -55,7 +55,7 @@ function loadFormToDB(form) {
 			errorHandler(err, isAppError);
 		} 
 		else {
-            alert("Success");
+            postSubmit();
 		}
 	});
 }
