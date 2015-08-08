@@ -8,27 +8,25 @@ File manipulation functions
 
 var global_formCount = -1;
 
+//
+
 //SERVER FUNCTIONS
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 */
 function loadFormToDB(form) {
-    var $inputs = $(form +' :input');
+    //Set up basic server request
     var values = {};
     values.name = "store";
     values.userKey = global_userKey;
 
-    console.log($inputs);
-
+    //query the form, convert to object
+    var $inputs = $(form +' :input');
     $inputs.each(function() {
         values[this.name] = $(this).val();
     });
 
-    console.log(values['apptDate']);
-
     values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
-
-    console.log(values) 
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -42,8 +40,7 @@ function loadFormToDB(form) {
 }
 
 function _loadFormFromDB(data) {
-
-    removeForms(function() {
+    removeForms(function() { 
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount) {
@@ -57,24 +54,18 @@ function _loadFormFromDB(data) {
                     continue;
                 }
 
-                if ($("#form-" + i + " ." + classnames).length) {
-                    $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
-                }
-                else {
+                if (!$("#form-" + i + " ." + classnames).length) {
                     var classInfo = classnames.split('-');
 
-                    var rowCount = 5;
-
                     for(var j = 5; j <= classInfo[1]; j++) {
-                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length && j > rowCount) {
+                        if(!$("#form-" + i + " " + classInfo[0] + '-' + j).length) {
                             var DOMelement = $("#form-" + i + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
-                            rowCount++;
                             createNewRow(DOMelement);
                         }
                     }
-
-                    $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
                 }
+
+                $("#form-" + i + " ." + classnames).val(data[i][classnames].S);
             }
         }
 
@@ -92,9 +83,6 @@ function _loadFormFromDB(data) {
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
 function loadFormFromDB(patient,apptDate) {
-	// patient = prompt("PatientName?");
- //    apptDate = prompt("apptDate?");
-
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
@@ -165,36 +153,29 @@ function copyForward() {
     if(global_formCount < 1)
         return;
 
-    var prevFormCount = global_formCount - 1;
-    $('#form-' + prevFormCount + ' :input').each(function(){
+    $('#form-' + (global_formCount - 1) + ' :input').each(function(){
 
         if($(this).val()) {
             var classes = $(this).attr("class")     
             classes = classes.split(" ");
 
             if(classes[0] !== 'apptDate') {
-                classes[0] = "." + classes[0];
+                continue;   
 
-                if ($("#form-" + global_formCount + " " + classes[0]).length) {
-                    $("#form-" + global_formCount + " " + classes[0]).val($(this).val());
-                }
-                else {
-                    console.log(classes[0])
+            if (!$("#form-" + global_formCount + " ." + classes[0]).length) {
+                var classInfo = classes[0].split('-');
 
-                    var classInfo = classes[0].split('-');
+                for(var j = 5; j <= classInfo[1]; j++) {
 
-                    for(var j = 5; j <= classInfo[1]; j++) {
-                        console.log(j)
-                        if(!$("#form-" + global_formCount + " " + classInfo[0] + '-' + j).length) {
-                            console.log('firing on: ' + j)
-                            var DOMelement = $("#form-" + global_formCount + " " + classInfo[0] + '-' + (j - 1)).closest("tr");
-                            createNewRow(DOMelement);
-                        }
+                    if(!$("#form-" + global_formCount + " ." + classInfo[0] + '-' + j).length) {
+                        var DOMelement = $("#form-" + global_formCount + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
+                        createNewRow(DOMelement);
                     }
 
-                    $("#form-" + global_formCount + " ." + classnames).val($(this).val());
                 }
-            }   
+            }
+
+            $("#form-" + global_formCount + " ." + classnames).val($(this).val());
         }
     });
 }
@@ -210,7 +191,6 @@ function copyForward() {
 
     $newRow.find('input').each(function(){
         var oldId = $(this).attr('class');
-        console.log(oldId)
         var idInfo = oldId.split('-');
 
         var newId = idInfo[0] + '-' + (parseInt(idInfo[1]) + 1);
@@ -222,9 +202,6 @@ function copyForward() {
     $newRow.click(function() {
         createNewRow(this);
     });
-
-    console.log(DOMelement)
-    console.log(table);
 
     $(table).append($newRow);
  }
