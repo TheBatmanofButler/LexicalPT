@@ -16,16 +16,39 @@
 
         .search .search-containers {
             width: 100%;
+            text-align: center;
         }
 
             .search .search-containers li {
                 display: inline-block;
-                width: 49%;
+                width: 25%;
                 text-align: center;
             }
 
             .search .search-containers li label {
                 font-size: 30px;
+            }
+
+            .search-containers .button-prelogin-invert {
+                background-color: white;
+                color: #b5191c;
+                width: 20%;
+
+                padding: 5px;
+                margin: 10px;
+                border-style: solid;
+                border-color: #b5191c;
+                border-radius: 2px;
+                border-width: 1px;
+                -webkit-transition: color .1s;
+                transition: color .1s;
+                -webkit-transition: background-color .1s;
+                transition: background-color .1s;
+            }
+
+            .search-containers .button-prelogin-invert:hover {
+                background-color: #b5191c;
+                color: white;
             }
 
         .search .new-form {
@@ -43,8 +66,9 @@
             display: none;
             text-align: center;
             font-size: 30px;
-            width: 100%;
-            height: 15%;
+            margin-left: 33%;
+            width: 33%;
+            height: 5%;
         }
 
         .multi-day-form-exercises-info-container {
@@ -115,6 +139,12 @@
 
                         .form-exercises-info-container .date-info label {
                             padding-right: 5%;
+                        }
+
+                        .form-exercises-info-container .table-container {
+                            height: 200px;
+                            overflow: auto;
+                            width: 100%;
                         }
 
                         .form-exercises-info-container table {
