@@ -135,7 +135,7 @@ $("#patient_combobox").change( function() {
         loadFormFromDB(patient = $patientName, apptDate = String($patientDate));
 
         // show reset button
-		$("#queryResetButton").show();
+		$("#queryResetButton").fadeIn().css("display","inline-block");
 	}
 
 });
