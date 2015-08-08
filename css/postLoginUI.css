@@ -116,6 +116,12 @@
                             padding-right: 5%;
                         }
 
+                        .form-exercises-info-container .table-container {
+                            height: 200px;
+                            overflow: auto;
+                            width: 100%;
+                        }
+
                         .form-exercises-info-container table {
                             width: 100%;
                             padding-top: 2%;
