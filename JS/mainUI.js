@@ -38,3 +38,10 @@ $('#logo').click(function() {
 $('#landingpagebutton').click(function() {
     $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
 });
+
+//Fade for successful data submission
+function postSubmit() {
+    $("html, body").animate({ scrollTop: 0 }, 1000);
+    $('#successAlert').fadeTo( 400, .75 )
+    $('#successAlert').delay(3000).fadeTo( 400, 0 );
+}

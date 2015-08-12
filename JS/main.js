@@ -14,12 +14,6 @@ function errorHandler(data, isAppError) {
     alert(data.message);
 }
 
-function postSubmit() {
-    $("html, body").animate({ scrollTop: 0 }, 1000);
-    $('#successAlert').show();
-    $('#successAlert').delay(3000).fadeOut();
-}
-
 //Login/logout/reg
 $("#RegisterNewUser").submit(function(event) {
     event.preventDefault();
