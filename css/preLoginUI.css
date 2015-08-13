@@ -178,7 +178,12 @@ h1 {
     min-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
+    
+    .landing-page-image {
+        margin-top: -8%;
+    }
 
     .about {
 
