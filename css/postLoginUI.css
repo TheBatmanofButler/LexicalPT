@@ -82,6 +82,7 @@
         .tables .forms {
             display: none;
             width: 75%;
+            height: 85%;
         }
 
             .multi-day-form-exercises-info-container {

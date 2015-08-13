@@ -184,7 +184,7 @@ $("#date_combobox").change( function() {
         loadFormFromDB(patient = $patientName, apptDate = String(stringDate2UTC($patientDate)));
 		
         // show reset button
-		$("#queryResetButton").show();
+		$("#queryResetButton").show().css("display","inline-block");;
 	}
 
 });
