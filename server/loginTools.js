@@ -56,7 +56,6 @@ function checkUser(socket, table, username, callback) {
 */
 function patientScan(patientsTable, callback) {
 	patientsTable.scan({
-		Limit: 50,
 		ProjectionExpression: "patient,apptDate"
 	}, function(err, dataFromScan) {
 			if(err) {
