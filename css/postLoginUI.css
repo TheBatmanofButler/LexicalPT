@@ -99,6 +99,7 @@
                     display: inline-block;
                     width: 31%;
                     height: 100%;
+                    margin-right: 5%;
                 } 
 
                     .single-day-form-exercises-info-container .patient-info label {
@@ -109,9 +110,7 @@
                         border-top: none;
                         border-right: none;
                         border-left: none;
-                        border-bottom: solid;
-                        border-width: 2px;
-                        border-color: grey;
+                        border-color: #BDBDBD;
                         font-family:"Raleway", "sans-serif";
                         font-size: 20px;
                     }
