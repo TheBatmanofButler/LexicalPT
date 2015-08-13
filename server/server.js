@@ -98,7 +98,7 @@ function serverHandler(socket, incomingObj, callback) {
 		if(!checkUserKey(socket, incomingObj.userKey)) {
 			console.log(socket.userKey)
 			console.log(incomingObj.userKey)
-			callback(null, {message: "Userkey incorrect, command failed"})
+			callback(null, {name: 'loginFailure', message: "Userkey incorrect, command failed"})
 		}
 
 		//store data

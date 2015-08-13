@@ -57,8 +57,9 @@ function logout() {
 	displayCurrentUser();
 	removeForms();
 
-	$(".postlogin-content, .login-show, #UserCreator").fadeOut( function() {	
+	$(".postlogin-content, .login-show").fadeOut( function() {	
 		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
+		$("#queryResetButton").click();
 	});
 }
 
@@ -76,34 +77,6 @@ function submitLogout() {
 
 
 //Pre Login------------------------------------------------------------------------------------------
-
-/**
-	Adds a new user to the db
-*/
-function registerNewUser() {
-	var $inputs = $('#RegisterNewUser :input');
-	
-	var values = {};
-    
-    $inputs.each(function() {
-        values[this.name] = $(this).val();
-    });
-	
-	socket.emit("clientToServer", {
-		name: "newUser",
-		username: values.username,
-		password: values.password,
-		email: values.email, 
-		fullname: values.firstname + " " + values.lastname
-	}, function(data, err, appError) {
-		if(err) {
-			errorHandler(err, appError);
-		}		
-		else {
-			login(data);
-		}
-	});
-}
 
 /**
 	Triggered on login submit button, sends user/password info for cross checking from server/dbs

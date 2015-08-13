@@ -12,13 +12,11 @@ Runner file. Executes program, initializes available libraries, etc.
 function errorHandler(data, isAppError) {
     console.log(data);
     alert(data.message);
-}
 
-//Login/logout/reg
-$("#RegisterNewUser").submit(function(event) {
-    event.preventDefault();
-    registerNewUser();
-});
+    if(data.name && data.name === 'loginFailure') {
+        submitLogout();
+    }
+}
 
 $("#SubmitLogin").click(function () {
     submitLogin();

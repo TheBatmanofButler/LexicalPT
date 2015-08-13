@@ -7,5 +7,19 @@ Handles incoming/outgoing server connections
 */
 
 socket.on('serverToClient', function(data) {
-	addNewFormData(data);
+	if(!data.name) {
+		errorHandler({message: 'No name, server data not sent'});
+	}
+	else {
+		if(data.name === 'Error') {
+			errorHandler(data.message);
+		}
+		else if (data.name === 'updateSearch') {
+			addNewFormData(data);
+		}
+	}
+});
+
+socket.on('disconnect', function() {
+	alert("Disconnected from server");
 });

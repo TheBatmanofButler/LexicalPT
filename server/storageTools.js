@@ -38,7 +38,7 @@ module.exports = {
 				dataObj[key] = {'S':incomingObj[key]};
 			}
 		}
-		
+
 		var itemParams = {Item: dataObj};
 
 		table.putItem(itemParams, function(err, data) {
@@ -47,6 +47,7 @@ module.exports = {
 			}
 			else {
 				callback(dataObj);
+				dataObj['name'] = 'updateSearch';
 				io.sockets.emit('serverToClient', dataObj);
 			}
 	    });

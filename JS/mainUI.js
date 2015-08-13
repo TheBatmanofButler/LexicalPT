@@ -1,7 +1,6 @@
 
 //Login bar
 $("#LoginButton").click(function showInputLogin() {
-    $("#NewUserButton").css("display", "none");
     $("#LoginButton").css("display", "none");
     $("#SubmitLogin").css("display", "inline");
     $("#UsernameField").css("display", "inline");
@@ -13,7 +12,6 @@ $("#LoginButton").click(function showInputLogin() {
 
 
 $("#Cancel").click(function hideInputLogin() {
-    $("#NewUserButton").css("display", "inline");
     $("#LoginButton").css("display", "inline");
     $("#SubmitLogin").css("display", "none");
     $("#UsernameField").css("display", "none");
@@ -22,21 +20,8 @@ $("#Cancel").click(function hideInputLogin() {
 
 });
 
-$('#NewUserButton, #CancelUserCreator').click(function toggleUserCreator() {
-    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
-});
-
-$('#GetStartedButton').click(function() {
-    this.parentNodes.submit();    
-});
-
 $('#logo').click(function() {
     location.reload();
-});
-
-//Prelogin landing page
-$('#landingpagebutton').click(function() {
-    $('#FlavorText, #UserCreator, #landingpagebutton').slideToggle('fast');
 });
 
 //Fade for successful data submission
