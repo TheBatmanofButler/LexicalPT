@@ -70,7 +70,7 @@
         }
 
     .tables {
-        display: inline-block;
+        display: none;
         height: 100%;
         width: 100%;
     }
@@ -80,7 +80,7 @@
         }
 
         .tables .forms {
-            display: none;
+            display: inline-block;
             width: 75%;
             height: 85%;
         }
@@ -179,14 +179,19 @@
             height: 100%;
         }
 
+            .tables .settings div {
+                text-align: center;
+                width: 100%;
+            }
+
 
             .copy-forward {
                 display: none;
-                text-align: center;
                 font-size: 30px;
-                margin-left: 33%;
-                width: 33%;
-                height: 5%;
+            }
+
+            .submit-forms {
+                font-size: 30px;
             }
 
         

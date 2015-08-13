@@ -8,6 +8,7 @@ File manipulation functions
 
 var global_formCount = -1;
 
+var changedFormIDs = {};
 
 //HELPER FUNCTIONS
 function openFormData(formSelector, className, value) {
@@ -24,8 +25,6 @@ function openFormData(formSelector, className, value) {
         }
     }
 
-    console.log(className)
-    console.log(value)
     $(formSelector + " ." + className).val(value);
 }
 
@@ -42,6 +41,7 @@ function loadFormToDB(form) {
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
+        console.log(this.name)
         values[this.name] = $(this).val();
     });
 
@@ -59,43 +59,45 @@ function loadFormToDB(form) {
 }
 
 /**
+    Loads changed forms to the database
+*/
+function loadChangedFormsToDB() {
+    for(idIndex in changedFormIDs) {
+        loadFormToDB(idIndex);
+    }
+}
+
+/**
     Takes in data and creats an actual form with that data
 
     @param: data; [] of objects like {}
 */
 function _loadFormFromDB(data) {
     removeForms(function() { 
-        console.log('check 2', socket.connected);
         for(var i = 0; i < data.length; i++) {
-            console.log('check 2', socket.connected);
 
             if(i > global_formCount) {
                 createForm();
             }
-            console.log('check 2', socket.connected);
-            console.log(data[i])
 
             for(classnames in data[i]) {
-                console.log('check 2', socket.connected);
-                console.log(classnames)
-
                 if(classnames === 'apptDate') {
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
                 }  
                 else {
                     openFormData(("#form-" + i), classnames, data[i][classnames].S);
                 }  
-                console.log('check 2', socket.connected);
             }
+
+            attachSubmitHandler('#form-' + i);
         }
         
-        console.log('check 2', socket.connected);
-
         //creates empty form
         createForm();
-                console.log('check 2', socket.connected);
 
-        $(".forms").fadeIn().css({'display':'inline-block'});
+        attachSubmitHandler('#form-' + global_formCount);
+
+        $(".tables").fadeIn();
         $('html, body').animate({
                 scrollTop: $("#BreakOne").offset().top
         }, 400);
@@ -116,8 +118,6 @@ function loadFormFromDB(patient,apptDate) {
             errorHandler(err, appError);
         }   
         else {
-            console.log('check 2', socket.connected);
-
             _loadFormFromDB(data);
         }    
     });
@@ -131,7 +131,7 @@ function loadFormFromDB(patient,apptDate) {
     @param: callback; function()
 */
 function removeForms(callback) {
-    $(".multi-day-form-exercises-info-container, #CopyForward").fadeOut(function() {
+    $(".multi-day-form-exercises-info-container, .tables").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
 
@@ -155,15 +155,6 @@ function createForm() {
     $form.attr("id","form-" + globalCount);
 
     $form.removeClass("hidden");
-    
-    $form.find(".data-form").submit(function(event) {
-        event.preventDefault();
-        loadFormToDB("#form-" + globalCount);
-    });
-
-    $form.find(".submit-data").click(function() {
-        $form.find(".hidden-submit-data").click();
-    });
 
     //Dynamic rows
     $form.find(".create-new-row-on-click").click(function() {
@@ -178,7 +169,7 @@ function createForm() {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-    $(".forms").fadeIn().css({'display':'inline-block'});
+    $(".tables").fadeIn();
 }
 
 
@@ -233,3 +224,10 @@ function createNewRow(DOMelement) {
 
     $(table).append($newRow);
  }
+
+
+function attachSubmitHandler(formId) {
+   $(formId).change(function() {
+        changedFormIDs['#' + $(this).attr('id')] = true;
+    });
+}

@@ -39,6 +39,7 @@ $("#Logout").click(function() {
 $("#CreateNewForm").click(function(){
     removeForms(function() {
         createForm();
+        attachSubmitHandler('#form-' + global_formCount);
         $('html, body').animate({
             scrollTop: $("#BreakOne").offset().top
         }, 400);
@@ -48,4 +49,9 @@ $("#CreateNewForm").click(function(){
 //Copy forward
 $("#CopyForward").click(function() {
     copyForward();
+});
+
+//Load removeForms
+$("#SubmitForms").click(function(){
+    loadChangedFormsToDB();
 });
