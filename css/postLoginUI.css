@@ -97,12 +97,27 @@
 
                .multi-day-form-exercises-info-container .single-day-form-exercises-info-container {
                     display: inline-block;
-                    width: 30%;
+                    width: 31%;
                     height: 100%;
                 } 
 
                     .single-day-form-exercises-info-container .patient-info label {
                         font-size: 30px;
+                    }
+
+                    .single-day-form-exercises-info-container input {
+                        border-top: none;
+                        border-right: none;
+                        border-left: none;
+                        border-bottom: solid;
+                        border-width: 2px;
+                        border-color: grey;
+                        font-family:"Raleway", "sans-serif";
+                        font-size: 20px;
+                    }
+
+                     .single-day-form-exercises-info-container input:focus {
+                        outline:none;
                     }
 
                     .single-day-form-exercises-info-container .patient-info input {
@@ -154,7 +169,7 @@
                             }
 
                             .form-exercises-info-container .table-container {
-                                height: 200px;
+                                height: 230px;
                                 overflow: auto;
                                 width: 100%;
                             }
