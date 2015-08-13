@@ -161,7 +161,9 @@ function createForm() {
         createNewRow(this);
     });
 
-    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+    var d = new Date();
+
+    $form.find(".apptDate").val(new Date(d.getTime() + d.getTimezoneOffset()*60000).toISOString().substring(0, 10));
 
     if(globalCount > 0) 
         $("#CopyForward").fadeIn();
