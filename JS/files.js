@@ -97,7 +97,10 @@ function _loadFormFromDB(data) {
 
         attachSubmitHandler('#form-' + global_formCount);
 
-        $(".tables").fadeIn();
+        $(".tables").fadeIn(function() {
+            $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
+        });
+
         $('html, body').animate({
                 scrollTop: $("#BreakOne").offset().top
         }, 400);
@@ -131,7 +134,7 @@ function loadFormFromDB(patient,apptDate) {
     @param: callback; function()
 */
 function removeForms(callback) {
-    $(".multi-day-form-exercises-info-container, .tables").fadeOut(function() {
+    $(".tables").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
 
@@ -171,7 +174,6 @@ function createForm() {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-    $(".tables").fadeIn();
 }
 
 
