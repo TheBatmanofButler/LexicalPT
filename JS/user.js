@@ -57,7 +57,7 @@ function logout() {
 	displayCurrentUser();
 	removeForms();
 
-	$(".postlogin-content, .login-show").fadeOut( function() {	
+	$(".postlogin-content, .login-show, #successAlert").fadeOut( function() {	
 		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
 		$("#queryResetButton").click();
 	});
