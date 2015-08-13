@@ -12,8 +12,6 @@ var global_formCount = -1;
 //HELPER FUNCTIONS
 function openFormData(formSelector, className, value) {
 
-    console.log("what");
-
     //If DOM element doesn't exist, we need to create it
     if (!$(formSelector + " ." + className).length) {
         var classInfo = className.split('-');
@@ -97,7 +95,7 @@ function _loadFormFromDB(data) {
         createForm();
                 console.log('check 2', socket.connected);
 
-        $(".tables").fadeIn();
+        $(".forms").fadeIn().css({'display':'inline-block'});
         $('html, body').animate({
                 scrollTop: $("#BreakOne").offset().top
         }, 400);
@@ -179,7 +177,8 @@ function createForm() {
 
     $(".multi-day-form-exercises-info-container").append($form);
 
-    $(".tables, .multi-day-form-exercises-info-container").fadeIn();
+    $(".multi-day-form-exercises-info-container").fadeIn();
+    $(".forms").fadeIn().css({'display':'inline-block'});
 }
 
 
