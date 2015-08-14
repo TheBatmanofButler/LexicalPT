@@ -6,9 +6,7 @@
 User registration and login module 
 */
 
-//AWS dependency - not sure if needed? 
-var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
+var bcrypt = require('bcrypt');
 
 
 //Helper functions--------------------------------------------------------------------------------------------------
@@ -94,8 +92,9 @@ module.exports = {
 	  				return;
 	  			}
 
-	  			if(dataFromgetItem.Item.password.S === incomingObj.password) {
-					
+	  			// bcrypt authenticates incoming password with userKey
+	  			if(bcrypt.compareSync(incomingObj.password, dataFromgetItem.Item.userKey.S)) {
+
 	  				dataObj = {};
 	  				for(key in dataFromgetItem.Item) {
 						dataObj[key] = {'S':dataFromgetItem.Item[key].S}
@@ -124,40 +123,16 @@ module.exports = {
 			@param: password; string; password for account login
 		@param: callback; function; the function to call if successfull login (default = loginResponseSuccess)
 	*/
-	regNewUser: function(socket, usersTable, patientsTable, incomingObj, callback) {
-		checkUser(socket, usersTable, incomingObj.username, function(err, isAppError) {
-			if(err) { 
-				console.log(err);
-				callback(null, err, isAppError);
-				return;
+	regNewUser: function(table, username, userKey) {
+		dataObj['username'] = {'S': username};
+		dataObj['userKey'] = {'S': userKey};
+
+		var itemParams = {Item: dataObj};
+
+		table.putItem(itemParams, function(err, data) {
+			if(err) {
+				console.log(data, err);
 			}
-
-			userKey = generateUserKey(incomingObj.username, incomingObj.password);
-
-			dataObj = {};
-
-			for(key in incomingObj) {
-				if(key === 'name')
-					continue;
-
-				dataObj[key] = {'S':incomingObj[key]};
-			}
-
-			dataObj['userKey'] = {'S': userKey};
-
-			var itemParams = {Item: dataObj};
-			
-			usersTable.putItem(itemParams, function(err, data) {
-				if(err) {
-					callback(null, err);
-				}
-				else {
-					patientScan(patientsTable, function(dataFromScan, err) {
-						dataObj['dataFromScan'] = dataFromScan;
-						callback(dataObj);
-					});
-				}
-		    });
 		});
 	}
 }

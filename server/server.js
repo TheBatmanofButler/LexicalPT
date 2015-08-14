@@ -73,21 +73,7 @@ function serverHandler(socket, incomingObj, callback) {
 				callback(data, err, key);
 			} 
 			else {
-				callback(null, {message: "Userkey not generated, login failed"}, "appError")
-			}
-		});
-
-	}
-	//User reg pip
-	else if(incomingObj.name === 'newUser') {
-
-		loginTools.regNewUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
-			if(data && data.userKey) {
-				socket.userKey = data.userKey.S;
-				callback(data, err, key);
-			} 
-			else {
-				callback(null, {message: "Userkey not generated, login failed"}, "appError")				
+				callback(null, {message: "Username or password incorrect"}, "appError")
 			}
 		});
 
@@ -111,7 +97,7 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 		//logout
 		else if(incomingObj.name === 'logout') {
-			console.log("???")
+			console.log("logout")
 			socket.userKey = null; 
 
 			callback();

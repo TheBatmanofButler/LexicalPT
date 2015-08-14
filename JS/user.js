@@ -40,8 +40,6 @@ function login(data) {
 	localStorage.setItem("username", global_username);
 	localStorage.setItem("password", $("#PasswordField").val());
 
-	global_userEmail = data.email.S;
-
 	displayCurrentUser(global_username);
 	$(".prelogin-content, #landingpagebutton, .login-hide").fadeOut( function() {	
 		$(".postlogin-content").fadeIn();
