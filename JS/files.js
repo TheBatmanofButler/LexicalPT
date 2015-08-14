@@ -41,8 +41,8 @@ function loadFormToDB(form) {
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
-        console.log(this.name)
-        values[this.name] = $(this).val();
+        if(this.name)
+            values[this.name] = $(this).val();
     });
 
     values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
@@ -80,25 +80,33 @@ function _loadFormFromDB(data) {
                 createForm();
             }
 
-            for(classnames in data[i]) {
+            var inverseFormVal = data.length - i - 1;
+
+            for(classnames in data[inverseFormVal]) {
                 if(classnames === 'apptDate') {
-                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[i][classnames].N)).toISOString().substring(0, 10));
+                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
                 }  
                 else {
-                    openFormData(("#form-" + i), classnames, data[i][classnames].S);
+                    openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
                 }  
             }
 
             attachSubmitHandler('#form-' + i);
         }
         
-        //creates empty form
-        createForm();
+        var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
+        var currentDate = new Date().toISOString().substring(0,10);
+
+        //creates empty form if one for the current date DOESNT already exist
+        if( lastDate !== currentDate) {
+            createForm();
+        }
 
         attachSubmitHandler('#form-' + global_formCount);
 
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
+            $('#form-' + global_formCount + ' .patient').focus();
         });
 
         $('html, body').animate({
@@ -167,6 +175,12 @@ function createForm() {
     var d = new Date();
 
     $form.find(".apptDate").val(new Date(d.getTime() + d.getTimezoneOffset()*60000).toISOString().substring(0, 10));
+
+    $form.submit(function(event) {
+        alert();
+        event.preventDefault(); 
+        loadChangedFormsToDB();
+    });
 
     if(globalCount > 0) 
         $("#CopyForward").fadeIn();

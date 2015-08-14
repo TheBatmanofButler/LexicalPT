@@ -115,6 +115,10 @@
                         font-size: 18px;
                     }
 
+                        .single-day-form-exercises-info-container input[type=date] {
+                            margin-top:-2%;
+                        }
+
                      .single-day-form-exercises-info-container input:focus {
                         outline:none;
                     }

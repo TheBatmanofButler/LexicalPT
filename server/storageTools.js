@@ -66,7 +66,7 @@ module.exports = {
 	*/
 	retrieveData: function(socket, incomingObj, table, callback) {
 		table.query({
-			ScanIndexForward: true,
+			ScanIndexForward: false,
 			Limit: 5,
 			ExpressionAttributeValues: {
 				":hashval": {"S": incomingObj['patient']},

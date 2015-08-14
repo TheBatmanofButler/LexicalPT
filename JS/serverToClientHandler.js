@@ -22,4 +22,5 @@ socket.on('serverToClient', function(data) {
 
 socket.on('disconnect', function() {
 	alert("Disconnected from server");
+	logout();
 });
