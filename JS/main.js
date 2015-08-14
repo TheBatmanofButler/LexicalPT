@@ -15,6 +15,7 @@ function errorHandler(data, isAppError) {
 
     if(data.name && data.name === 'loginFailure') {
         submitLogout();
+        logout();
     }
 }
 
@@ -42,7 +43,7 @@ $("#CreateNewForm").click(function(){
         attachSubmitHandler('#form-' + global_formCount);
 
         $(".tables").fadeIn();
-        
+
         $('html, body').animate({
             scrollTop: $("#BreakOne").offset().top
         }, 400);
