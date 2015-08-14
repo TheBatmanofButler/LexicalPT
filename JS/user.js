@@ -34,7 +34,12 @@ function displayCurrentUser(username) {
 */
 function login(data) {
 	global_userKey = data.userKey.S;
+
 	global_username = data.username.S;
+
+	localStorage.setItem("username", global_username);
+	localStorage.setItem("password", $("#PasswordField").val());
+
 	global_userEmail = data.email.S;
 
 	displayCurrentUser(global_username);

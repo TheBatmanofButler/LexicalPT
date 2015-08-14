@@ -59,3 +59,17 @@ $("#CopyForward").click(function() {
 $("#SubmitForms").click(function(){
     loadChangedFormsToDB();
 });
+
+
+
+function main() {
+    if (localStorage.getItem("username")) {
+        $("#UsernameField").val(localStorage.getItem("username"));
+    }
+
+    if (localStorage.getItem("password")) {
+        $("#PasswordField").val(localStorage.getItem("password"));
+    }  
+}
+
+main();
