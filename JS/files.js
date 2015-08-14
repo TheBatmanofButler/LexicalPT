@@ -146,10 +146,12 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
 }
 
 function loadPrevFive() {
+    loadChangedFormsToDB();
     loadFormFromDB(currentPatient, firstDateLoaded.toString(), null, true);
 }
 
 function loadNextFive() {
+    loadChangedFormsToDB();
     loadFormFromDB(currentPatient, lastDateLoaded.toString(), true)
 }
 
