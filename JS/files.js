@@ -41,8 +41,8 @@ function loadFormToDB(form) {
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
-        console.log(this.name)
-        values[this.name] = $(this).val();
+        if(this.name)
+            values[this.name] = $(this).val();
     });
 
     values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
@@ -167,6 +167,12 @@ function createForm() {
     var d = new Date();
 
     $form.find(".apptDate").val(new Date(d.getTime() + d.getTimezoneOffset()*60000).toISOString().substring(0, 10));
+
+    $form.submit(function(event) {
+        alert();
+        event.preventDefault(); 
+        loadChangedFormsToDB();
+    });
 
     if(globalCount > 0) 
         $("#CopyForward").fadeIn();
