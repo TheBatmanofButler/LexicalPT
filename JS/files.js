@@ -164,6 +164,7 @@ function removeForms(callback) {
     $(".tables").fadeOut(function() {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
+        changedFormIDs = {};
 
         if(callback)
             callback();
