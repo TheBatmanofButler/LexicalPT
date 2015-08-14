@@ -140,3 +140,5 @@ io.sockets.on('connection', function(socket) {
 	});
 
 });
+
+loginTools.regNewUser('Ganesh','password');
