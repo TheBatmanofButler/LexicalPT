@@ -50,6 +50,8 @@ $("#CreateNewForm").click(function(){
     });
 });
 
+//SETTINGS BAR FOR FORMS
+
 //Copy forward
 $("#CopyForward").click(function() {
     copyForward();
@@ -60,7 +62,14 @@ $("#SubmitForms").click(function(){
     loadChangedFormsToDB();
 });
 
+//Load next/prev five docs
+$("#NextFive").click(function() {
+    loadNextFive();
+});
 
+$("#NextFive").click(function() {
+    loadPrevFive();
+});
 
 function main() {
     if (localStorage.getItem("username")) {

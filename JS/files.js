@@ -10,6 +10,10 @@ var global_formCount = -1;
 
 var changedFormIDs = {};
 
+var currentPatient = "";
+var lastDateLoaded = "";
+var firstDateLoaded = "";
+
 //HELPER FUNCTIONS
 function openFormData(formSelector, className, value) {
 
@@ -73,7 +77,9 @@ function loadChangedFormsToDB() {
     @param: data; [] of objects like {}
 */
 function _loadFormFromDB(data) {
+    //delete all previous forms
     removeForms(function() { 
+        //load new ones
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount) {
@@ -94,13 +100,16 @@ function _loadFormFromDB(data) {
             attachSubmitHandler('#form-' + i);
         }
         
-        var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
+        var lastDate = lastDateLoaded = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
         var currentDate = new Date().toISOString().substring(0,10);
 
         //creates empty form if one for the current date DOESNT already exist
         if( lastDate !== currentDate) {
             createForm();
         }
+
+        currentPatient = data[0]['patient'].S;
+        firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
 
         attachSubmitHandler('#form-' + global_formCount);
 
@@ -118,12 +127,13 @@ function _loadFormFromDB(data) {
 /**
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
-function loadFormFromDB(patient,apptDate) {
+function loadFormFromDB(patient,apptDate, reverseOrder) {
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         patient: patient,
-        apptDate: apptDate
+        apptDate: apptDate, 
+        reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
             errorHandler(err, appError);
@@ -132,6 +142,14 @@ function loadFormFromDB(patient,apptDate) {
             _loadFormFromDB(data);
         }    
     });
+}
+
+function loadNextFive() {
+    loadFormFromDB(currentPatient, firstDateLoaded);
+}
+
+function loadPrevFive() {
+    loadFormFromDB(currentPatient, lastDateLoaded, true)
 }
 
 //LOCAL FUNCTIONS
