@@ -67,7 +67,7 @@ $("#NextFive").click(function() {
     loadNextFive();
 });
 
-$("#NextFive").click(function() {
+$("#PrevFive").click(function() {
     loadPrevFive();
 });
 

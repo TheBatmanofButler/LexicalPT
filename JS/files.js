@@ -76,7 +76,7 @@ function loadChangedFormsToDB() {
 
     @param: data; [] of objects like {}
 */
-function _loadFormFromDB(data) {
+function _loadFormFromDB(data, noExtraForm) {
     //delete all previous forms
     removeForms(function() { 
         //load new ones
@@ -100,16 +100,17 @@ function _loadFormFromDB(data) {
             attachSubmitHandler('#form-' + i);
         }
         
-        var lastDate = lastDateLoaded = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
+        var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
         var currentDate = new Date().toISOString().substring(0,10);
 
         //creates empty form if one for the current date DOESNT already exist
-        if( lastDate !== currentDate) {
+        if( lastDate !== currentDate && !noExtraForm) {
             createForm();
         }
 
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
+        lastDateLoaded = parseInt(data[0]['apptDate'].N)
 
         attachSubmitHandler('#form-' + global_formCount);
 
@@ -127,7 +128,7 @@ function _loadFormFromDB(data) {
 /**
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
-function loadFormFromDB(patient,apptDate, reverseOrder) {
+function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
@@ -139,17 +140,17 @@ function loadFormFromDB(patient,apptDate, reverseOrder) {
             errorHandler(err, appError);
         }   
         else {
-            _loadFormFromDB(data);
+            _loadFormFromDB(data, noExtraForm);
         }    
     });
 }
 
-function loadNextFive() {
-    loadFormFromDB(currentPatient, firstDateLoaded);
+function loadPrevFive() {
+    loadFormFromDB(currentPatient, firstDateLoaded.toString(), null, true);
 }
 
-function loadPrevFive() {
-    loadFormFromDB(currentPatient, lastDateLoaded, true)
+function loadNextFive() {
+    loadFormFromDB(currentPatient, lastDateLoaded.toString(), true)
 }
 
 //LOCAL FUNCTIONS
@@ -190,9 +191,8 @@ function createForm() {
         createNewRow(this);
     });
 
-    var d = new Date();
 
-    $form.find(".apptDate").val(new Date(d.getTime() + d.getTimezoneOffset()*60000).toISOString().substring(0, 10));
+    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
 
     $form.submit(function(event) {
         alert();

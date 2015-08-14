@@ -199,14 +199,15 @@
                 width: 100%;
             }
 
-
-            .copy-forward {
-                display: none;
+            .setting-button {
                 font-size: 30px;
             }
 
+            .copy-forward {
+                display: none;
+            }
+
             .submit-forms {
-                font-size: 30px;
             }
 
         
