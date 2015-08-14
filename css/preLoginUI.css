@@ -9,6 +9,21 @@
     width: 100%;
 }
 
+
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+::-webkit-scrollbar-thumb {
+    background:#888 
+}​
+
 html {
     overflow-x: hidden;
 }
