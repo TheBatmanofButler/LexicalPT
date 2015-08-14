@@ -97,7 +97,7 @@ function PatientDateInput(IncomingData) {
 	});
 
 	// populate date combobox (similar to patient combobox)
-	var dateList = UTC2stringDate(Object.keys(Date2Patient).sort().reverse())
+	var dateList = UTC2stringDate(Object.keys(Date2Patient).sort().reverse());
 	dateList.unshift('');
 	$("#date_combobox").select2({
 		placeholder: "Select a Date",
@@ -118,7 +118,7 @@ $("#patient_combobox").change( function() {
         $("#date_combobox").children().remove().end();
 
 		// repopulate date combobox
-        var dateList = UTC2stringDate(Patient2Date[$patientName]).sort().reverse()
+        var dateList = UTC2stringDate(Patient2Date[$patientName].sort().reverse());
         if (dateList.length > 1) {
         	dateList.unshift('');
         }
