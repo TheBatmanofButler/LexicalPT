@@ -231,6 +231,7 @@
 
 #queryResetButton {
     display: none;
+    margin-bottom: 0px;
 }
 
 #patient_combobox {

@@ -7,6 +7,7 @@
     color:#b5191c;
     height: 100%;
     width: 100%;
+    min-width: 1675px;
 }
 
 
@@ -93,6 +94,7 @@ h1 {
     right: 0;
     top: 0;
     z-index: 2;
+    min-width: 1250px;
 }
 
     .header-container {
