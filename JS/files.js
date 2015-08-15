@@ -81,7 +81,7 @@ function loadFormToDB(form) {
 */
 function loadChangedFormsToDB() {
     for(idIndex in changedFormIDs) {
-        loadFormToDB(idIndex);
+        $(idIndex).submit();
     }
 }
 
@@ -236,7 +236,7 @@ function createForm(noDate) {
 
     $form.submit(function(event) {
         event.preventDefault(); 
-        loadChangedFormsToDB();
+        loadFormToDB("#" + $(this).attr('id'));
     });
 
     if(globalCount > 0) 
