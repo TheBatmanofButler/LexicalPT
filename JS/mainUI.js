@@ -26,7 +26,6 @@ $('#logo').click(function() {
 
 //Fade for successful data submission
 function postSubmit() {
-    $("html, body").animate({ scrollTop: 0 }, 1000);
     $('#successAlert').fadeTo( 400, .75 )
-    $('#successAlert').delay(3000).fadeTo( 400, 0 );
+    $('#successAlert').delay(2000).fadeTo( 400, 0 );
 }
