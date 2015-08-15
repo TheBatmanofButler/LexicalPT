@@ -151,6 +151,7 @@ function _loadFormFromDB(data, noExtraForm) {
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
             $('#form-' + global_formCount + ' .patient_last').focus();
+            $('.next-five, .prev-five').fadeIn();
         });
 
         $('html, body').animate({
@@ -198,12 +199,14 @@ function loadNextFive() {
 */
 function removeForms(callback) {
     $(".tables").fadeOut(function() {
+        $("#CopyForward, .next-five, .prev-five").fadeOut();
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
         changedFormIDs = {};
 
-        if(callback)
+        if(callback) {
             callback();
+        }
     });
 }
 

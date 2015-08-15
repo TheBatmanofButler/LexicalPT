@@ -134,14 +134,14 @@ h1 {
             #UsernameField {
                 display: none;
                 height: 12pt;
-                width: 100px;
+                width: 75px;
                 float: right;
             }
             #PasswordField {
                 height: 12pt;
-                width: 100px;
+                width: 75px;
                 display: none;
-                margin-left: 30px;
+                margin-left: 10px;
                 float: right;
             }
 

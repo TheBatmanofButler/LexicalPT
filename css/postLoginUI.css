@@ -212,7 +212,8 @@
                 display: none;
             }
 
-            .submit-forms {
+            .next-five, .prev-five {
+                display: none;
             }
 
         
