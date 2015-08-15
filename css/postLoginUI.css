@@ -27,6 +27,7 @@
 
             .search .search-containers li label {
                 font-size: 30px;
+                text-align: center;
             }
 
             .search-containers .button-prelogin-invert {
@@ -150,7 +151,7 @@
                             .form-exercises-info-container li label {
                                 font-size: 20px;
                                 padding-bottom: 1%;
-                                float: left;
+                                text-align: center;
                             }
 
                                 .form-header-info {
