@@ -10,6 +10,10 @@ var global_formCount = -1;
 
 var changedFormIDs = {};
 
+var currentPatient = "";
+var lastDateLoaded = "";
+var firstDateLoaded = "";
+
 //HELPER FUNCTIONS
 function openFormData(formSelector, className, value) {
 
@@ -38,14 +42,28 @@ function loadFormToDB(form) {
     values.name = "store";
     values.userKey = global_userKey;
 
+    var lastName = "";
+    var firstName = "";
+
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
-        if(this.name)
-            values[this.name] = $(this).val();
+        if(this.name) {
+            if(this.name === 'patient_last') {
+                lastName = $(this).val();
+            }
+            else if (this.name === 'patient_first') {
+                firstName = $(this).val();
+            }
+            else {
+                values[this.name] = $(this).val();
+            }
+        }
     });
 
     values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
+
+    values['patient'] = lastName + ', ' + firstName;
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -63,17 +81,22 @@ function loadFormToDB(form) {
 */
 function loadChangedFormsToDB() {
     for(idIndex in changedFormIDs) {
-        loadFormToDB(idIndex);
+        $(idIndex).submit();
     }
 }
 
 /**
-    Takes in data and creats an actual form with that data
+    Takes in data and creats an actual form with that data.
+
+    This is messy, needs to be cleaned. 
 
     @param: data; [] of objects like {}
 */
-function _loadFormFromDB(data) {
+function _loadFormFromDB(data, noExtraForm) {
+    //delete all previous forms
     removeForms(function() { 
+
+        //load new ones
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount) {
@@ -84,9 +107,16 @@ function _loadFormFromDB(data) {
 
             for(classnames in data[inverseFormVal]) {
                 if(classnames === 'apptDate') {
+
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
-                }  
-                else {
+                
+                } else if (classnames === 'patient') {
+                    var nameInfo = data[inverseFormVal]['patient'].S.split(', ');
+
+                    $("#form-" + i + " .patient_first").val(nameInfo[1]);
+                    $("#form-" + i + " .patient_last").val(nameInfo[0]);
+
+                } else {
                     openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
                 }  
             }
@@ -94,19 +124,34 @@ function _loadFormFromDB(data) {
             attachSubmitHandler('#form-' + i);
         }
         
+        //creates empty form if one for the current date DOESNT already exist
         var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
         var currentDate = new Date().toISOString().substring(0,10);
 
-        //creates empty form if one for the current date DOESNT already exist
-        if( lastDate !== currentDate) {
+        if( lastDate !== currentDate && !noExtraForm) {
             createForm();
+            
+            //Copy in the settings
+            $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
+            $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
+
+            $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
+            $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
         }
 
+        //loads data for prevfive/nextfive
+        currentPatient = data[0]['patient'].S;
+        firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
+        lastDateLoaded = parseInt(data[0]['apptDate'].N)
+
+        //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);
 
+        //Animations
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
-            $('#form-' + global_formCount + ' .patient').focus();
+            $('#form-' + global_formCount + ' .patient_last').focus();
+            $('.next-five, .prev-five').fadeIn();
         });
 
         $('html, body').animate({
@@ -118,20 +163,31 @@ function _loadFormFromDB(data) {
 /**
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
-function loadFormFromDB(patient,apptDate) {
+function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         patient: patient,
-        apptDate: apptDate
+        apptDate: apptDate, 
+        reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
             errorHandler(err, appError);
         }   
         else {
-            _loadFormFromDB(data);
+            _loadFormFromDB(data, noExtraForm);
         }    
     });
+}
+
+function loadPrevFive() {
+    loadChangedFormsToDB();
+    loadFormFromDB(currentPatient, firstDateLoaded.toString(), null, true);
+}
+
+function loadNextFive() {
+    loadChangedFormsToDB();
+    loadFormFromDB(currentPatient, lastDateLoaded.toString(), true)
 }
 
 //LOCAL FUNCTIONS
@@ -143,11 +199,14 @@ function loadFormFromDB(patient,apptDate) {
 */
 function removeForms(callback) {
     $(".tables").fadeOut(function() {
+        $("#CopyForward, .next-five, .prev-five").fadeOut();
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
+        changedFormIDs = {};
 
-        if(callback)
+        if(callback) {
             callback();
+        }
     });
 }
 
@@ -155,7 +214,7 @@ function removeForms(callback) {
 /**
     Creates a form and increases the global form count by one
 */
-function createForm() {
+function createForm(noDate) {
 
     global_formCount++;
 
@@ -172,14 +231,12 @@ function createForm() {
         createNewRow(this);
     });
 
-    var d = new Date();
-
-    $form.find(".apptDate").val(new Date(d.getTime() + d.getTimezoneOffset()*60000).toISOString().substring(0, 10));
+    if(!noDate)
+        $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
 
     $form.submit(function(event) {
-        alert();
         event.preventDefault(); 
-        loadChangedFormsToDB();
+        loadFormToDB("#" + $(this).attr('id'));
     });
 
     if(globalCount > 0) 
@@ -197,6 +254,37 @@ function deleteForm() {
     $('.data-form').css('background-color', 'black')
         .click(alert('gjhghj'));
     });
+}
+
+/**
+    Helper method to actually call the create new form method
+*/
+function createNewForm() {
+    removeForms(function() {
+        createForm();
+        attachSubmitHandler('#form-' + global_formCount);
+
+        $(".tables").fadeIn(function () {
+            $("#form-" + global_formCount + " .patient_last").focus();
+        });
+
+        $('html, body').animate({
+            scrollTop: $("#BreakOne").offset().top
+        }, 400);
+    });
+}
+
+function createNewPatientForm() {
+    createForm(true);
+    attachSubmitHandler('#form-' + global_formCount);
+
+    $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
+    $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
+
+    $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
+    $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
+
+    $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
 }
 
 /**
@@ -218,7 +306,7 @@ function copyForward() {
         }
     });
 }
- 
+
 /**
     Takes a DOMElement that represents a row, copies it and adds it to the document. Clears out the row on the copy.
 

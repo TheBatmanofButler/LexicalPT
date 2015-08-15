@@ -27,6 +27,7 @@
 
             .search .search-containers li label {
                 font-size: 30px;
+                text-align: center;
             }
 
             .search-containers .button-prelogin-invert {
@@ -123,9 +124,13 @@
                         outline:none;
                     }
 
-                    .single-day-form-exercises-info-container .patient-info input {
-                        width: 99%;
+                    .single-day-form-exercises-info-container .patient-info li {
+                        display: inline-block;
                     }
+                        .single-day-form-exercises-info-container .patient-info input {
+                            margin-top: 2%;
+                            width: 49%;
+                        }
 
                     .form-exercises-info-container {
                         text-align: center;
@@ -150,7 +155,7 @@
                             .form-exercises-info-container li label {
                                 font-size: 20px;
                                 padding-bottom: 1%;
-                                float: left;
+                                text-align: center;
                             }
 
                                 .form-header-info {
@@ -199,14 +204,16 @@
                 width: 100%;
             }
 
-
-            .copy-forward {
-                display: none;
+            .setting-button {
                 font-size: 30px;
             }
 
-            .submit-forms {
-                font-size: 30px;
+            .copy-forward {
+                display: none;
+            }
+
+            .next-five, .prev-five {
+                display: none;
             }
 
         
@@ -229,6 +236,7 @@
 
 #queryResetButton {
     display: none;
+    margin-bottom: 0px;
 }
 
 #patient_combobox {

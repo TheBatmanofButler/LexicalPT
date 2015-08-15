@@ -65,6 +65,11 @@ module.exports = {
 		@param: callback; function(data, err)
 	*/
 	retrieveData: function(socket, incomingObj, table, callback) {
+		var sign = "<=";
+		if(incomingObj.reverseOrder) {
+			sign = ">=";
+		}
+
 		table.query({
 			ScanIndexForward: false,
 			Limit: 5,
@@ -72,7 +77,7 @@ module.exports = {
 				":hashval": {"S": incomingObj['patient']},
 				":rangeval": {"N": incomingObj['apptDate']}
 			},
-			KeyConditionExpression: "patient = :hashval AND apptDate <= :rangeval"
+			KeyConditionExpression: "patient = :hashval AND apptDate " + sign + " :rangeval"
 		}, function(err, data)  {
 			console.log("callback")
 			if(err) {

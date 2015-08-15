@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="css/postLoginUI.css" />
 		<link rel="stylesheet" href="css/preLoginUI.css" />
 
-		<script src="http://54.86.173.127:3000/socket.io/socket.io.js"></script>
+		<script src="http://54.86.173.127:4000/socket.io/socket.io.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
@@ -68,8 +68,7 @@
 						</select>
 					</li>
 				</ul>
-				<div class="spacer-15"></div>
-				<div id="successAlert">Data Saved</div>
+				<div class="spacer-30"></div>
 				<div id="CreateNewForm" class="new-form button">
 					Create New Form
 				</div>
@@ -84,14 +83,31 @@
 			    </li>
 			    <li class="settings">
 			    	<div class="spacer-30"></div>
+
 			    	<div id="DeleteForm" class="button">
 						Delete Form
 					</div>
 			    	<div id="CopyForward" class="copy-forward button">
+			    	<div id="successAlert">Data Saved</div>
+
+					<div class="spacer-5"></div>
+
+			    	<div id="SettingsNewForm" class="settings-new-form setting-button button">
+						Create Patient Form
+					</div>
+					<div class="spacer-5"></div>
+			    	<div id="CopyForward" class="setting-button copy-forward button">
 						Copy Forward
 					</div>
 					<div class="spacer-5"></div>
-					<div id="SubmitForms" class="submit-forms button">
+					<div id="NextFive" class="setting-button next-five button">
+						Load Next Five
+					</div>
+					<div id="PrevFive" class="setting-button prev-five button">
+						Load Previous Five
+					</div>
+					<div class="spacer-5"></div>
+					<div id="SubmitForms" class="setting-button submit-forms button">
 						Submit Forms
 					</div>
 			    </li>
@@ -118,7 +134,12 @@
 			<div class="patient-info">
 				<label>Patient: </label>
 				<br>
-				<input name="patient" class="patient form-input" placeholder="Patient Name" type="text">
+				<ul> 
+					<li>
+						<input name="patient_last" class="patient_last form-input" placeholder="Patient Last Name" type="text" required>
+						<input name="patient_first" class="patient_first form-input" placeholder="Patient First Name" type="text" required>
+					</li>
+				</ul>
 			</div>
 			<ul class="form-exercises-info-container">
 				<li>
@@ -126,7 +147,7 @@
 			    		<tr>
 			    			<td>
 			    				<label>Date: </label>
-								<input class="apptDate form-input" name="apptDate" type="date" id="date_input">
+								<input class="apptDate form-input" name="apptDate" type="date" id="date_input" required>
 					    	</td>
 					    	<td>
 						    	<label>Precautions: </label>
