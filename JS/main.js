@@ -50,12 +50,17 @@ $("#CreateNewForm").click(function(){
     });
 });
 
-//Copy forward
+// Reveal delete form checkboxes
+$("#DeleteForm").click(function() {
+    deleteForm();
+});
+
+// Copy forward
 $("#CopyForward").click(function() {
     copyForward();
 });
 
-//Load removeForms
+// Load removeForms
 $("#SubmitForms").click(function(){
     loadChangedFormsToDB();
 });

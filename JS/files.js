@@ -190,6 +190,14 @@ function createForm() {
     $(".multi-day-form-exercises-info-container").fadeIn();
 }
 
+function deleteForm() {
+
+    var checkboxes = '<input type="checkbox" name="delete" value="Delete">'
+
+    $('.data-form').css('background-color', 'black')
+        .click(alert('gjhghj'));
+    });
+}
 
 /**
     Copies all of the data from the last day to the current day
