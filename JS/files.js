@@ -106,6 +106,11 @@ function _loadFormFromDB(data, noExtraForm) {
         //creates empty form if one for the current date DOESNT already exist
         if( lastDate !== currentDate && !noExtraForm) {
             createForm();
+            
+            //Copy in the settings
+            $('#form-' + global_formCount + ' .patient').val($('#form-' + (global_formCount - 1) + ' .patient').val());
+            $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
+            $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
         }
 
         currentPatient = data[0]['patient'].S;
