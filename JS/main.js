@@ -62,6 +62,11 @@ $("#PrevFive").click(function() {
     loadPrevFive();
 });
 
+//Create new form for the patient
+$("#SettingsNewForm").click(function() {
+    createNewPatientForm();
+});
+
 function main() {
     if (localStorage.getItem("username")) {
         $("#UsernameField").val(localStorage.getItem("username"));

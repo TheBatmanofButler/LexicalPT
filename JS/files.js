@@ -132,7 +132,9 @@ function _loadFormFromDB(data, noExtraForm) {
             createForm();
             
             //Copy in the settings
-            $('#form-' + global_formCount + ' .patient').val($('#form-' + (global_formCount - 1) + ' .patient').val());
+            $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
+            $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
+
             $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
             $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
         }
@@ -209,7 +211,7 @@ function removeForms(callback) {
 /**
     Creates a form and increases the global form count by one
 */
-function createForm() {
+function createForm(noDate) {
 
     global_formCount++;
 
@@ -226,8 +228,8 @@ function createForm() {
         createNewRow(this);
     });
 
-
-    $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+    if(!noDate)
+        $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
 
     $form.submit(function(event) {
         event.preventDefault(); 
@@ -259,6 +261,19 @@ function createNewForm() {
             scrollTop: $("#BreakOne").offset().top
         }, 400);
     });
+}
+
+function createNewPatientForm() {
+    createForm(true);
+    attachSubmitHandler('#form-' + global_formCount);
+
+    $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
+    $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
+
+    $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
+    $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
+
+    $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
 }
 
 /**
