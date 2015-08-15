@@ -50,10 +50,10 @@ function loadFormToDB(form) {
     $inputs.each(function() {
         if(this.name) {
             if(this.name === 'patient_last') {
-                lastName = $(this).val();
+                lastName = $(this).val().toUpperCase();
             }
             else if (this.name === 'patient_first') {
-                firstName = $(this).val();
+                firstName = $(this).val().toUpperCase();
             }
             else {
                 values[this.name] = $(this).val();
