@@ -42,14 +42,28 @@ function loadFormToDB(form) {
     values.name = "store";
     values.userKey = global_userKey;
 
+    var lastName = "";
+    var firstName = "";
+
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
-        if(this.name)
-            values[this.name] = $(this).val();
+        if(this.name) {
+            if(this.name === 'patient_last') {
+                lastName = $(this).val();
+            }
+            else if (this.name === 'patient_first') {
+                firstName = $(this).val();
+            }
+            else {
+                values[this.name] = $(this).val();
+            }
+        }
     });
 
     values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
+
+    values['patient'] = lastName + ', ' + firstName;
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -72,13 +86,16 @@ function loadChangedFormsToDB() {
 }
 
 /**
-    Takes in data and creats an actual form with that data
+    Takes in data and creats an actual form with that data.
+
+    This is messy, needs to be cleaned. 
 
     @param: data; [] of objects like {}
 */
 function _loadFormFromDB(data, noExtraForm) {
     //delete all previous forms
     removeForms(function() { 
+
         //load new ones
         for(var i = 0; i < data.length; i++) {
 
@@ -90,9 +107,16 @@ function _loadFormFromDB(data, noExtraForm) {
 
             for(classnames in data[inverseFormVal]) {
                 if(classnames === 'apptDate') {
+
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
-                }  
-                else {
+                
+                } else if (classnames === 'patient') {
+                    var nameInfo = data[inverseFormVal]['patient'].S.split(', ');
+
+                    $("#form-" + i + " .patient_first").val(nameInfo[1]);
+                    $("#form-" + i + " .patient_last").val(nameInfo[0]);
+
+                } else {
                     openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
                 }  
             }
@@ -100,10 +124,10 @@ function _loadFormFromDB(data, noExtraForm) {
             attachSubmitHandler('#form-' + i);
         }
         
+        //creates empty form if one for the current date DOESNT already exist
         var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
         var currentDate = new Date().toISOString().substring(0,10);
 
-        //creates empty form if one for the current date DOESNT already exist
         if( lastDate !== currentDate && !noExtraForm) {
             createForm();
             
@@ -113,15 +137,18 @@ function _loadFormFromDB(data, noExtraForm) {
             $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
         }
 
+        //loads data for prevfive/nextfive
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         lastDateLoaded = parseInt(data[0]['apptDate'].N)
 
+        //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);
 
+        //Animations
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
-            $('#form-' + global_formCount + ' .patient').focus();
+            $('#form-' + global_formCount + ' .patient_last').focus();
         });
 
         $('html, body').animate({
@@ -203,7 +230,6 @@ function createForm() {
     $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
 
     $form.submit(function(event) {
-        alert();
         event.preventDefault(); 
         loadChangedFormsToDB();
     });
@@ -216,6 +242,24 @@ function createForm() {
     $(".multi-day-form-exercises-info-container").fadeIn();
 }
 
+
+/**
+    Helper method to actually call the create new form method
+*/
+function createNewForm() {
+    removeForms(function() {
+        createForm();
+        attachSubmitHandler('#form-' + global_formCount);
+
+        $(".tables").fadeIn(function () {
+            $("#form-" + global_formCount + " .patient_last").focus();
+        });
+
+        $('html, body').animate({
+            scrollTop: $("#BreakOne").offset().top
+        }, 400);
+    });
+}
 
 /**
     Copies all of the data from the last day to the current day
@@ -236,7 +280,7 @@ function copyForward() {
         }
     });
 }
- 
+
 /**
     Takes a DOMElement that represents a row, copies it and adds it to the document. Clears out the row on the copy.
 

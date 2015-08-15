@@ -38,16 +38,7 @@ $("#Logout").click(function() {
 });*/
 
 $("#CreateNewForm").click(function(){
-    removeForms(function() {
-        createForm();
-        attachSubmitHandler('#form-' + global_formCount);
-
-        $(".tables").fadeIn();
-
-        $('html, body').animate({
-            scrollTop: $("#BreakOne").offset().top
-        }, 400);
-    });
+    createNewForm();
 });
 
 //SETTINGS BAR FOR FORMS

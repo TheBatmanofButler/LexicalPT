@@ -124,9 +124,13 @@
                         outline:none;
                     }
 
-                    .single-day-form-exercises-info-container .patient-info input {
-                        width: 99%;
+                    .single-day-form-exercises-info-container .patient-info li {
+                        display: inline-block;
                     }
+                        .single-day-form-exercises-info-container .patient-info input {
+                            margin-top: 2%;
+                            width: 49%;
+                        }
 
                     .form-exercises-info-container {
                         text-align: center;
