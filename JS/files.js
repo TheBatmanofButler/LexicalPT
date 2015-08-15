@@ -72,6 +72,7 @@ function loadFormToDB(form) {
 		} 
 		else {
             postSubmit();
+            delete changedFormIDs[form];
 		}
 	});
 }
