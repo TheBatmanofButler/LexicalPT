@@ -32,6 +32,27 @@ function openFormData(formSelector, className, value) {
     $(formSelector + " ." + className).val(value);
 }
 
+function checkFormErrors(form) {
+
+    var date = new Date($(form + " .apptDate").val());
+
+    var name = $(form + " .patient_last").val().toUpperCase() + ", " + $(form + " .patient_first").val().toUpperCase();
+
+    //first some error checking 
+    if(date.getTime() > new Date().getTime()) {
+        alert("Date submitted is in the future, please select a different date: " + $(form + ".apptDate").val());
+        return false;
+    }
+
+    if(Patient2Date[name] && name != currentPatient) {
+        alert("Patient is already in the database, please use a different name");
+        return false;
+    }
+
+    return true;
+
+}
+
 //SERVER FUNCTIONS
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
@@ -87,19 +108,8 @@ function loadChangedFormsToDB(callback) {
     var callCallback = true;
 
     for(idIndex in changedFormIDs) {
-        var date = new Date(Date.parse($(idIndex + ".apptDate").val()));
 
-        var name = $(idIndex + " .patient_last").val().toUpperCase() + ", " + $(idIndex + " .patient_first").val().toUpperCase();
-
-        //first some error checking 
-        if(date > new Date().getTime()) {
-            alert("Date submitted is in the future, please select a different date: " + storeDateString);
-            callCallback = false;
-            continue;
-        }
-
-        if(Patient2Date[name] && name != currentPatient) {
-            alert("Patient is already in the database, please use a different name");
+        if(!checkFormErrors(idIndex)) {
             callCallback = false;
             continue;
         }
@@ -192,7 +202,7 @@ function _loadFormFromDB(data, noExtraForm) {
 */
 function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     var datetime = new Date(apptDate).getTime() + "";
-    console.log(datetime)
+
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
@@ -211,12 +221,12 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
 
 function loadPrevFive() {
     loadChangedFormsToDB();
-    loadFormFromDB(currentPatient, firstDateLoaded.toString(), null, true);
+    loadFormFromDB(currentPatient, firstDateLoaded, null, true);
 }
 
 function loadNextFive() {
     loadChangedFormsToDB();
-    loadFormFromDB(currentPatient, lastDateLoaded.toString(), true)
+    loadFormFromDB(currentPatient, lastDateLoaded, true)
 }
 
 //LOCAL FUNCTIONS
@@ -227,6 +237,12 @@ function loadNextFive() {
     @param: callback; function()
 */
 function removeForms(callback) {
+    if(Object.keys(changedFormIDs).length > 0) {
+        if(!confirm("You have unsaved changes. Do you want to continue?")) {
+            return;
+        }
+    }
+
     $(".tables").fadeOut(function() {
         $("#CopyForward, .next-five, .prev-five").fadeOut();
         $(".multi-day-form-exercises-info-container").empty();
@@ -268,7 +284,12 @@ function createForm(noDate) {
 
     $form.submit(function(event) {
         event.preventDefault(); 
-        loadChangedFormsToDB();
+
+        if(checkFormErrors("#" + $(this).attr("id")))
+            loadFormToDB("#" + $(this).attr("id"));
+        else {
+            return;
+        }
     });
 
     if(globalCount > 0) 
