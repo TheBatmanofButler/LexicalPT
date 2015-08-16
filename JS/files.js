@@ -65,6 +65,11 @@ function loadFormToDB(form) {
 
     values['patient'] = lastName + ', ' + firstName;
 
+    if(values['apptDate'] > new Date().getTime()) {
+        alert("Date submitted is in the future, please select a different date");
+        return;
+    }
+
     if(Patient2Date[values['patient']]) {
         alert("Patient is already in the database, please use a different name");
         return;
