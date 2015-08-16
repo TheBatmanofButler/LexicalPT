@@ -61,19 +61,11 @@ function loadFormToDB(form) {
         }
     });
 
+    var storeDateString = values['apptDate'];
+
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
 
     values['patient'] = lastName + ', ' + firstName;
-
-    if(values['apptDate'] > new Date().getTime()) {
-        alert("Date submitted is in the future, please select a different date");
-        return;
-    }
-
-    if(Patient2Date[values['patient']]) {
-        alert("Patient is already in the database, please use a different name");
-        return;
-    }
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -90,9 +82,33 @@ function loadFormToDB(form) {
 /**
     Loads changed forms to the database
 */
-function loadChangedFormsToDB() {
+function loadChangedFormsToDB(callback) {
+
+    var callCallback = true;
+
     for(idIndex in changedFormIDs) {
+        var date = new Date(Date.parse($(idIndex + ".apptDate").val()));
+
+        var name = $(idIndex + " .patient_last").val().toUpperCase() + ", " + $(idIndex + " .patient_first").val().toUpperCase();
+
+        //first some error checking 
+        if(date > new Date().getTime()) {
+            alert("Date submitted is in the future, please select a different date: " + storeDateString);
+            callCallback = false;
+            continue;
+        }
+
+        if(Patient2Date[name] && name != currentPatient) {
+            alert("Patient is already in the database, please use a different name");
+            callCallback = false;
+            continue;
+        }
+
         $(idIndex).submit();
+    }
+
+    if(callback && callCallback) {
+        callback();
     }
 }
 
@@ -216,6 +232,9 @@ function removeForms(callback) {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
         changedFormIDs = {};
+        currentPatient = "";
+        firstDateLoaded = "";
+        lastDateLoaded = "";
 
         if(callback) {
             callback();
@@ -249,7 +268,7 @@ function createForm(noDate) {
 
     $form.submit(function(event) {
         event.preventDefault(); 
-        loadFormToDB("#" + $(this).attr('id'));
+        loadChangedFormsToDB();
     });
 
     if(globalCount > 0) 

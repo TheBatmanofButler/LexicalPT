@@ -29,7 +29,3 @@ function postSubmit() {
     $('#successAlert').fadeTo( 400, .75 )
     $('#successAlert').delay(2000).fadeTo( 400, 0 );
 }
-
-
-$('#body').css('min-height', screen.height); // or anyother like window.height
-$('#body').css('min-width', screen.width);
