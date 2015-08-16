@@ -66,6 +66,7 @@ module.exports = {
 	*/
 	retrieveData: function(socket, incomingObj, table, callback) {
 		var sign = "<=";
+
 		if(incomingObj.reverseOrder) {
 			sign = ">=";
 		}
@@ -79,7 +80,7 @@ module.exports = {
 			},
 			KeyConditionExpression: "patient = :hashval AND apptDate " + sign + " :rangeval"
 		}, function(err, data)  {
-			console.log("callback")
+
 			if(err) {
 				callback(null, err);
 			}

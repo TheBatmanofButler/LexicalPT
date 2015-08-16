@@ -61,7 +61,7 @@ function loadFormToDB(form) {
         }
     });
 
-    values['apptDate'] = new Date(Date.parse(values['apptDate']) + new Date().getTimezoneOffset()*60000).getTime();
+    values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
 
     values['patient'] = lastName + ', ' + firstName;
 
@@ -127,7 +127,7 @@ function _loadFormFromDB(data, noExtraForm) {
         
         //creates empty form if one for the current date DOESNT already exist
         var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
-        var currentDate = new Date().toISOString().substring(0,10);
+        var currentDate = new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0,10);
 
         if( lastDate !== currentDate && !noExtraForm) {
             createForm();
@@ -165,11 +165,13 @@ function _loadFormFromDB(data, noExtraForm) {
 	Triggered on form request, (currently) prompts for patient name and apptDate 	
 */
 function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
+    var datetime = new Date(apptDate).getTime() + "";
+    console.log(datetime)
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         patient: patient,
-        apptDate: apptDate, 
+        apptDate: datetime, 
         reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
@@ -233,7 +235,7 @@ function createForm(noDate) {
     });
 
     if(!noDate)
-        $form.find(".apptDate").val(new Date().toISOString().substring(0, 10));
+        $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
 
     $form.submit(function(event) {
         event.preventDefault(); 
