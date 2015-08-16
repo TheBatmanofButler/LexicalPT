@@ -287,6 +287,11 @@
     margin-bottom: 0px;
 }
 
+#querySubmitButton {
+    display: inline-block;
+    margin-bottom: 0px;
+}
+
 #patient_combobox {
     position: inline;
     z-index: 1;

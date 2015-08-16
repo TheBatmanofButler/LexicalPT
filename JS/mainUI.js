@@ -20,10 +20,6 @@ $("#Cancel").click(function hideInputLogin() {
 
 });
 
-$('#logo').click(function() {
-    location.reload();
-});
-
 //Fade for successful data submission
 function postSubmit() {
     $('#successAlert').fadeTo( 400, .75 )

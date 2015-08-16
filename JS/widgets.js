@@ -36,7 +36,7 @@ function UTC2stringDate(UTCtime) {
 function stringDate2UTC(stringDate) {
 	if (stringDate != '') {
 		var dateConvert = new Date(stringDate)
-		return dateConvert.getTime();
+		return dateConvert.getTime() - (dateConvert.getTimezoneOffset()*60000);
 	}
 }
 
@@ -55,6 +55,7 @@ function PatientDateInput(IncomingData) {
 		
 		// time in UTC milliseconds
 		var tMS = IncomingData.Items[item]['apptDate']['N']
+		console.log(tMS)
 
 		// capitalized patient name
 		var patientName = IncomingData.Items[item]['patient']['S']
@@ -130,7 +131,7 @@ $("#patient_combobox").change( function() {
 	}
 
 	// if date has been selected or there is only one date for the selected patient
-	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length == 1) {
+	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length === 1) {
 
 		// disable comboboxes
 		$("#patient_combobox, #date_combobox").prop( "disabled", true );
@@ -172,8 +173,13 @@ $("#date_combobox").change( function() {
 		});
 	} 
 
+	console.log($patientDate)
+	console.log(stringDate2UTC($patientDate))
+	console.log(Date2Patient)
+	console.log(Date2Patient[stringDate2UTC($patientDate)])
+
 	// if patient has been selected or there is only one patient for the selected date
-	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC([$patientDate])].length == 1) {
+	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC($patientDate)].length === 1) {
 
 		// disable comboboxes
 		$("#patient_combobox, #date_combobox").prop( "disabled", true );
