@@ -6,6 +6,7 @@
 File manipulation functions directly related to the server
 */
 
+
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 
@@ -49,7 +50,9 @@ function loadFormToDB(form) {
 		} 
 		else {
             postSubmit();
+            var tempDeferred = changedFormIDs[form];
             delete changedFormIDs[form];
+            tempDeferred.resolve();
 		}
 	});
 }
@@ -73,9 +76,11 @@ function loadChangedFormsToDB(callback) {
         $(idIndex).submit();
     }
 
-    if(callback && callCallback) {
-        callback();
-    }
+    $.when.apply($, global_deferredArray).then(function() {
+        if(callback && callCallback) {
+            callback();
+        }
+    });
 }
 
 /**
@@ -89,6 +94,8 @@ function loadChangedFormsToDB(callback) {
 function _loadFormFromDB(data, noExtraForm) {
     //delete all previous forms
     removeForms(function() { 
+
+        global_deferredArray = [];
 
         //load new ones
         for(var i = 0; i < data.length; i++) {

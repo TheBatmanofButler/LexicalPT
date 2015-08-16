@@ -6,7 +6,7 @@
 File manipulation helper functions
 */
 
-
+var global_deferredArray = [];
 
 /**
     Attaches the handler for changes in the form
@@ -15,10 +15,17 @@ File manipulation helper functions
 */
 function attachSubmitHandler(formId) {
    $(formId).change(function() {
-        changedFormIDs['#' + $(this).attr('id')] = true;
+
+        if(!changedFormIDs['#' + $(this).attr('id')]) {
+            var deferred = new $.Deferred();
+
+            changedFormIDs['#' + $(this).attr('id')] = deferred;
+
+            global_deferredArray.push(deferred);
+        }
+        
     });
 }
-
 
 /**
     Loads form data for a given data field
@@ -125,11 +132,13 @@ function createForm(noDate) {
     $form.submit(function(event) {
         event.preventDefault(); 
 
-        if(checkFormErrors("#" + $(this).attr("id")))
-            loadFormToDB("#" + $(this).attr("id"));
+        if(checkFormErrors("#" + $(this).attr("id"))) {
+             loadFormToDB("#" + $(this).attr("id"));           
+        }
         else {
             return;
         }
+
     });
 
     if(globalCount > 0) 
