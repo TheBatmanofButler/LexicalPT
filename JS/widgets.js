@@ -182,9 +182,9 @@ $("#querySubmitButton").click( function() {
 
 	loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
 
-	$("#querySubmitButton").fadeOut();
-	$("#queryResetButton").fadeIn().css("display","inline-block");
-
+	$("#querySubmitButton").fadeOut(function() {
+		$("#queryResetButton").fadeIn().css("display","inline-block");
+	});
 })
 
 /**
