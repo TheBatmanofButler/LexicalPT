@@ -288,7 +288,7 @@
 }
 
 #querySubmitButton {
-    display: inline-block;
+    display: none;
     margin-bottom: 0px;
 }
 

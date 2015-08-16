@@ -133,17 +133,7 @@ $("#patient_combobox").change( function() {
 	// if date has been selected or there is only one date for the selected patient
 	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length === 1) {
 
-		// disable comboboxes
-		$("#patient_combobox, #date_combobox").prop( "disabled", true );
-
-		// convert local date to utc
-		var $patientDate = stringDate2UTC($("#date_combobox").val())
-
-		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = $patientDate);
-
-        // show reset button
-		$("#queryResetButton").fadeIn().css("display","inline-block");
+		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
 });
@@ -173,28 +163,29 @@ $("#date_combobox").change( function() {
 		});
 	} 
 
-	console.log($patientDate)
-	console.log(stringDate2UTC($patientDate))
-	console.log(Date2Patient)
-	console.log(Date2Patient[stringDate2UTC($patientDate)])
-
 	// if patient has been selected or there is only one patient for the selected date
 	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC($patientDate)].length === 1) {
-
-		// disable comboboxes
-		$("#patient_combobox, #date_combobox").prop( "disabled", true );
-
-		// convert local date to utc
-		var $patientName = $("#patient_combobox").val()
-        
-		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
-		
-        // show reset button
-		$("#queryResetButton").show().css("display","inline-block");;
+ 		
+		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
 });
+
+/**
+	Handles form submission request
+*/
+$("#querySubmitButton").click( function() {
+	var $patientName = $("#patient_combobox").val()
+	var $patientDate = $("#date_combobox").val();
+	
+	$("#patient_combobox, #date_combobox").prop( "disabled", true );
+
+	loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
+
+	$("#querySubmitButton").fadeOut();
+	$("#queryResetButton").fadeIn().css("display","inline-block");
+
+})
 
 /**
 	Handles click event for reset button
