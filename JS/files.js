@@ -65,6 +65,11 @@ function loadFormToDB(form) {
 
     values['patient'] = lastName + ', ' + firstName;
 
+    if(Patient2Date[values['patient']]) {
+        alert("Patient is already in the database, please use a different name");
+        return;
+    }
+
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
 		if(err) {
