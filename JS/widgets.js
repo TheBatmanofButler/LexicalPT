@@ -217,7 +217,9 @@ $("#queryResetButton").click( function() {
     $("#patient_combobox, #date_combobox").prop( "disabled", false );
 
     // hide reset button
-    $("#queryResetButton").hide();
+    $("#queryResetButton").fadeOut();
+    $("#querySubmitButton").fadeOut();
+
 });
 
 /**
