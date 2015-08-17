@@ -6,6 +6,7 @@
 File manipulation functions directly related to the server
 */
 
+
 /**
 	Triggered on form submit, compiles the form into JSON and loads to server to db
 
@@ -49,7 +50,9 @@ function loadFormToDB(form) {
 		} 
 		else {
             postSubmit();
+            var tempDeferred = changedFormIDs[form];
             delete changedFormIDs[form];
+            tempDeferred.resolve();
 		}
 	});
 }
@@ -63,19 +66,16 @@ function loadChangedFormsToDB(callback) {
 
     var callCallback = true;
 
-    for(idIndex in changedFormIDs) {
-
-        if(!checkFormErrors(idIndex)) {
-            callCallback = false;
-            continue;
-        }
+    for(var idIndex in changedFormIDs) {
 
         $(idIndex).submit();
     }
 
-    if(callback && callCallback) {
-        callback();
-    }
+    $.when.apply($, global_deferredArray).then(function() {
+        if(callback && callCallback) {
+            callback();
+        }
+    });
 }
 
 /**
@@ -90,6 +90,8 @@ function _loadFormFromDB(data, noExtraForm) {
     //delete all previous forms
     removeForms(function() { 
 
+        global_deferredArray = [];
+
         //load new ones
         for(var i = 0; i < data.length; i++) {
 
@@ -99,7 +101,7 @@ function _loadFormFromDB(data, noExtraForm) {
 
             var inverseFormVal = data.length - i - 1;
 
-            for(classnames in data[inverseFormVal]) {
+            for(var classnames in data[inverseFormVal]) {
                 if(classnames === 'apptDate') {
 
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
@@ -116,21 +118,6 @@ function _loadFormFromDB(data, noExtraForm) {
             }
 
             attachSubmitHandler('#form-' + i);
-        }
-        
-        //creates empty form if one for the current date DOESNT already exist
-        var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
-        var currentDate = new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0,10);
-
-        if( lastDate !== currentDate && !noExtraForm) {
-            createForm();
-            
-            //Copy in the settings
-            $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
-            $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
-
-            $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
-            $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
         }
 
         //loads data for prevfive/nextfive

@@ -6,8 +6,6 @@
 File manipulation helper functions
 */
 
-
-
 /**
     Attaches the handler for changes in the form
 
@@ -15,10 +13,17 @@ File manipulation helper functions
 */
 function attachSubmitHandler(formId) {
    $(formId).change(function() {
-        changedFormIDs['#' + $(this).attr('id')] = true;
+
+        if(!changedFormIDs['#' + $(this).attr('id')]) {
+            var deferred = new $.Deferred();
+
+            changedFormIDs['#' + $(this).attr('id')] = deferred;
+
+            global_deferredArray.push(deferred);
+        }
+        
     });
 }
-
 
 /**
     Loads form data for a given data field
@@ -62,8 +67,20 @@ function checkFormErrors(form) {
     }
 
     if(Patient2Date[name] && name != currentPatient) {
-        alert("Patient is already in the database, please use a different name");
-        return false;
+
+        for(var index in Patient2Date[name]) {
+
+            if(date.getTime() === parseInt(Patient2Date[name][index])) {
+
+                if(confirm("Patient is already in the database. Saving may overwrite previous data. Continue?")) {
+                    break;
+                }
+                else {
+                    return false;
+                }
+            } 
+
+        }
     }
 
     return true;
@@ -125,11 +142,13 @@ function createForm(noDate) {
     $form.submit(function(event) {
         event.preventDefault(); 
 
-        if(checkFormErrors("#" + $(this).attr("id")))
-            loadFormToDB("#" + $(this).attr("id"));
+        if(checkFormErrors("#" + $(this).attr("id"))) {
+             loadFormToDB("#" + $(this).attr("id"));           
+        }
         else {
             return;
         }
+
     });
 
     if(globalCount > 0) 
@@ -170,7 +189,7 @@ function createNewRow(DOMelement) {
     $(DOMelement).removeClass("create-new-row-on-click");
     $(DOMelement).unbind( "click" );
 
-    table = $(DOMelement).closest("table");
+    var table = $(DOMelement).closest("table");
 
     $newRow.find('input').each(function(){
         var oldId = $(this).attr('class');

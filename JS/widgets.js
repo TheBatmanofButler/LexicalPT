@@ -36,7 +36,7 @@ function UTC2stringDate(UTCtime) {
 function stringDate2UTC(stringDate) {
 	if (stringDate != '') {
 		var dateConvert = new Date(stringDate)
-		return dateConvert.getTime();
+		return dateConvert.getTime() - (dateConvert.getTimezoneOffset()*60000);
 	}
 }
 
@@ -112,37 +112,21 @@ function PatientDateInput(IncomingData) {
 $("#patient_combobox").change( function() {
 	var $patientName = $("#patient_combobox").val();
 
-	// if date has not been selected yet
-	if ($("#date_combobox").val() == '') {
+	// remove children
+    $("#date_combobox").children().remove().end();
 
-		// remove children
-        $("#date_combobox").children().remove().end();
+	// repopulate date combobox
+    var dateList = UTC2stringDate(Patient2Date[$patientName].sort().reverse());
 
-		// repopulate date combobox
-        var dateList = UTC2stringDate(Patient2Date[$patientName].sort().reverse());
-        if (dateList.length > 1) {
-        	dateList.unshift('');
-        }
-		$("#date_combobox").select2({
-			placeholder: "Select a Date",
-			data: dateList
-		});
-	}
+	$("#date_combobox").select2({
+		placeholder: "Select a Date",
+		data: dateList
+	});
 
 	// if date has been selected or there is only one date for the selected patient
-	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length == 1) {
-
-		// disable comboboxes
-		$("#patient_combobox, #date_combobox").prop( "disabled", true );
-
-		// convert local date to utc
-		var $patientDate = stringDate2UTC($("#date_combobox").val())
-
-		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = $patientDate);
-
-        // show reset button
-		$("#queryResetButton").fadeIn().css("display","inline-block");
+	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length === 1) {
+ 		$("#queryResetButton").fadeIn().css("display","inline-block");
+		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
 });
@@ -163,9 +147,7 @@ $("#date_combobox").change( function() {
         var patientList = Date2Patient[stringDate2UTC([$patientDate])].sort(function (a, b) {
 		    return a.toLowerCase().localeCompare(b.toLowerCase());
 		})
-        if (patientList.length > 1) {
-        	patientList.unshift('');
-        }
+
 		$("#patient_combobox").select2({
 			placeholder: "Select a Patient",
 			data: patientList
@@ -173,22 +155,26 @@ $("#date_combobox").change( function() {
 	} 
 
 	// if patient has been selected or there is only one patient for the selected date
-	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC([$patientDate])].length == 1) {
-
-		// disable comboboxes
-		$("#patient_combobox, #date_combobox").prop( "disabled", true );
-
-		// convert local date to utc
-		var $patientName = $("#patient_combobox").val()
-        
-		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
-		
-        // show reset button
-		$("#queryResetButton").show().css("display","inline-block");;
+	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC($patientDate)].length === 1) {
+ 		$("#queryResetButton").fadeIn().css("display","inline-block");
+		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
 });
+
+/**
+	Handles form submission request
+*/
+$("#querySubmitButton").click( function() {
+	var $patientName = $("#patient_combobox").val()
+	var $patientDate = $("#date_combobox").val();
+	
+	$("#patient_combobox, #date_combobox").prop( "disabled", true );
+
+	loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
+
+	$("#querySubmitButton").fadeOut();
+})
 
 /**
 	Handles click event for reset button
