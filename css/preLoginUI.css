@@ -7,7 +7,6 @@
     color:#b5191c;
     height: 100%;
     width: 100%;
-    min-width: 1675px;
 }
 
 
@@ -37,7 +36,7 @@ ul, li
 }
 h1 {
     color: white;
-    font-size: 22pt;
+    font-size: 2vw;
 }
 
 .hidden {
@@ -64,20 +63,6 @@ h1 {
     height: 30%;
 }
 
-    .button-prelogin {
-        padding: 5px;
-        margin: 10px;
-        border-style: solid;
-        border-color: white;
-        border-radius: 2px;
-        color: white;
-        border-width: 1px;
-        -webkit-transition: color .1s;
-        transition: color .1s;
-        -webkit-transition: background-color .1s;
-        transition: background-color .1s;
-    }
-
 .button:hover {
     background-color: white;
     color: #b5191c;
@@ -94,13 +79,26 @@ h1 {
     right: 0;
     top: 0;
     z-index: 2;
-    min-width: 1250px;
 }
 
     .header-container {
         width: 100%;
         display: inline-block;
     }
+
+        .button-prelogin {
+            padding: 1%;
+            margin: 2%;
+            border-style: solid;
+            border-color: white;
+            border-radius: 2px;
+            color: white;
+            border-width: 1px;
+            -webkit-transition: color .1s;
+            transition: color .1s;
+            -webkit-transition: background-color .1s;
+            transition: background-color .1s;
+        }
 
         .header-container li {
             display: inline-block;
@@ -134,12 +132,12 @@ h1 {
             #UsernameField {
                 display: none;
                 height: 12pt;
-                width: 75px;
+                width: 7vw;
                 float: right;
             }
             #PasswordField {
                 height: 12pt;
-                width: 75px;
+                width: 7vw;
                 display: none;
                 margin-left: 10px;
                 float: right;
@@ -161,38 +159,10 @@ h1 {
 
             }
 
-#landing-page-background {
-    width: 100%;
-    height: 100%;
-    margin-bottom: 0px;
-    position: fixed;
-    z-index: -1;
-    background-image: url("../img/background.png");
-}
-#landingpagebutton {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #b5191c;
-    color: white;
-    font-size: 20pt;
-    border-radius: 2px;
-    cursor: pointer;
-    -webkit-transition: -webkit-box-shadow .1s;
-    transition: box-shadow .1s
-}
-#landingpagebutton:hover {
-    -webkit-box-shadow: 0px 0px 13px -3px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 13px -3px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 13px -3px rgba(0,0,0,0.75);
-}
 
 .prelogin-content {
     padding-top: 75px;
     width: 75%;
-    min-width: 500px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -200,22 +170,6 @@ h1 {
     
     .landing-page-image {
         margin-top: -8%;
-    }
-
-    .about {
-
-        text-align: center;
-        color: #333333;
-        padding: 25px;
-        border-radius: 3px;
-    }
-
-    .inputfield {
-        padding: 5px;
-        margin: 10px;
-        border-radius: 3px;
-        background-color: white;
-        color: #B2B2B2;
     }
 
     #button-table {
@@ -228,61 +182,6 @@ h1 {
         width: 34%;
     }
 
-.largebutton {
-    cursor: pointer;
-}
-.largebutton:active {
-    -webkit-box-shadow: inset 0px 3px 14px -3px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: inset 0px 3px 14px -3px rgba(0, 0, 0, 0.75);
-    box-shadow: inset 0px 3px 14px -3px rgba(0, 0, 0, 0.75);
-}
 
-.small-link {
-    text-decoration: underline;
-    cursor: pointer;
-}
 
-.legal {
-    color: #CCCCCC;
-    font-size: 9pt;
-}
-
-#GetStartedButton {
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    height: 100px;
-    background-color: #b5191c;
-    text-align: center;
-    line-height: 100px;
-    color: white;
-    font-weight: bold;
-    font-size: 15pt;
-    border-radius: 2px;
-}
-
-#UserCreator {
-    display: none;
-}
-
-    #UserCreator input {
-        width: 400px;
-        height: 20px;
-        margin: 10px;
-    }
-
-    #UserCreator input[type="file"] {
-        margin-top: 50px;
-        width: 100%;
-    }
-
-    #SubmitNewUserButton {
-        cursor: pointer;
-    }
-    
-    #SubmitNewUserButton:active {
-        -webkit-box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
-        -moz-box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
-        box-shadow: inset 0px 5px 35px -13px rgba(0,0,0,0.75);
-    }
 

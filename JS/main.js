@@ -53,7 +53,13 @@ $("#CopyForward").click(function() {
 
 // Load removeForms
 $("#SubmitForms").click(function(){
-    loadChangedFormsToDB();
+    loadChangedFormsToDB(function() {
+        removeForms();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 400);
+        $("#queryResetButton").click();
+    });
 });
 
 //Load next/prev five docs

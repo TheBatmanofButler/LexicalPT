@@ -21,7 +21,7 @@ function UTC2stringDate(UTCtime) {
 	var formattedArray = [];
 	for (var eachTime in UTCtime) {
 		if (UTCtime[eachTime] != '') {
-			formattedArray.push(new Date(parseInt(UTCtime[eachTime])).toDateString());
+			formattedArray.push(new Date(parseInt(UTCtime[eachTime])).toUTCString().substring(0, 17));
 		}
 	}
 	return formattedArray;
@@ -98,6 +98,7 @@ function PatientDateInput(IncomingData) {
 
 	// populate date combobox (similar to patient combobox)
 	var dateList = UTC2stringDate(Object.keys(Date2Patient).sort().reverse());
+
 	dateList.unshift('');
 	$("#date_combobox").select2({
 		placeholder: "Select a Date",
@@ -138,7 +139,7 @@ $("#patient_combobox").change( function() {
 		var $patientDate = stringDate2UTC($("#date_combobox").val())
 
 		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = String($patientDate));
+        loadFormFromDB(patient = $patientName, apptDate = $patientDate);
 
         // show reset button
 		$("#queryResetButton").fadeIn().css("display","inline-block");
@@ -181,7 +182,7 @@ $("#date_combobox").change( function() {
 		var $patientName = $("#patient_combobox").val()
         
 		// call form loading function
-        loadFormFromDB(patient = $patientName, apptDate = String(stringDate2UTC($patientDate)));
+        loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
 		
         // show reset button
 		$("#queryResetButton").show().css("display","inline-block");;
