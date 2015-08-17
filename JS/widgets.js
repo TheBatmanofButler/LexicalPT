@@ -113,26 +113,20 @@ function PatientDateInput(IncomingData) {
 $("#patient_combobox").change( function() {
 	var $patientName = $("#patient_combobox").val();
 
-	// if date has not been selected yet
-	if ($("#date_combobox").val() == '') {
+	// remove children
+    $("#date_combobox").children().remove().end();
 
-		// remove children
-        $("#date_combobox").children().remove().end();
+	// repopulate date combobox
+    var dateList = UTC2stringDate(Patient2Date[$patientName].sort().reverse());
 
-		// repopulate date combobox
-        var dateList = UTC2stringDate(Patient2Date[$patientName].sort().reverse());
-        if (dateList.length > 1) {
-        	dateList.unshift('');
-        }
-		$("#date_combobox").select2({
-			placeholder: "Select a Date",
-			data: dateList
-		});
-	}
+	$("#date_combobox").select2({
+		placeholder: "Select a Date",
+		data: dateList
+	});
 
 	// if date has been selected or there is only one date for the selected patient
 	if ($("#date_combobox").val() != '' || Patient2Date[$patientName].length === 1) {
-
+ 		$("#queryResetButton").fadeIn().css("display","inline-block");
 		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
@@ -154,9 +148,7 @@ $("#date_combobox").change( function() {
         var patientList = Date2Patient[stringDate2UTC([$patientDate])].sort(function (a, b) {
 		    return a.toLowerCase().localeCompare(b.toLowerCase());
 		})
-        if (patientList.length > 1) {
-        	patientList.unshift('');
-        }
+
 		$("#patient_combobox").select2({
 			placeholder: "Select a Patient",
 			data: patientList
@@ -165,7 +157,7 @@ $("#date_combobox").change( function() {
 
 	// if patient has been selected or there is only one patient for the selected date
 	if ($("#patient_combobox").val() != '' || Date2Patient[stringDate2UTC($patientDate)].length === 1) {
- 		
+ 		$("#queryResetButton").fadeIn().css("display","inline-block");
 		$("#querySubmitButton").fadeIn().css("display","inline-block");
 	}
 
@@ -182,9 +174,7 @@ $("#querySubmitButton").click( function() {
 
 	loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
 
-	$("#querySubmitButton").fadeOut(function() {
-		$("#queryResetButton").fadeIn().css("display","inline-block");
-	});
+	$("#querySubmitButton").fadeOut();
 })
 
 /**
