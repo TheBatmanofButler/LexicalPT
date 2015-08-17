@@ -124,21 +124,6 @@ function _loadFormFromDB(data, noExtraForm) {
 
             attachSubmitHandler('#form-' + i);
         }
-        
-        //creates empty form if one for the current date DOESNT already exist
-        var lastDate = new Date(parseInt(data[0]['apptDate'].N)).toISOString().substring(0,10);
-        var currentDate = new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0,10);
-
-        if( lastDate !== currentDate && !noExtraForm) {
-            createForm();
-            
-            //Copy in the settings
-            $('#form-' + global_formCount + ' .patient_last').val($('#form-' + (global_formCount - 1) + ' .patient_last').val());
-            $('#form-' + global_formCount + ' .patient_first').val($('#form-' + (global_formCount - 1) + ' .patient_first').val());
-
-            $('#form-' + global_formCount + ' .precautions').val($('#form-' + (global_formCount - 1) + ' .precautions').val());
-            $('#form-' + global_formCount + ' .diagnosis').val($('#form-' + (global_formCount - 1) + ' .diagnosis').val());
-        }
 
         //loads data for prevfive/nextfive
         currentPatient = data[0]['patient'].S;
