@@ -171,6 +171,8 @@ $("#querySubmitButton").click( function() {
 	
 	$("#patient_combobox, #date_combobox").prop( "disabled", true );
 
+	$('#CancelDelete').trigger('click');
+
 	loadFormFromDB(patient = $patientName, apptDate = stringDate2UTC($patientDate));
 
 	$("#querySubmitButton").fadeOut();

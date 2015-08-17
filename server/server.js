@@ -28,6 +28,39 @@ function isSanitized(inputString) {
 	return true;
 }
 
+function removeFormsFromDB(form) {
+
+    var values = {};
+    var lastName = "";
+    var firstName = "";
+
+    var $inputs = $(form).filter(':input');
+
+    $inputs.each(function() {
+        if(this.name) {
+            if(this.name === 'patient_last') {
+                lastName = $(this).val().toUpperCase();
+            }
+            else if (this.name === 'patient_first') {
+                firstName = $(this).val().toUpperCase();
+            }
+            else {
+                values[this.name] = $(this).val();
+            }
+
+        }
+    });
+
+    values['patient'] = lastName + ', ' + firstName;
+
+	fileTable.DeleteItem({
+		ExpressionAttributeValues: {
+			":hashval": {"S": values['patient']},
+			":rangeval": {"N": values['apptDate']}
+		}
+	});
+}
+
 /**
 	Checks if the userkey equals the login key stored on the server
 

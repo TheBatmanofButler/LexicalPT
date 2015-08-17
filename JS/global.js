@@ -15,6 +15,9 @@ var global_formCount = -1;
 //Number of forms with changed id values
 var changedFormIDs = {};
 
+// Forms that have been selected for deletion
+var deletedForms = {};
+
 //Data for the current patient that is loaded
 var currentPatient = "";
 var lastDateLoaded = "";

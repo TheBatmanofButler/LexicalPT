@@ -42,9 +42,35 @@ $("#CreateNewForm").click(function(){
 });
 
 // Reveal delete form checkboxes
-$("#DeleteForm").click(function() {
-    deleteForm();
+$("#DeleteMode").click(function() {
+
+    $('#DeleteMode').hide();
+    $('#CancelDelete').show();
+    $('#FinalDelete').show();
+    $('#DeleteAll').show();
+
+    $('.data-form').closest("li").css('background', 'red');
+
+    deleteToggle();
 });
+
+$('#CancelDelete').click(function() {
+    $('#DeleteMode').show();
+    $('#CancelDelete').hide();
+    $('#FinalDelete').hide();
+    $('#DeleteAll').hide();
+
+    $(".data-form").unbind( "click" );
+
+    $('.data-form').closest("li").css('background', 'white');
+    deletedForms = {};
+
+})
+
+$('#FinalDelete').click(function() {
+    finalDelete();
+    $('#CancelDelete').trigger('click');
+})
 
 //Copy forward
 $("#CopyForward").click(function() {

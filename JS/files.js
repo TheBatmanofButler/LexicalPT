@@ -249,8 +249,6 @@ function createForm(noDate) {
 
 function deleteForm() {
 
-    var checkboxes = '<input type="checkbox" name="delete" value="Delete">'
-
     $('.data-form').css('background-color', 'black')
         .click(alert('gjhghj'));
     });

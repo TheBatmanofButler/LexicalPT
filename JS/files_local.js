@@ -103,6 +103,7 @@ function removeForms(callback) {
         $(".multi-day-form-exercises-info-container").empty();
         global_formCount = -1;
         changedFormIDs = {};
+        deletedForms = {};
         currentPatient = "";
         firstDateLoaded = "";
         lastDateLoaded = "";
@@ -168,6 +169,8 @@ function createNewForm() {
         createForm();
         attachSubmitHandler('#form-' + global_formCount);
 
+        deletedForms['#form-' + global_formCount] = false;
+
         $(".tables").fadeIn(function () {
             $("#form-" + global_formCount + " .patient_last").focus();
         });
@@ -176,6 +179,37 @@ function createNewForm() {
             scrollTop: $("#BreakOne").offset().top
         }, 400);
     });
+}
+
+function deleteToggle() {
+
+    $('.data-form').click( function() {
+        var toggleState = deletedForms['#' + $(this).attr('id')]
+        if (!toggleState) {
+            $(this).closest("li").css('background', 'yellow');
+            deletedForms['#' + $(this).parent('li').attr('id')] = true;
+        } else if (toggleState) {
+            $(this).closest("li").css('background', 'red');
+            deletedForms['#' + $(this).parent('li').attr('id')] = false;
+        }
+    });
+}
+
+function finalDelete() {
+    var formIDs = Object.keys(deletedForms);
+    for (var eachForm in formIDs) {
+        if (deletedForms[formIDs[eachForm]] === true) {
+            removeFormsFromDB(eachForm);
+            eachForm.remove();
+        }
+    }
+}
+
+function deleteAllForms() {
+    for (var eachForm in Object.keys(deletedForms)) {
+        removeFormsFromDB(eachForm);
+        eachForm.remove();
+    }
 }
 
 /**
