@@ -6,8 +6,6 @@
 File manipulation helper functions
 */
 
-var global_deferredArray = [];
-
 /**
     Attaches the handler for changes in the form
 
@@ -68,11 +66,9 @@ function checkFormErrors(form) {
         return false;
     }
 
-    alert();
-
     if(Patient2Date[name] && name != currentPatient) {
 
-        for(index in Patient2Date[name]) {
+        for(var index in Patient2Date[name]) {
 
             if(date.getTime() === parseInt(Patient2Date[name][index])) {
 
@@ -193,7 +189,7 @@ function createNewRow(DOMelement) {
     $(DOMelement).removeClass("create-new-row-on-click");
     $(DOMelement).unbind( "click" );
 
-    table = $(DOMelement).closest("table");
+    var table = $(DOMelement).closest("table");
 
     $newRow.find('input').each(function(){
         var oldId = $(this).attr('class');

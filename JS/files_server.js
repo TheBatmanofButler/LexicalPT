@@ -66,7 +66,7 @@ function loadChangedFormsToDB(callback) {
 
     var callCallback = true;
 
-    for(idIndex in changedFormIDs) {
+    for(var idIndex in changedFormIDs) {
 
         $(idIndex).submit();
     }
@@ -101,7 +101,7 @@ function _loadFormFromDB(data, noExtraForm) {
 
             var inverseFormVal = data.length - i - 1;
 
-            for(classnames in data[inverseFormVal]) {
+            for(var classnames in data[inverseFormVal]) {
                 if(classnames === 'apptDate') {
 
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));

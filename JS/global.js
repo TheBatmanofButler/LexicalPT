@@ -19,3 +19,6 @@ var changedFormIDs = {};
 var currentPatient = "";
 var lastDateLoaded = "";
 var firstDateLoaded = "";
+
+//Used to track changed forms
+var global_deferredArray = [];
