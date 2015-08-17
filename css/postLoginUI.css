@@ -205,7 +205,7 @@
                             }
 
                             .form-exercises-info-container .table-container {
-                                height: 230px;
+                                height: 150px;
                                 overflow: auto;
                                 width: 100%;
                             }
@@ -228,8 +228,20 @@
             text-align: center;
         }
 
+            .settings .settings-title {
+                width: 100%;
+                font-size: 2vw;
+                text-align: center;
+            }
+
+            .settings .settings-sub-title {
+                width: 100%;
+                font-size: 1.7vw;
+                text-align: center;
+            }
+
             .settings .setting-button {
-                font-size: 1.6vw;
+                font-size: 1.4vw;
 
                 display: inline-block;
 

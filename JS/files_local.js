@@ -38,7 +38,7 @@ function openFormData(formSelector, className, value) {
     if (!$(formSelector + " ." + className).length) {
         var classInfo = className.split('-');
 
-        for(var j = 5; j <= classInfo[1]; j++) {
+        for(var j = global_slotCount; j <= classInfo[1]; j++) {
             if(!$(formSelector + " ." + classInfo[0] + '-' + j).length) {
                 var DOMelement = $(formSelector + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
                 createNewRow(DOMelement);
