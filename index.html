@@ -88,7 +88,9 @@
 			    	</ul>
 			    </li>
 			    <li class="settings">
-			    	<div class="spacer-15"></div>
+					<div class="spacer-15"></div>
+			    	<div class="settings-title"> Tools: </div>
+			    	<div class="spacer-5"></div>
 			    	<div id="successAlert">Data Saved</div>
 
 					<div class="spacer-5"></div>
@@ -109,6 +111,9 @@
 					<div class="spacer-5"></div>
 			    	<div id="DeleteAll" class="button" hidden>
 						Delete All
+
+					<div id="DeleteForm" class="button">
+						Delete Form
 					</div>
 
 					<div class="spacer-5"></div>
@@ -116,20 +121,20 @@
 			    	<div id="SettingsNewForm" class="settings-new-form setting-button button">
 						Add New Form
 					</div>
-					<div class="spacer-5"></div>
 			    	<div id="CopyForward" class="setting-button copy-forward button">
 						Copy Forward
+					</div>					
+					<div id="SubmitForms" class="setting-button submit-forms button">
+						Save &amp; Close
 					</div>
+
 					<div class="spacer-5"></div>
+			    	<div class="settings-sub-title"> Patient History: </div>
 					<div id="NextFive" class="setting-button next-five button">
-						Load Next 5
+						5 &raquo
 					</div>
 					<div id="PrevFive" class="setting-button prev-five button">
-						Load Previous 5
-					</div>
-					<div class="spacer-5"></div>
-					<div id="SubmitForms" class="setting-button submit-forms button">
-						Submit &amp; Close
+						&laquo 5 
 					</div>
 			    </li>
 		    </div>
@@ -164,6 +169,11 @@
 					</li>
 				</ul>
 			</div>
+			<div class="protocol-info">
+				<label>Protocol Approved By: </label>
+				<br>
+				<input name="protocol_approved" class="protocol_approved form-input" placeholder="Therapist Name" type="text">
+			</div>
 			<ul class="form-exercises-info-container">
 				<li>
 					<table class="form-header-info">
@@ -184,7 +194,7 @@
 						    	<input class="diagnosis form-input" name="diagnosis" type="text">
 					    	</td>
 					    	<td>
-						    	<label>Doctor: </label>
+						    	<label>Referring Doctor: </label>
 						    	<input class="doctorname form-input" name="doctorname" type="text">
 						    </td>
 						</tr>
@@ -216,7 +226,7 @@
 								<td>
 									<input class="TableMinInput-1" type="text" name="TableMinInput-1" size='8'>
 								</td>
-							<tr>
+							</tr>
 							<tr class="inputs">
 								<td>
 									<input class="TableExercisesInput-2" type="text" name="TableExercisesInput-2">
@@ -227,8 +237,8 @@
 								<td>
 									<input class="TableMinInput-2" type="text" name="TableMinInput-2" size='8'>
 								</td>
-							<tr>
-							<tr class="inputs">
+							</tr>
+							<tr class='create-new-row-on-click'>
 								<td>
 									<input class="TableExercisesInput-3" type="text" name="TableExercisesInput-3">
 								</td>
@@ -237,27 +247,6 @@
 								</td>
 								<td>
 									<input class="TableMinInput-3" type="text" name="TableMinInput-3" size='8'>
-								</td>
-							<tr>
-								<td>
-									<input class="TableExercisesInput-4" type="text" name="TableExercisesInput-4">
-								</td>
-								<td>
-									<input class="TableSRWInput-4" type="text" name="TableSRWInput-4" size='8'>
-								</td>
-								<td>
-									<input class="TableMinInput-4" type="text" name="TableMinInput-4" size='8'>
-								</td>
-							</tr>
-							<tr class='create-new-row-on-click'>
-								<td>
-									<input class="TableExercisesInput-5" type="text" name="TableExercisesInput-5">
-								</td>
-								<td>
-									<input class="TableSRWInput-5" type="text" name="TableSRWInput-5" size='8'>
-								</td>
-								<td>
-									<input class="TableMinInput-5" type="text" name="TableMinInput-5" size='8'>
 								</td>
 							</tr>
 						</table>
@@ -286,7 +275,7 @@
 								<td>
 									<input class="StretchMinInput-1" type="text" name="StretchMinInput-1" size='8'>
 								</td>
-							<tr>
+							</tr>
 							<tr class="inputs">
 								<td>
 									<input class="StretchExercisesInput-2" type="text" name="StretchExercisesInput-2">
@@ -297,8 +286,8 @@
 								<td>
 									<input class="StretchMinInput-2" type="text" name="StretchMinInput-2" size='8'>
 								</td>
-							<tr>
-							<tr class="inputs">
+							</tr>
+							<tr class='create-new-row-on-click'>
 								<td>
 									<input class="StretchExercisesInput-3" type="text" name="StretchExercisesInput-3">
 								</td>
@@ -307,27 +296,6 @@
 								</td>
 								<td>
 									<input class="StretchMinInput-3" type="text" name="StretchMinInput-3" size='8'>
-								</td>
-							<tr>
-								<td>
-									<input class="StretchExercisesInput-4" type="text" name="StretchExercisesInput-4">
-								</td>
-								<td>
-									<input class="StretchSRWInput-4" type="text" name="StretchSRWInput-4" size='8'>
-								</td>
-								<td>
-									<input class="StretchMinInput-4" type="text" name="StretchMinInput-4" size='8'>
-								</td>
-							</tr>
-							<tr class='create-new-row-on-click'>
-								<td>
-									<input class="StretchExercisesInput-5" type="text" name="StretchExercisesInput-5">
-								</td>
-								<td>
-									<input class="StretchSRWInput-5" type="text" name="StretchSRWInput-5" size='8'>
-								</td>
-								<td>
-									<input class="StretchMinInput-5" type="text" name="StretchMinInput-5" size='8'>
 								</td>
 							</tr>
 						</table>
@@ -356,7 +324,7 @@
 								<td>
 									<input class="TheraMinInput-1" type="text" name="TheraMinInput-1" size='8'>
 								</td>
-							<tr>
+							</tr>
 							<tr class="inputs">
 								<td>
 									<input class="TheraExercisesInput-2" type="text" name="TheraExercisesInput-2">
@@ -367,8 +335,8 @@
 								<td>
 									<input class="TheraMinInput-2" type="text" name="TheraMinInput-2" size='8'>
 								</td>
-							<tr>
-							<tr class="inputs">
+							</tr>
+							<tr class='create-new-row-on-click'>
 								<td>
 									<input class="TheraExercisesInput-3" type="text" name="TheraExercisesInput-3">
 								</td>
@@ -377,27 +345,6 @@
 								</td>
 								<td>
 									<input class="TheraMinInput-3" type="text" name="TheraMinInput-3" size='8'>
-								</td>
-							<tr>
-								<td>
-									<input class="TheraExercisesInput-4" type="text" name="TheraExercisesInput-4">
-								</td>
-								<td>
-									<input class="TheraSRWInput-4" type="text" name="TheraSRWInput-4" size='8'>
-								</td>
-								<td>
-									<input class="TheraMinInput-4" type="text" name="TheraMinInput-4" size='8'>
-								</td>
-							</tr>
-							<tr class='create-new-row-on-click'>
-								<td>
-									<input class="TheraExercisesInput-5" type="text" name="TheraExercisesInput-5">
-								</td>
-								<td>
-									<input class="TheraSRWInput-5" type="text" name="TheraSRWInput-5" size='8'>
-								</td>
-								<td>
-									<input class="TheraMinInput-5" type="text" name="TheraMinInput-5" size='8'>
 								</td>
 							</tr>
 						</table>
@@ -426,7 +373,7 @@
 								<td>
 									<input class="MachineMinInput-1" type="text" name="MachineMinInput-1" size='8'>
 								</td>
-							<tr>
+							</tr>
 							<tr class="inputs">
 								<td>
 									<input class="MachineExercisesInput-2" type="text" name="MachineExercisesInput-2">
@@ -437,8 +384,8 @@
 								<td>
 									<input class="MachineMinInput-2" type="text" name="MachineMinInput-2" size='8'>
 								</td>
-							<tr>
-							<tr class="inputs">
+							</tr>
+							<tr class='create-new-row-on-click'>
 								<td>
 									<input class="MachineExercisesInput-3" type="text" name="MachineExercisesInput-3">
 								</td>
@@ -447,27 +394,6 @@
 								</td>
 								<td>
 									<input class="MachineMinInput-3" type="text" name="MachineMinInput-3" size='8'>
-								</td>
-							<tr>
-								<td>
-									<input class="MachineExercisesInput-4" type="text" name="MachineExercisesInput-4">
-								</td>
-								<td>
-									<input class="MachineSRWInput-4" type="text" name="MachineSRWInput-4" size='8'>
-								</td>
-								<td>
-									<input class="MachineMinInput-4" type="text" name="MachineMinInput-4" size='8'>
-								</td>
-							</tr>
-							<tr class='create-new-row-on-click'>
-								<td>
-									<input class="MachineExercisesInput-5" type="text" name="MachineExercisesInput-5">
-								</td>
-								<td>
-									<input class="MachineSRWInput-5" type="text" name="MachineSRWInput-5" size='8'>
-								</td>
-								<td>
-									<input class="MachineMinInput-5" type="text" name="MachineMinInput-5" size='8'>
 								</td>
 							</tr>
 						</table>
@@ -496,7 +422,7 @@
 								<td>
 									<input class="FloorMinInput-1" type="text" name="FloorMinInput-1" size='8'>
 								</td>
-							<tr>
+							</tr>
 							<tr class="inputs">
 								<td>
 									<input class="FloorExercisesInput-2" type="text" name="FloorExercisesInput-2">
@@ -507,8 +433,8 @@
 								<td>
 									<input class="FloorMinInput-2" type="text" name="FloorMinInput-2" size='8'>
 								</td>
-							<tr>
-							<tr class="inputs">
+							</tr>
+							<tr class='create-new-row-on-click'>
 								<td>
 									<input class="FloorExercisesInput-3" type="text" name="FloorExercisesInput-3">
 								</td>
@@ -518,33 +444,40 @@
 								<td>
 									<input class="FloorMinInput-3" type="text" name="FloorMinInput-3" size='8'>
 								</td>
-							<tr>
-								<td>
-									<input class="FloorExercisesInput-4" type="text" name="FloorExercisesInput-4">
-								</td>
-								<td>
-									<input class="FloorSRWInput-4" type="text" name="FloorSRWInput-4" size='8'>
-								</td>
-								<td>
-									<input class="FloorMinInput-4" type="text" name="FloorMinInput-4" size='8'>
-								</td>
-							</tr>
-							<tr class='create-new-row-on-click'>
-								<td>
-									<input class="FloorExercisesInput-5" type="text" name="FloorExercisesInput-5">
-								</td>
-								<td>
-									<input class="FloorSRWInput-5" type="text" name="FloorSRWInput-5" size='8'>
-								</td>
-								<td>
-									<input class="FloorMinInput-5" type="text" name="FloorMinInput-5" size='8'>
-								</td>
 							</tr>
 						</table>
 					</div>
 				</li>
 			</ul>
+
+			<div class="pt-info">
+				<label>Supervising Therapist: </label>
+				<br>
+				<input name="supervising-pt" class="supervising-pt form-input" placeholder="Therapist Name" type="text">
+				<ul> 
+					<li>
+						<div>
+							<label> Progress: </label>
+						</div>
+						<input name="progress" class="progress form-input" placeholder="%" type="text">
+					</li>
+					<li>
+						<div>
+							<label> Time In: </label>
+						</div>
+						<input name="time-in" class="time-in form-input" placeholder="12:00 AM" type="text">
+					</li>
+					<li>
+						<div>
+							<label> Time Out: </label>
+						</div>
+						<input name="time-out" class="time-out form-input" placeholder="12:00 AM" type="text">
+					</li>
+				</ul>
+			</div>
+
 			<input class="hidden" type="submit"></input>
+
 		</form>
 		<div class="spacer-10"></div>
 	</li>

@@ -123,7 +123,9 @@ function _loadFormFromDB(data, noExtraForm) {
         //loads data for prevfive/nextfive
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
-        lastDateLoaded = parseInt(data[0]['apptDate'].N)
+        lastDateLoaded = parseInt(data[0]['apptDate'].N);
+
+
 
         //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);
@@ -132,7 +134,17 @@ function _loadFormFromDB(data, noExtraForm) {
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
             $('#form-' + global_formCount + ' .patient_last').focus();
-            $('.next-five, .prev-five').fadeIn();
+
+            //get the ms number for the first and last dates that exist in the db
+            var firstDateForPatient =  parseInt(Patient2Date[currentPatient][Patient2Date[currentPatient].length - 1]);
+            var lastDateForPatient =  parseInt(Patient2Date[currentPatient][0]);
+
+            if(firstDateLoaded > firstDateForPatient)
+                $('.prev-five').fadeIn();
+
+            if(lastDateLoaded < lastDateForPatient)
+                $('.next-five').fadeIn();
+
         });
 
         $('html, body').animate({

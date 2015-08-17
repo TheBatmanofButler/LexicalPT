@@ -131,8 +131,16 @@
                     margin-right: 5%;
                 } 
 
-                    .single-day-form-exercises-info-container .patient-info label {
-                        font-size: 1.75vw;
+                    .single-day-form-exercises-info-container div label {
+                        font-size: 1.2vw;
+                    }
+
+                    .single-day-form-exercises-info-container div input {
+                        margin-top: 2%;
+                    }
+
+                    .pt-info, .protocol-info {
+                        margin-top: 3%;
                     }
 
                     .single-day-form-exercises-info-container input {
@@ -205,7 +213,7 @@
                             }
 
                             .form-exercises-info-container .table-container {
-                                height: 230px;
+                                height: 150px;
                                 overflow: auto;
                                 width: 100%;
                             }
@@ -219,8 +227,17 @@
                                 .form-exercises-info-container .column-headers {
                                     width: 33%;
                                     text-align: center;
-                                    font-size: 1.2vw;
+                                    font-size: 1.0vw;
                                 }
+
+                    .pt-info ul {
+                        margin-top: 3%;
+                    }
+                    
+                        .pt-info ul li {
+                            display: inline-block;
+                            width: 30%
+                        }
 
         .tables .settings {
             width: 24%;
@@ -228,8 +245,20 @@
             text-align: center;
         }
 
+            .settings .settings-title {
+                width: 100%;
+                font-size: 2vw;
+                text-align: center;
+            }
+
+            .settings .settings-sub-title {
+                width: 100%;
+                font-size: 1.7vw;
+                text-align: center;
+            }
+
             .settings .setting-button {
-                font-size: 1.6vw;
+                font-size: 1.4vw;
 
                 display: inline-block;
 

@@ -25,3 +25,6 @@ var firstDateLoaded = "";
 
 //Used to track changed forms
 var global_deferredArray = [];
+
+//Used to track default number of exercise slots
+var global_slotCount = 3;
