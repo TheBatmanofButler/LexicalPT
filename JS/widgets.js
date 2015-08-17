@@ -55,7 +55,6 @@ function PatientDateInput(IncomingData) {
 		
 		// time in UTC milliseconds
 		var tMS = IncomingData.Items[item]['apptDate']['N']
-		console.log(tMS)
 
 		// capitalized patient name
 		var patientName = IncomingData.Items[item]['patient']['S']

@@ -68,9 +68,23 @@ function checkFormErrors(form) {
         return false;
     }
 
+    alert();
+
     if(Patient2Date[name] && name != currentPatient) {
-        alert("Patient is already in the database, please use a different name");
-        return false;
+
+        for(index in Patient2Date[name]) {
+
+            if(date.getTime() === parseInt(Patient2Date[name][index])) {
+
+                if(confirm("Patient is already in the database. Saving may overwrite previous data. Continue?")) {
+                    break;
+                }
+                else {
+                    return false;
+                }
+            } 
+
+        }
     }
 
     return true;

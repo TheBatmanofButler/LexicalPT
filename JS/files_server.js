@@ -68,11 +68,6 @@ function loadChangedFormsToDB(callback) {
 
     for(idIndex in changedFormIDs) {
 
-        if(!checkFormErrors(idIndex)) {
-            callCallback = false;
-            continue;
-        }
-
         $(idIndex).submit();
     }
 
