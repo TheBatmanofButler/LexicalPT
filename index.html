@@ -94,6 +94,11 @@
 			    	<div id="successAlert">Data Saved</div>
 
 					<div class="spacer-5"></div>
+					<div id="DeleteForm" class="button">
+						Delete Form
+					</div>
+
+					<div class="spacer-5"></div>
 
 			    	<div id="SettingsNewForm" class="settings-new-form setting-button button">
 						Add New Form
@@ -108,10 +113,10 @@
 					<div class="spacer-5"></div>
 			    	<div class="settings-sub-title"> Patient History: </div>
 					<div id="NextFive" class="setting-button next-five button">
-						&laquo 5
+						5 &raquo
 					</div>
 					<div id="PrevFive" class="setting-button prev-five button">
-						5 &raquo
+						&laquo 5 
 					</div>
 			    </li>
 		    </div>
@@ -146,6 +151,11 @@
 					</li>
 				</ul>
 			</div>
+			<div class="protocol-info">
+				<label>Protocol Approved By: </label>
+				<br>
+				<input name="protocol_approved" class="protocol_approved form-input" placeholder="Therapist Name" type="text">
+			</div>
 			<ul class="form-exercises-info-container">
 				<li>
 					<table class="form-header-info">
@@ -166,7 +176,7 @@
 						    	<input class="diagnosis form-input" name="diagnosis" type="text">
 					    	</td>
 					    	<td>
-						    	<label>Doctor: </label>
+						    	<label>Referring Doctor: </label>
 						    	<input class="doctorname form-input" name="doctorname" type="text">
 						    </td>
 						</tr>
@@ -421,7 +431,35 @@
 					</div>
 				</li>
 			</ul>
+
+			<div class="pt-info">
+				<label>Supervising Therapist: </label>
+				<br>
+				<input name="supervising-pt" class="supervising-pt form-input" placeholder="Therapist Name" type="text">
+				<ul> 
+					<li>
+						<div>
+							<label> Progress: </label>
+						</div>
+						<input name="progress" class="progress form-input" placeholder="%" type="text">
+					</li>
+					<li>
+						<div>
+							<label> Time In: </label>
+						</div>
+						<input name="time-in" class="time-in form-input" placeholder="12:00 AM" type="text">
+					</li>
+					<li>
+						<div>
+							<label> Time Out: </label>
+						</div>
+						<input name="time-out" class="time-out form-input" placeholder="12:00 AM" type="text">
+					</li>
+				</ul>
+			</div>
+
 			<input class="hidden" type="submit"></input>
+
 		</form>
 		<div class="spacer-10"></div>
 	</li>
