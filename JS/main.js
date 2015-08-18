@@ -84,6 +84,7 @@ $("#CopyForward").click(function() {
 
 // Load removeForms
 $("#SubmitForms").click(function(){
+    console.log(1);
     loadChangedFormsToDB(function() {
         removeForms();
         $('html, body').animate({
@@ -91,6 +92,7 @@ $("#SubmitForms").click(function(){
         }, 400);
         $("#queryResetButton").click();
     });
+    console.log(2);
 });
 
 //Load next/prev five docs

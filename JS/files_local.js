@@ -6,12 +6,17 @@
 File manipulation helper functions
 */
 
+$('#staticForm').change(function() {
+    $('li[id^="form-"]').trigger('change');
+});
+
 /**
     Attaches the handler for changes in the form
 
     @param: formId; string; the id of the form WITH a #
 */
 function attachSubmitHandler(formId) {
+
    $(formId).change(function() {
 
         if(!changedFormIDs['#' + $(this).attr('id')]) {
@@ -121,7 +126,6 @@ function removeForms(callback) {
     @param: noDate; bool; whether or not to copy the date value in
 */
 function createForm(noDate) {
-
     global_formCount++;
 
     var globalCount = global_formCount;
@@ -142,9 +146,8 @@ function createForm(noDate) {
 
     $form.submit(function(event) {
         event.preventDefault(); 
-
         if(checkFormErrors("#" + $(this).attr("id"))) {
-             loadFormToDB("#" + $(this).attr("id"));           
+            loadFormToDB("#" + $(this).attr("id"));           
         }
         else {
             return;
@@ -168,7 +171,6 @@ function createNewForm() {
     removeForms(function() {
         createForm();
         attachSubmitHandler('#form-' + global_formCount);
-
         $(".tables").fadeIn(function () {
             $("#form-" + global_formCount + " .patient_last").focus();
         });

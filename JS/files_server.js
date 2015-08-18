@@ -35,7 +35,7 @@ function loadFormToDB(form) {
             }
         }
     });
-
+    console.log(22);
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
@@ -43,13 +43,13 @@ function loadFormToDB(form) {
             values[this.name] = $(this).val();
         }
     });
-
+    console.log(33);
     var storeDateString = values['apptDate'];
 
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
 
     values['patient'] = lastName + ', ' + firstName;
-
+    console.log(44);
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
 		if(err) {
@@ -74,7 +74,6 @@ function loadChangedFormsToDB(callback) {
     var callCallback = true;
 
     for(var idIndex in changedFormIDs) {
-
         $(idIndex).submit();
     }
 
