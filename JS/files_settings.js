@@ -77,7 +77,7 @@ function downloadFormsAsPDF() {
 
     doc.setFontSize(labelfontSize);
 
-    $('.data-form').each(function() {
+    $('.multi-day-form-exercises-info-container .data-form').each(function() {
      
         var text = $(this).find('label, input');
 
