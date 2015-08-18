@@ -93,7 +93,7 @@ function loadChangedFormsToDB(callback) {
     @param: data; [] of objects like {}
     @param: noExtraForm; bool; whether or not to add a form at the end of the load
 */
-function _loadFormFromDB(data, noExtraForm) {
+function _loadFormFromDB(data, noExtraForm, requestedDate) {
     //delete all previous forms
     removeForms(function() { 
 
@@ -171,21 +171,23 @@ function _loadFormFromDB(data, noExtraForm) {
 
         //Animations
         $(".tables").fadeIn(function() {
-            $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
-            $('#form-' + global_formCount + ' .apptDate').focus();
+            console.log(requestedDate)
+            var length = Patient2Date[currentPatient].length;
+            var index = length - Patient2Date[currentPatient].indexOf(requestedDate.toString()) - 1;
+            var scroll = document.getElementById('Forms').scrollWidth/length * index;
 
-        
+            console.log(scroll)
+
+            $(".forms").animate({ scrollLeft: scroll}, 400);
+
+            //$('#form-' + global_formCount + ' .apptDate').focus();
 
             //get the ms number for the first and last dates that exist in the db
             var firstDateForPatient =  parseInt(Patient2Date[currentPatient][Patient2Date[currentPatient].length - 1]);
             var lastDateForPatient =  parseInt(Patient2Date[currentPatient][0]);
 
-        
-
             if(firstDateLoaded > firstDateForPatient)
                 $('.prev-five').fadeIn();
-
-        
 
             if(lastDateLoaded < lastDateForPatient)
                 $('.next-five').fadeIn();
@@ -221,7 +223,7 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
             errorHandler(err, appError);
         }   
         else {
-            _loadFormFromDB(data, noExtraForm);
+            _loadFormFromDB(data, noExtraForm, apptDate);
         }    
     });
 }
