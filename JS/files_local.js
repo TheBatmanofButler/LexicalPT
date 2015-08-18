@@ -196,12 +196,19 @@ function deleteToggle() {
 }
 
 function finalDelete(all) {
+
+    if (all) {
+        $('.data-form').each(function() {
+            if ($(this).parent('li').attr('id') != 'form-default') {
+                deletedForms['#' + $(this).parent('li').attr('id')] = true;
+            }
+        });
+    }
+    
     var formIDs = Object.keys(deletedForms);
+
     for (var eachForm in formIDs) {
-        if (all) {
-            deleteForm(formIDs[eachForm]);
-        }
-        else if (deletedForms[formIDs[eachForm]] === true) {
+        if (deletedForms[formIDs[eachForm]] === true) {
             deleteForm(formIDs[eachForm]);
         }
     }
@@ -213,19 +220,18 @@ function deleteForm(form) {
     var lastName = "";
     var firstName = "";
 
-    var $inputs = $(form).filter(':input');
-
+    var $inputs = $(form +' :input');
     $inputs.each(function() {
         if(this.name) {
-            console.log(this.name, 22);
             if(this.name === 'patient_last') {
                 lastName = $(this).val().toUpperCase();
             }
             else if (this.name === 'patient_first') {
                 firstName = $(this).val().toUpperCase();
             }
-            else {
-                values[this.name] = $(this).val();
+            else if (this.name === 'apptDate') {
+                values['apptDate'] = $(this).val();
+                values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime().toString();
             }
 
         }

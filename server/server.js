@@ -104,13 +104,19 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 	}
 	else if(incomingObj.name === 'formDelete') {
-		console.log(incomingObj.patient, incomingObj.apptDate);
-		// fileTable.DeleteItem({
-		// 	Key: {
-		// 		"HashKeyElement": {"S": incomingObj.patient},
-		// 		"RangeKeyElement": {"N": incomingObj.apptDate}
-		// 	}
-		// });
+		fileTable.deleteItem({
+			Key: {
+				"patient": {"S": incomingObj.patient},
+				"apptDate": {"N": incomingObj.apptDate}
+			}
+		}, function(err){
+				if(err) {
+					callback(null, err);
+				}
+				else {
+					callback();
+				}
+			});
 	}
 	//Error pipe
 	else {

@@ -46,7 +46,7 @@ $("#DeleteMode").click(function() {
 
     $('#DeleteMode').hide();
     $('#CancelDelete').show();
-    $('#FinalDelete').show();
+    $('#DeleteSelected').show();
     $('#DeleteAll').show();
 
     $('.data-form').closest("li").css('background', 'red');
@@ -57,7 +57,7 @@ $("#DeleteMode").click(function() {
 $('#CancelDelete').click(function() {
     $('#DeleteMode').show();
     $('#CancelDelete').hide();
-    $('#FinalDelete').hide();
+    $('#DeleteSelected').hide();
     $('#DeleteAll').hide();
 
     $(".data-form").unbind( "click" );
@@ -67,8 +67,13 @@ $('#CancelDelete').click(function() {
 
 })
 
-$('#FinalDelete').click(function() {
-    finalDelete();
+$('#DeleteSelected').click(function() {
+    finalDelete(false);
+    $('#CancelDelete').trigger('click');
+})
+
+$('#DeleteAll').click(function() {
+    finalDelete(true);
     $('#CancelDelete').trigger('click');
 })
 
