@@ -93,13 +93,25 @@ module.exports = {
 		});
 	},
 
+	/**
+		Deletes data from the requested table
+
+		@param: socket; client connection
+		@param: incomingObj;
+			@param: patient; hash value for db
+			@param: apptDate; range value for db
+		@param: table; where to search
+		@param: callback; function(data, err)
+	*/
 	deleteData: function(socket, incomingObj, table, callback) {
+		console.log("HI")
 		table.deleteItem({
 			Key: {
 				"patient": {"S": incomingObj.patient},
 				"apptDate": {"N": incomingObj.apptDate}
 			}
-		}, function(err){
+		}, function(err) {
+			console.log(err)
 			if(err) {
 				callback(null, err);
 			}
@@ -109,8 +121,12 @@ module.exports = {
 		});
 	},
 
+	/**
+		Closes a patient injury and moves the data to an archive table
+	*/
 	closePatientInjury: function(socket, incomingObj, dataTable, archiveTable, callback) {
-		retrieveData(socket, incomingObj, dataTable, function(err, data) {
+
+		this.retrieveData(socket, incomingObj, dataTable, function(data, err) {
 			if(err) {
 				callback(null, err);
 			}
@@ -121,6 +137,9 @@ module.exports = {
 				for(var formIndex in data) {
 
 					promiseArray.push(new Promise(function(resolve, reject) {
+
+						data[formIndex]['closeDate'] = {N: new Date().getTime() + ""};
+
 						var itemParams = {Item: data[formIndex]};
 
 						archiveTable.putItem(itemParams, function(err, callbackData) {
@@ -137,20 +156,26 @@ module.exports = {
 				}
 
 				Promise.all(promiseArray).then(function() {
+
 					promiseArray = [];
 
 					for(var formIndex in data) {
 						promiseArray.push(new Promise(function(resolve, reject) {
 
-							deleteData(socket, {patient: data[formIndex].patient.S, apptDate: data[formIndex].apptDate.N}, dataTable, function(data, err) {
+							dataTable.deleteItem({
+								Key: {
+									"patient": {"S": data[formIndex].patient.S},
+									"apptDate": {"N": data[formIndex].apptDate.N}
+								}
+							}, function(err) {
+								console.log(err)
 								if(err) {
 									reject();
 								}
 								else {
-									resolve()
+									resolve();
 								}
 							});
-
 						}));
 					}
 

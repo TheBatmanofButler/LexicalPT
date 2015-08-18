@@ -140,6 +140,10 @@ function createForm(noDate) {
     if(!noDate)
         $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
 
+    $form.find(".apptDate").change(function() {
+        //put code for date checking here
+    });
+
     $form.submit(function(event) {
         event.preventDefault(); 
         if(checkFormErrors("#" + $(this).attr("id"))) {

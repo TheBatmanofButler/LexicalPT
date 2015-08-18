@@ -36,7 +36,6 @@ function isSanitized(inputString) {
 	@param: userKey; string; 
 */
 function checkUserKey(socket, userKey) { 
-	console.log("CHECKING")
 	if(userKey === socket.userKey)
 		return true;
 	else
@@ -81,10 +80,8 @@ function serverHandler(socket, incomingObj, callback) {
 	}
 	//Post login
 	else if(incomingObj.userKey) {
-
+		
 		if(!checkUserKey(socket, incomingObj.userKey)) {
-			console.log(socket.userKey)
-			console.log(incomingObj.userKey)
 			callback(null, {name: 'loginFailure', message: "Userkey incorrect, command failed"})
 		}
 
@@ -101,10 +98,12 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 		//logout
 		else if(incomingObj.name === 'logout') {
-			console.log("logout")
 			socket.userKey = null; 
 
 			callback();
+		}
+		else {
+			callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 		}
 	}
 	else if(incomingObj.name === 'formDelete') {

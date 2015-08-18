@@ -232,11 +232,20 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     and all related dates from the combobox search list.  
 */
 function closePatientInjury() {
+    if(!confirm('Closing the patient injury will archive this data. Do you want to proceed?'))
+        return;
+
     socket.emit("clientToServer", {
         name: 'closeInjury',
-        patient: currentPatient
+        patient: currentPatient,
+        userKey: global_userKey
     }, function(data, err, key) {
-        //do stuff on callback
+        //Update the comboboxes
+        removeForms();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 400);
+        $("#queryResetButton").click();
     });
 }
 
