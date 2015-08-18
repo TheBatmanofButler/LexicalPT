@@ -73,6 +73,11 @@ $("#SettingsNewForm").click(function() {
     createNewPatientForm();
 });
 
+//Download form as pdf
+$("#DownloadForms").click(function() {
+    downloadFormsAsPDF();
+});
+
 function main() {
     if (localStorage.getItem("username")) {
         $("#UsernameField").val(localStorage.getItem("username"));

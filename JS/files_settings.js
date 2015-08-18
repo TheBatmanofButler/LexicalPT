@@ -57,3 +57,53 @@ function copyForward() {
         }
     });
 }
+
+/**
+    Downloads all visible forms as pdfs
+*/
+function downloadFormsAsPDF() {
+    var doc = new jsPDF('l');
+
+    var labelfontSize = 8;
+    var yStart = 20;
+    var xStart = 20;
+    var yDelta = 10;
+    var xDelta = 100;
+
+    var xValueOffset = 20;
+
+    var yOffset = yStart;
+    var xOffset = xStart;
+
+    doc.setFontSize(labelfontSize);
+
+    $('.data-form').each(function() {
+     
+        var text = $(this).find('label, input');
+
+        for(var i = 0; i < text.length; i++) {
+            if($(text[i]).is("input")) {
+
+                if ($(text[i]).val()) {
+
+                            console.log($(text[i]).val())
+
+                    doc.text(xOffset + xValueOffset, yOffset, $(text[i]).val())
+                    yOffset += yDelta;
+                }
+
+            }
+            else {
+                console.log($(text[i]).html())
+
+                doc.text(xOffset, yOffset, $(text[i]).html())
+                yOffset += yDelta;
+            }
+        }
+    });
+
+    //$.when.apply($, deferredArray).then(function() {
+        doc.save('test.pdf');
+    //});
+
+}
