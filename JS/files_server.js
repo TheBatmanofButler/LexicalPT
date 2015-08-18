@@ -235,3 +235,18 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
         }    
     });
 }
+
+
+
+/** 
+    Closes out a patient injury. Moves all of the data related to that patient to another table, and removes the patient 
+    and all related dates from the combobox search list.  
+*/
+function closePatientInjury() {
+    socket.emit("clientToServer", {
+        patient: currentPatient
+    }, function(data, err, key) {
+        //do stuff on callback
+    });
+}
+

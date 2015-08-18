@@ -114,6 +114,12 @@ $("#DownloadForms").click(function() {
     downloadFormsAsPDF();
 });
 
+//Closes a patient cycle
+$("#CloseInjury").click(function() {
+    closePatientInjury();
+});
+
+//Password/username
 function main() {
     if (localStorage.getItem("username")) {
         $("#UsernameField").val(localStorage.getItem("username"));

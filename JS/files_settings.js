@@ -29,7 +29,7 @@ function createNewPatientForm() {
     createForm(true);
     attachSubmitHandler('#form-' + global_formCount);
 
-    $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
+    $(".forms").animate({ scrollLeft: document.getElementById("Forms").scrollWidth}, 400);
 }
 
 /**
