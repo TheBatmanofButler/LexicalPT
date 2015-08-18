@@ -198,6 +198,15 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
                 scrollTop: $("#BreakOne").offset().top
         }, 400);
     });
+
+    $('#staticForm :input').click(function() {
+        var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
+        if (confirmBox) {
+            $('#staticForm :input').unbind('click');
+            $('li[id^="form-"]').trigger('change');
+        }
+    });
+
 }
 
 /**
