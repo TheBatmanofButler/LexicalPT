@@ -151,7 +151,7 @@ module.exports = {
 								}
 							});
 
-						}
+						}));
 					}
 
 					Promise.all(promiseArray).then(function() {
@@ -163,6 +163,6 @@ module.exports = {
 					callback(null, {message: "Server Error on loading promises"});
 				});
 			}
-		})
+		});
 	}
 }
