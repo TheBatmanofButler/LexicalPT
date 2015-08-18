@@ -21,8 +21,8 @@ function loadFormToDB(form) {
     var lastName = "";
     var firstName = "";
 
-    //load metadata first
-    $('.metadata :input').each(function() {
+    //load meta-data first
+    $('.meta-data :input').each(function() {
         if(this.name) {
             if(this.name === 'patient_last') {
                 lastName = $(this).val().toUpperCase();
@@ -97,37 +97,47 @@ function _loadFormFromDB(data, noExtraForm) {
     //delete all previous forms
     removeForms(function() { 
 
-        global_deferredArray = [];
 
+        global_deferredArray = [];
 
         //Load the meta-data
         var nameInfo = data[0]['patient'].S.split(', ');
 
-        $(".metadata .patient_first").val(nameInfo[1]);
-        $(".metadata .patient_last").val(nameInfo[0]);
+        $(".meta-data .patient_first").val(nameInfo[1]);
+        $(".meta-data .patient_last").val(nameInfo[0]);
 
-        if (data[0]['protocol-approved'].S) {
-           $(".metadata .protocol-approved").val(data[0]['protocol-approved'].S);
+        if (data[0]['protocol-approved']) {
+           $(".meta-data .protocol-approved").val(data[0]['protocol-approved'].S);
+        } 
+        
+
+        if (data[0]['precautions']) {
+            $(".meta-data .precautions").val(data[0]['precautions'].S);
         } 
 
-        if (data[0]['precautions'].S) {
-            $(".metadata .precautions").val(data[0]['precautions'].S);
-        } 
-
-        if (data[0]['diagnosis'].S) {
-            $(".metadata .diagnosis").val(data[0]['diagnosis'].S);
+        if (data[0]['diagnosis']) {
+            $(".meta-data .diagnosis").val(data[0]['diagnosis'].S);
         }
 
-        if (data[0]['doctorname'].S) {
-            $(".metadata .doctorname").val(data[0]['doctorname'].S);
+        
+
+
+        if (data[0]['doctorname']) {
+            $(".meta-data .doctorname").val(data[0]['doctorname'].S);
         }
+
+        
 
         //load the rest of the data
         for(var i = 0; i < data.length; i++) {
 
+        
+
             if(i > global_formCount) {
                 createForm();
             }
+
+        
 
             var inverseFormVal = data.length - i - 1;
 
@@ -140,33 +150,48 @@ function _loadFormFromDB(data, noExtraForm) {
                     openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
                 }  
             }
+        
 
             attachSubmitHandler('#form-' + i);
         }
+
+        
 
         //loads data for prevfive/nextfive
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         lastDateLoaded = parseInt(data[0]['apptDate'].N);
 
+        
+
         //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);
+
+        
 
         //Animations
         $(".tables").fadeIn(function() {
             $(".multi-day-form-exercises-info-container").animate({ scrollLeft: $(".multi-day-form-exercises-info-container").width() + 500}, 400);
-            $('#form-' + global_formCount + ' .patient_last').focus();
+            $('#form-' + global_formCount + ' .apptDate').focus();
+
+        
 
             //get the ms number for the first and last dates that exist in the db
             var firstDateForPatient =  parseInt(Patient2Date[currentPatient][Patient2Date[currentPatient].length - 1]);
             var lastDateForPatient =  parseInt(Patient2Date[currentPatient][0]);
 
+        
+
             if(firstDateLoaded > firstDateForPatient)
                 $('.prev-five').fadeIn();
+
+        
 
             if(lastDateLoaded < lastDateForPatient)
                 $('.next-five').fadeIn();
         });
+        
+
 
         $('html, body').animate({
                 scrollTop: $("#BreakOne").offset().top
