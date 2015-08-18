@@ -132,13 +132,15 @@ module.exports = {
 			}
 			else if(data) {
 
+				var closeTime = new Date().getTime() + "";
+
 				var promiseArray = [];
 
 				for(var formIndex in data) {
 
 					promiseArray.push(new Promise(function(resolve, reject) {
 
-						data[formIndex]['closeDate'] = {N: new Date().getTime() + ""};
+						data[formIndex]['closeDate'] = {N: closeTime};
 
 						var itemParams = {Item: data[formIndex]};
 
