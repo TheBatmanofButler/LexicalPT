@@ -58,7 +58,7 @@ function checkFormErrors(form) {
 
     var date = new Date($(form + " .apptDate").val());
 
-    var name = $(form + " .patient_last").val().toUpperCase() + ", " + $(form + " .patient_first").val().toUpperCase();
+    var name = $(".meta-data .patient_last").val().toUpperCase() + ", " + $(".meta-data .patient_first").val().toUpperCase();
 
     //first some error checking 
     if(date.getTime() > new Date().getTime()) {
@@ -101,9 +101,9 @@ function removeForms(callback) {
     $(".tables").fadeOut(function() {
         $("#CopyForward, .next-five, .prev-five").fadeOut();
         $(".multi-day-form-exercises-info-container").empty();
+        $(".meta-data input").val("");
         global_formCount = -1;
         changedFormIDs = {};
-        deletedForms = {};
         currentPatient = "";
         firstDateLoaded = "";
         lastDateLoaded = "";
@@ -169,8 +169,6 @@ function createNewForm() {
         createForm();
         attachSubmitHandler('#form-' + global_formCount);
 
-        deletedForms['#form-' + global_formCount] = false;
-
         $(".tables").fadeIn(function () {
             $("#form-" + global_formCount + " .patient_last").focus();
         });
@@ -178,72 +176,6 @@ function createNewForm() {
         $('html, body').animate({
             scrollTop: $("#BreakOne").offset().top
         }, 400);
-    });
-}
-
-function deleteToggle() {
-
-    $('.data-form').click( function() {
-        var toggleState = deletedForms['#' + $(this).attr('id')]
-        if (!toggleState) {
-            $(this).closest("li").css('background', 'yellow');
-            deletedForms['#' + $(this).parent('li').attr('id')] = true;
-        } else if (toggleState) {
-            $(this).closest("li").css('background', 'red');
-            deletedForms['#' + $(this).parent('li').attr('id')] = false;
-        }
-    });
-}
-
-function finalDelete(all) {
-    var formIDs = Object.keys(deletedForms);
-    for (var eachForm in formIDs) {
-        if (all) {
-            deleteForm(formIDs[eachForm]);
-        }
-        else if (deletedForms[formIDs[eachForm]] === true) {
-            deleteForm(formIDs[eachForm]);
-        }
-    }
-}
-
-function deleteForm(form) {
-
-    var values = {};
-    var lastName = "";
-    var firstName = "";
-
-    var $inputs = $(form).filter(':input');
-
-    $inputs.each(function() {
-        if(this.name) {
-            console.log(this.name, 22);
-            if(this.name === 'patient_last') {
-                lastName = $(this).val().toUpperCase();
-            }
-            else if (this.name === 'patient_first') {
-                firstName = $(this).val().toUpperCase();
-            }
-            else {
-                values[this.name] = $(this).val();
-            }
-
-        }
-    });
-
-    values['patient'] = lastName + ', ' + firstName;
-
-    socket.emit("clientToServer", {
-        name: "formDelete",
-        patient: values['patient'],
-        apptDate: values['apptDate']
-    }, function(data, err, isAppError) {
-        if(err) {
-            errorHandler(err, isAppError);
-        }
-        else {
-            $(form).remove();
-        }
     });
 }
 

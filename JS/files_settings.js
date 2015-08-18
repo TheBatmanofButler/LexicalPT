@@ -62,15 +62,15 @@ function copyForward() {
     Downloads all visible forms as pdfs
 */
 function downloadFormsAsPDF() {
-    var doc = new jsPDF('l');
+    var doc = new jsPDF();
 
     var labelfontSize = 8;
     var yStart = 20;
     var xStart = 20;
-    var yDelta = 10;
-    var xDelta = 100;
+    var yDelta = 5;
+    var xDelta = 45;
 
-    var xValueOffset = 20;
+    var xValueOffset = 10;
 
     var yOffset = yStart;
     var xOffset = xStart;
@@ -79,27 +79,53 @@ function downloadFormsAsPDF() {
 
     $('.multi-day-form-exercises-info-container .data-form').each(function() {
      
-        var text = $(this).find('label, input');
+        var text = $(this).find('label, input, tr');
+
+        var valueText = "";
 
         for(var i = 0; i < text.length; i++) {
+
             if($(text[i]).is("input")) {
 
                 if ($(text[i]).val()) {
+                    if(valueText)
+                        valueText = valueText + ", " + $(text[i]).val();
+                    else
+                        valueText = $(text[i]).val();
+                }
 
-                            console.log($(text[i]).val())
-
-                    doc.text(xOffset + xValueOffset, yOffset, $(text[i]).val())
+            }
+            else if ($(text[i]).is("tr")) {
+                
+                if(valueText) {
+                    doc.text(xOffset + xValueOffset, yOffset, valueText);
                     yOffset += yDelta;
+                    valueText = "";
                 }
 
             }
             else {
-                console.log($(text[i]).html())
+
+                if(valueText) {
+                    doc.text(xOffset + xValueOffset, yOffset, valueText);
+                    yOffset += yDelta;
+                    valueText = "";
+                }
 
                 doc.text(xOffset, yOffset, $(text[i]).html())
                 yOffset += yDelta;
             }
         }
+
+        if(valueText) {
+            doc.text(xOffset + xValueOffset, yOffset, valueText);
+            yOffset += yDelta;
+            valueText = "";
+        }
+
+        yOffset = yStart;
+        xOffset = xOffset + xDelta;
+
     });
 
     //$.when.apply($, deferredArray).then(function() {

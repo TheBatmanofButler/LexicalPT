@@ -112,7 +112,42 @@
             display: inline-block;
             width: 75%;
             height: 85%;
+
+            overflow: auto;
+
         }
+
+            .forms input {
+                border-top: none;
+                border-right: none;
+                border-left: none;
+                border-color: #BDBDBD;
+                font-family:"Raleway", "sans-serif";
+                font-size: 1vw;
+            }
+
+                .forms input[type=date] {
+                    margin-top:-2%;
+                }
+
+            .forms input:focus {
+                outline:none;
+            }
+
+            .meta-data {
+                position:relative;
+            }
+
+                .meta-data .patient-info li {
+                    display: inline-block;
+                }
+
+                .meta-data .patient-info input {
+                    margin-top: 2%;
+                    width: 49%;
+                }
+
+
 
             .multi-day-form-exercises-info-container {
                 text-align: center;
@@ -123,7 +158,6 @@
 
                 display: block;
                 white-space: nowrap;
-                overflow: auto;
             }
 
                .multi-day-form-exercises-info-container .single-day-form-exercises-info-container {
@@ -133,42 +167,17 @@
                     margin-right: 5%;
                 } 
 
-                    .single-day-form-exercises-info-container div label {
+                    .forms div label {
                         font-size: 1.2vw;
                     }
 
-                    .single-day-form-exercises-info-container div input {
+                    .forms div input {
                         margin-top: 2%;
                     }
 
                     .pt-info, .protocol-info {
                         margin-top: 3%;
                     }
-
-                    .single-day-form-exercises-info-container input {
-                        border-top: none;
-                        border-right: none;
-                        border-left: none;
-                        border-color: #BDBDBD;
-                        font-family:"Raleway", "sans-serif";
-                        font-size: 1vw;
-                    }
-
-                        .single-day-form-exercises-info-container input[type=date] {
-                            margin-top:-2%;
-                        }
-
-                     .single-day-form-exercises-info-container input:focus {
-                        outline:none;
-                    }
-
-                    .single-day-form-exercises-info-container .patient-info li {
-                        display: inline-block;
-                    }
-                        .single-day-form-exercises-info-container .patient-info input {
-                            margin-top: 2%;
-                            width: 49%;
-                        }
 
                     .form-exercises-info-container {
                         text-align: center;

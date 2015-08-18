@@ -25,3 +25,8 @@ function postSubmit() {
     $('#successAlert').fadeTo( 400, .75 )
     $('#successAlert').delay(2000).fadeTo( 400, 0 );
 }
+
+
+$('.forms').scroll(function() {
+    $(this).find('.meta-data').css('left', $(this).scrollLeft());
+});
