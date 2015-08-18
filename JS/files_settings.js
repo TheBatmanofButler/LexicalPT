@@ -6,6 +6,84 @@
 File manipulation functions for settings bar specifically
 */
 
+
+/**
+    All functions related to form deletion
+*/
+
+function deleteToggle() {
+
+    $('.data-form').click( function() {
+        var toggleState = deletedForms['#' + $(this).attr('id')]
+        if (!toggleState) {
+            $(this).closest("li").css('background', 'yellow');
+            deletedForms['#' + $(this).parent('li').attr('id')] = true;
+        } else if (toggleState) {
+            $(this).closest("li").css('background', 'red');
+            deletedForms['#' + $(this).parent('li').attr('id')] = false;
+        }
+    });
+}
+
+function finalDelete(all) {
+
+    if (all) {
+        $('.data-form').each(function() {
+            if ($(this).parent('li').attr('id') != 'form-default') {
+                deletedForms['#' + $(this).parent('li').attr('id')] = true;
+            }
+        });
+    }
+    
+    var formIDs = Object.keys(deletedForms);
+
+    for (var eachForm in formIDs) {
+        //this is doing it the dumb way; extra calls to the server that don't need to be made
+        if (deletedForms[formIDs[eachForm]] === true) {
+            deleteForm(formIDs[eachForm]);
+        }
+    }
+}
+
+function deleteForm(form) {
+
+    var values = {};
+    var lastName = "";
+    var firstName = "";
+
+    var $inputs = $(form +' :input');
+    $inputs.each(function() {
+        if(this.name) {
+            if(this.name === 'patient_last') {
+                lastName = $(this).val().toUpperCase();
+            }
+            else if (this.name === 'patient_first') {
+                firstName = $(this).val().toUpperCase();
+            }
+            else if (this.name === 'apptDate') {
+                values['apptDate'] = $(this).val();
+                values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime().toString();
+            }
+
+        }
+    });
+
+    values['patient'] = lastName + ', ' + firstName;
+
+    socket.emit("clientToServer", {
+        name: "formDelete",
+        patient: values['patient'],
+        apptDate: values['apptDate']
+    }, function(data, err, isAppError) {
+        if(err) {
+            errorHandler(err, isAppError);
+        }
+        else {
+            $(form).remove();
+        }
+    });
+}
+
 /**
     Calls for the previous set of five forms from the server
 */

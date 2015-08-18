@@ -11,6 +11,7 @@ var storageTools = require('./storageTools');
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
 var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
+var archiveTable = new AWS.DynamoDB({params: {TableName: 'JAGClientArchiveData'}});
 
 //Sockets
 var io = require('socket.io').listen(4000);
@@ -95,6 +96,9 @@ function serverHandler(socket, incomingObj, callback) {
 		else if(incomingObj.name === 'retrieve') {
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
+		else if (incomingObj.name === 'closeInjury') {
+			storageTools.closePatientInjury(socket, incomingObj, fileTable, archiveTable, callback);
+		}
 		//logout
 		else if(incomingObj.name === 'logout') {
 			console.log("logout")
@@ -104,19 +108,7 @@ function serverHandler(socket, incomingObj, callback) {
 		}
 	}
 	else if(incomingObj.name === 'formDelete') {
-		fileTable.deleteItem({
-			Key: {
-				"patient": {"S": incomingObj.patient},
-				"apptDate": {"N": incomingObj.apptDate}
-			}
-		}, function(err){
-				if(err) {
-					callback(null, err);
-				}
-				else {
-					callback();
-				}
-			});
+		storageTools.deleteData(socket, incomingObj, fileTable, callback);
 	}
 	//Error pipe
 	else {

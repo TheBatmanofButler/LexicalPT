@@ -235,6 +235,7 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
 */
 function closePatientInjury() {
     socket.emit("clientToServer", {
+        name: 'closeInjury',
         patient: currentPatient
     }, function(data, err, key) {
         //do stuff on callback

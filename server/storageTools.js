@@ -91,5 +91,78 @@ module.exports = {
 				callback(null);
 			}
 		});
+	},
+
+	deleteData: function(socket, incomingObj, table, callback) {
+		table.deleteItem({
+			Key: {
+				"patient": {"S": incomingObj.patient},
+				"apptDate": {"N": incomingObj.apptDate}
+			}
+		}, function(err){
+			if(err) {
+				callback(null, err);
+			}
+			else {
+				callback();
+			}
+		});
+	},
+
+	closePatientInjury: function(socket, incomingObj, dataTable, archiveTable, callback) {
+		retrieveData(socket, incomingObj, dataTable, function(err, data) {
+			if(err) {
+				callback(null, err);
+			}
+			else if(data) {
+
+				var promiseArray = [];
+
+				for(var formIndex in data) {
+
+					promiseArray.push(new Promise(function(resolve, reject) {
+						var itemParams = {Item: data[formIndex]};
+
+						archiveTable.putItem(itemParams, function(err, callbackData) {
+							if(err) {
+								reject();
+							}
+							else {
+								resolve();
+							}
+					    });
+
+					}));
+					
+				}
+
+				Promise.all(promiseArray).then(function() {
+					promiseArray = [];
+
+					for(var formIndex in data) {
+						promiseArray.push(new Promise(function(resolve, reject) {
+
+							deleteData(socket, {patient: data[formIndex].patient.S, apptDate: data[formIndex].apptDate.N}, dataTable, function(data, err) {
+								if(err) {
+									reject();
+								}
+								else {
+									resolve()
+								}
+							});
+
+						}
+					}
+
+					Promise.all(promiseArray).then(function() {
+						callback();
+					}).catch(function() {
+						callback(null, {message: "Server Error on loading promises -- 2"});
+					});
+				}).catch(function() {
+					callback(null, {message: "Server Error on loading promises"});
+				});
+			}
+		})
 	}
 }
