@@ -80,7 +80,7 @@ function serverHandler(socket, incomingObj, callback) {
 	}
 	//Post login
 	else if(incomingObj.userKey) {
-		
+
 		if(!checkUserKey(socket, incomingObj.userKey)) {
 			callback(null, {name: 'loginFailure', message: "Userkey incorrect, command failed"})
 		}
@@ -93,8 +93,18 @@ function serverHandler(socket, incomingObj, callback) {
 		else if(incomingObj.name === 'retrieve') {
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
+		else if(incomingObj.name === 'formDelete') {
+			storageTools.deleteData(socket, incomingObj, fileTable, callback);
+		}
 		else if (incomingObj.name === 'closeInjury') {
-			storageTools.closePatientInjury(socket, incomingObj, fileTable, archiveTable, callback);
+			storageTools.closePatientInjury(socket, incomingObj, fileTable, archiveTable, function(data, err, key) {
+				if(err) {
+					callback(null, err, key);
+				}
+				else { 
+
+				}
+			});
 		}
 		//logout
 		else if(incomingObj.name === 'logout') {
@@ -105,9 +115,6 @@ function serverHandler(socket, incomingObj, callback) {
 		else {
 			callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 		}
-	}
-	else if(incomingObj.name === 'formDelete') {
-		storageTools.deleteData(socket, incomingObj, fileTable, callback);
 	}
 	//Error pipe
 	else {
