@@ -195,21 +195,56 @@ function deleteToggle() {
     });
 }
 
-function finalDelete() {
+function finalDelete(all) {
     var formIDs = Object.keys(deletedForms);
     for (var eachForm in formIDs) {
-        if (deletedForms[formIDs[eachForm]] === true) {
-            removeFormsFromDB(eachForm);
-            eachForm.remove();
+        if (all) {
+            deleteForm(formIDs[eachForm]);
+        }
+        else if (deletedForms[formIDs[eachForm]] === true) {
+            deleteForm(formIDs[eachForm]);
         }
     }
 }
 
-function deleteAllForms() {
-    for (var eachForm in Object.keys(deletedForms)) {
-        removeFormsFromDB(eachForm);
-        eachForm.remove();
-    }
+function deleteForm(form) {
+
+    var values = {};
+    var lastName = "";
+    var firstName = "";
+
+    var $inputs = $(form).filter(':input');
+
+    $inputs.each(function() {
+        if(this.name) {
+            console.log(this.name, 22);
+            if(this.name === 'patient_last') {
+                lastName = $(this).val().toUpperCase();
+            }
+            else if (this.name === 'patient_first') {
+                firstName = $(this).val().toUpperCase();
+            }
+            else {
+                values[this.name] = $(this).val();
+            }
+
+        }
+    });
+
+    values['patient'] = lastName + ', ' + firstName;
+
+    socket.emit("clientToServer", {
+        name: "formDelete",
+        patient: values['patient'],
+        apptDate: values['apptDate']
+    }, function(data, err, isAppError) {
+        if(err) {
+            errorHandler(err, isAppError);
+        }
+        else {
+            $(form).remove();
+        }
+    });
 }
 
 /**
