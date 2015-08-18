@@ -85,6 +85,32 @@
 			<div class="spacer-10"></div>
 			<ul class="tables">
 				<li class="forms">
+					<div class="meta-data">
+						<div class="patient-info">
+							<label>Patient: </label>
+							<br>
+							<ul> 
+								<li>
+									<input name="patient_last" class="patient_last form-input" placeholder="Patient Last Name" type="text" required>
+									<input name="patient_first" class="patient_first form-input" placeholder="Patient First Name" type="text" required>
+								</li>
+							</ul>
+						</div>
+						<div class="protocol-info">
+							<label>Protocol Approved By: </label>
+							<br>
+							<input name="protocol_approved" class="protocol_approved form-input" placeholder="Therapist Name" type="text">
+
+					    	<label>Precautions: </label>
+					    	<input class="precautions form-input"  name="precautions" type="text">
+					    
+					    	<label>Diagnosis: </label>
+					    	<input class="diagnosis form-input" name="diagnosis" type="text">
+				    	
+					    	<label>Referring Doctor: </label>
+					    	<input class="doctorname form-input" name="doctorname" type="text">
+						</div>
+					</div>
 					<ul class="multi-day-form-exercises-info-container">
 
 			    	</ul>
@@ -162,21 +188,6 @@
 	<!-- Variables -->
 	<li id="form-default" class="single-day-form-exercises-info-container hidden">
 		<form class="data-form" name="MedInfo">		    		
-			<div class="patient-info">
-				<label>Patient: </label>
-				<br>
-				<ul> 
-					<li>
-						<input name="patient_last" class="patient_last form-input" placeholder="Patient Last Name" type="text" required>
-						<input name="patient_first" class="patient_first form-input" placeholder="Patient First Name" type="text" required>
-					</li>
-				</ul>
-			</div>
-			<div class="protocol-info">
-				<label>Protocol Approved By: </label>
-				<br>
-				<input name="protocol_approved" class="protocol_approved form-input" placeholder="Therapist Name" type="text">
-			</div>
 			<ul class="form-exercises-info-container">
 				<li>
 					<table class="form-header-info">
@@ -185,23 +196,7 @@
 			    				<label>Date: </label>
 								<input class="apptDate form-input" name="apptDate" type="date" id="date_input" required>
 					    	</td>
-					    	<td>
-						    	<label>Precautions: </label>
-						    	<input class="precautions form-input"  name="precautions" type="text">
-						    </td>
 				    	</tr>
-
-						<tr>
-							<td>
-						    	<label>Diagnosis: </label>
-						    	<input class="diagnosis form-input" name="diagnosis" type="text">
-					    	</td>
-					    	<td>
-						    	<label>Referring Doctor: </label>
-						    	<input class="doctorname form-input" name="doctorname" type="text">
-						    </td>
-						</tr>
-
 					</table>
 				</li>
 				<li class="exercise-info">

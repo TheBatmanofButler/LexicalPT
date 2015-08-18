@@ -58,7 +58,7 @@ function checkFormErrors(form) {
 
     var date = new Date($(form + " .apptDate").val());
 
-    var name = $(form + " .patient_last").val().toUpperCase() + ", " + $(form + " .patient_first").val().toUpperCase();
+    var name = $(".meta-data .patient_last").val().toUpperCase() + ", " + $(".meta-data .patient_first").val().toUpperCase();
 
     //first some error checking 
     if(date.getTime() > new Date().getTime()) {
@@ -101,9 +101,9 @@ function removeForms(callback) {
     $(".tables").fadeOut(function() {
         $("#CopyForward, .next-five, .prev-five").fadeOut();
         $(".multi-day-form-exercises-info-container").empty();
+        $(".meta-data input").val("");
         global_formCount = -1;
         changedFormIDs = {};
-        deletedForms = {};
         currentPatient = "";
         firstDateLoaded = "";
         lastDateLoaded = "";
@@ -168,8 +168,6 @@ function createNewForm() {
     removeForms(function() {
         createForm();
         attachSubmitHandler('#form-' + global_formCount);
-
-        deletedForms['#form-' + global_formCount] = false;
 
         $(".tables").fadeIn(function () {
             $("#form-" + global_formCount + " .patient_last").focus();

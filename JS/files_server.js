@@ -21,9 +21,8 @@ function loadFormToDB(form) {
     var lastName = "";
     var firstName = "";
 
-    //query the form, convert to object
-    var $inputs = $(form +' :input');
-    $inputs.each(function() {
+    //load metadata first
+    $('.metadata :input').each(function() {
         if(this.name) {
             if(this.name === 'patient_last') {
                 lastName = $(this).val().toUpperCase();
@@ -34,6 +33,14 @@ function loadFormToDB(form) {
             else {
                 values[this.name] = $(this).val();
             }
+        }
+    });
+
+    //query the form, convert to object
+    var $inputs = $(form +' :input');
+    $inputs.each(function() {
+        if(this.name) {
+            values[this.name] = $(this).val();
         }
     });
 
@@ -92,7 +99,30 @@ function _loadFormFromDB(data, noExtraForm) {
 
         global_deferredArray = [];
 
-        //load new ones
+
+        //Load the meta-data
+        var nameInfo = data[0]['patient'].S.split(', ');
+
+        $(".metadata .patient_first").val(nameInfo[1]);
+        $(".metadata .patient_last").val(nameInfo[0]);
+
+        if (data[0]['protocol-approved'].S) {
+           $(".metadata .protocol-approved").val(data[0]['protocol-approved'].S);
+        } 
+
+        if (data[0]['precautions'].S) {
+            $(".metadata .precautions").val(data[0]['precautions'].S);
+        } 
+
+        if (data[0]['diagnosis'].S) {
+            $(".metadata .diagnosis").val(data[0]['diagnosis'].S);
+        }
+
+        if (data[0]['doctorname'].S) {
+            $(".metadata .doctorname").val(data[0]['doctorname'].S);
+        }
+
+        //load the rest of the data
         for(var i = 0; i < data.length; i++) {
 
             if(i > global_formCount) {
@@ -106,12 +136,6 @@ function _loadFormFromDB(data, noExtraForm) {
 
                     $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
                 
-                } else if (classnames === 'patient') {
-                    var nameInfo = data[inverseFormVal]['patient'].S.split(', ');
-
-                    $("#form-" + i + " .patient_first").val(nameInfo[1]);
-                    $("#form-" + i + " .patient_last").val(nameInfo[0]);
-
                 } else {
                     openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
                 }  
@@ -124,8 +148,6 @@ function _loadFormFromDB(data, noExtraForm) {
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         lastDateLoaded = parseInt(data[0]['apptDate'].N);
-
-
 
         //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);
@@ -144,7 +166,6 @@ function _loadFormFromDB(data, noExtraForm) {
 
             if(lastDateLoaded < lastDateForPatient)
                 $('.next-five').fadeIn();
-
         });
 
         $('html, body').animate({
