@@ -73,12 +73,12 @@ module.exports = {
 
 		table.query({
 			ScanIndexForward: false,
-			Limit: 5,
+			//Limit: 5,
 			ExpressionAttributeValues: {
-				":hashval": {"S": incomingObj['patient']},
-				":rangeval": {"N": incomingObj['apptDate']}
+				":hashval": {"S": incomingObj['patient']}
+				//":rangeval": {"N": incomingObj['apptDate']}
 			},
-			KeyConditionExpression: "patient = :hashval AND apptDate " + sign + " :rangeval"
+			KeyConditionExpression: "patient = :hashval" //AND apptDate " + sign + " :rangeval"
 		}, function(err, data)  {
 
 			if(err) {
