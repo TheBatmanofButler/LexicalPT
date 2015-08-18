@@ -6,10 +6,6 @@
 File manipulation helper functions
 */
 
-$('#staticForm').change(function() {
-    $('li[id^="form-"]').trigger('change');
-});
-
 /**
     Attaches the handler for changes in the form
 
@@ -170,6 +166,9 @@ function createForm(noDate) {
 function createNewForm() {
     removeForms(function() {
         createForm();
+        $('#staticForm').change(function() {
+            $('li[id^="form-"]').trigger('change');
+        });
         attachSubmitHandler('#form-' + global_formCount);
         $(".tables").fadeIn(function () {
             $("#form-" + global_formCount + " .patient_last").focus();
