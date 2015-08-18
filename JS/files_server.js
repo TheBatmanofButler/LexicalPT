@@ -96,7 +96,6 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
     //delete all previous forms
     removeForms(function() { 
 
-
         global_deferredArray = [];
 
         //Load the meta-data
@@ -118,25 +117,16 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
             $(".meta-data .diagnosis").val(data[0]['diagnosis'].S);
         }
 
-        
-
-
         if (data[0]['doctorname']) {
             $(".meta-data .doctorname").val(data[0]['doctorname'].S);
         }
 
-        
-
         //load the rest of the data
         for(var i = 0; i < data.length; i++) {
-
-        
 
             if(i > global_formCount) {
                 createForm();
             }
-
-        
 
             var inverseFormVal = data.length - i - 1;
 
@@ -150,7 +140,6 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
                 }  
             }
         
-
             attachSubmitHandler('#form-' + i);
         }
 
