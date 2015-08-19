@@ -27,7 +27,6 @@ function loadFormToDB(form) {
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
-            alert()
     		if(err) {
     			errorHandler(err, isAppError);
     		} 

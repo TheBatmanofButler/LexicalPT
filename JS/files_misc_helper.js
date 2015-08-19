@@ -135,7 +135,17 @@ function bindNewFormEvents($form) {
 
     });
 
-    attachSubmitHandler('#' + $form.attr("id"));
+    $form.change(function() {
+
+        if(!changedFormIDs['#' + $(this).attr('id')]) {
+            var deferred = new $.Deferred();
+
+            changedFormIDs['#' + $(this).attr('id')] = deferred;
+
+            global_deferredArray.push(deferred);
+        }
+        
+    });
 
     return $form;
 }
