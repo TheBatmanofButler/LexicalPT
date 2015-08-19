@@ -273,8 +273,9 @@ function removeFormData(data) {
 		Date2Patient[apptDate].splice(index, 1);
 
 		//delete date from patient
-		if(Patient2Date[data.patient] === 1)
-			delete Patient2Date[data.patient];
+		if(Patient2Date[data.patient].length === 1) {
+			delete Patient2Date[data.patient];	
+		}
 		else {
 			index = Patient2Date[data.patient].indexOf(apptDate);
 			Patient2Date[data.patient].splice(index, 1);
