@@ -3,8 +3,23 @@
 @date: 8-16-15
 @version: 0.1
 
-File manipulation helper functions
+File manipulation helper functions. API. 
 */
+
+/**
+    Binds a focus warning to the metadata
+*/
+function bindWarning() {
+    $('#staticForm :input').unbind('focus');
+
+    $('#staticForm :input').focus(function() {
+        var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
+        if (confirmBox) {
+            $('#staticForm :input').unbind('focus');
+            $('li[id^="form-"]').trigger('change');
+        }
+    });
+}
 
 /**
     Attaches the handler for changes in the form
@@ -24,30 +39,6 @@ function attachSubmitHandler(formId) {
         }
         
     });
-}
-
-/**
-    Loads form data for a given data field
-
-    @param: formSelector; string; id of the form WITH a #
-    @param: className; string; the class of the field WITHOUT a .
-    @param: value; string; value to copy in 
-*/
-function openFormData(formSelector, className, value) {
-
-    //If DOM element doesn't exist, we need to create it
-    if (!$(formSelector + " ." + className).length) {
-        var classInfo = className.split('-');
-
-        for(var j = global_slotCount; j <= classInfo[1]; j++) {
-            if(!$(formSelector + " ." + classInfo[0] + '-' + j).length) {
-                var DOMelement = $(formSelector + " ." + classInfo[0] + '-' + (j - 1)).closest("tr");
-                createNewRow(DOMelement);
-            }
-        }
-    }
-
-    $(formSelector + " ." + className).val(value);
 }
 
 /**
@@ -72,23 +63,6 @@ function checkFormErrors(form) {
         return false;
     }
 
-    if(Patient2Date[name] && name != currentPatient) {
-
-        for(var index in Patient2Date[name]) {
-
-            if(date.getTime() === parseInt(Patient2Date[name][index])) {
-
-                if(confirm("Patient is already in the database. Saving may overwrite previous data. Continue?")) {
-                    break;
-                }
-                else {
-                    return false;
-                }
-            } 
-
-        }
-    }
-
     return true;
 }
 
@@ -110,7 +84,7 @@ function removeForms(callback) {
         $(".meta-data input").val("");
         global_formCount = -1;
         changedFormIDs = {};
-        currentPatient = "";
+        global_patientInfo.currentPatient = "";
         firstDateLoaded = "";
         lastDateLoaded = "";
 
@@ -120,37 +94,24 @@ function removeForms(callback) {
     });
 }
 
-
 /**
-    Creates a form and increases the global form count by one
+    Takes a form DOM/jquery element and binds events to the elements inside it. Helper method to createForm()
 
-    @param: noDate; bool; whether or not to copy the date value in
+    @param: $form; jquery form element
 */
-function createForm(noDate) {
-    global_formCount++;
-
-    var globalCount = global_formCount;
-
-    var $form = $("#form-default").clone(true);
-
-    $form.attr("id","form-" + globalCount);
-
-    $form.removeClass("hidden");
+function bindNewFormEvents($form) {
 
     //Dynamic rows
     $form.find(".create-new-row-on-click").click(function() {
         createNewRow(this);
     });
 
-    if(!noDate)
-        $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
-
     $form.find(".apptDate").change(function() {
         var dateString = $(this).val();
         var dateTime = new Date(dateString).getTime() + "";
 
-        for(var i in Patient2Date[currentPatient]) {
-            if(Patient2Date[currentPatient][i] === dateTime) {
+        for(var i in Patient2Date[global_patientInfo.currentPatient]) {
+            if(Patient2Date[global_patientInfo.currentPatient][i] === dateTime) {
                 alert("This date is already set for this patient. Please select another date.");
                 $(this).val("");
             }
@@ -168,7 +129,31 @@ function createForm(noDate) {
 
     });
 
-    if(globalCount > 0) 
+    attachSubmitHandler('#' + $form.attr("id"));
+
+    return $form;
+}
+
+/**
+    Creates a form and increases the global form count by one
+
+    @param: noDate; bool; whether or not to copy the date value in
+*/
+function createForm(noDate) {
+    global_formCount++;
+
+    var $form = $("#form-default").clone(true);
+
+    $form.attr("id","form-" + global_formCount);
+
+    $form.removeClass("hidden");
+
+    if(!noDate)
+        $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
+
+    $form = bindNewFormEvents($form);
+
+    if(global_formCount > 0) 
         $("#CopyForward").fadeIn();
 
     $(".multi-day-form-exercises-info-container").append($form);
@@ -188,14 +173,8 @@ function createNewForm() {
         $('#staticForm').change(function() {
             $('li[id^="form-"]').trigger('change');
         });
-        attachSubmitHandler('#form-' + global_formCount);
-        $(".tables").fadeIn(function () {
-            $(".forms").animate({ scrollLeft: scroll}, 400);
-        });
 
-        $('html, body').animate({
-            scrollTop: $("#BreakOne").offset().top
-        }, 400);
+        postCreateNewForm();
     });
 }
 
@@ -231,7 +210,3 @@ function createNewRow(DOMelement) {
     $(table).append($newRow);
  }
 
-
-function updateCurrentPatient() {
-    currentPatient = $('.meta-data .patient_last').val() + ", " + $('.meta-data .patient_first').val();
-}

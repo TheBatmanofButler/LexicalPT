@@ -15,49 +15,15 @@ File manipulation functions directly related to the server
 function loadFormToDB(form) {
     //Set up basic server request
     var values = {};
+
+    var values = processForm(form);
+
     values.name = "store";
     values.userKey = global_userKey;
 
-    var lastName = "";
-    var firstName = "";
+    global_patientInfo.currentPatient = values['patient'];
 
-    //load meta-data first
-    $('.meta-data :input').each(function() {
-        if(this.name) {
-            if(this.name === 'patient_last') {
-                lastName = $(this).val().toUpperCase();
-            }
-            else if (this.name === 'patient_first') {
-                firstName = $(this).val().toUpperCase();
-            }
-            else {
-                values[this.name] = $(this).val();
-            }
-        }
-    });
-
-    //query the form, convert to object
-    var $inputs = $(form +' :input');
-    $inputs.each(function() {
-        if(this.name) {
-            values[this.name] = $(this).val();
-        }
-    });
-
-    values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
-    values['patient'] = lastName + ', ' + firstName;
-
-    currentPatient = values['patient'];
-
-    $('#staticForm :input').unbind('focus');
-
-    $('#staticForm :input').focus(function() {
-        var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
-        if (confirmBox) {
-            $('#staticForm :input').unbind('focus');
-            $('li[id^="form-"]').trigger('change');
-        }
-    });
+    bindWarning();
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
@@ -108,97 +74,23 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         global_deferredArray = [];
 
         //Load the meta-data
-        var nameInfo = data[0]['patient'].S.split(', ');
+        loadMetaData(data);
 
-        $(".meta-data .patient_first").val(nameInfo[1]);
-        $(".meta-data .patient_last").val(nameInfo[0]);
+        loadFormData(data);  
 
-        if (data[0]['protocol-approved']) {
-           $(".meta-data .protocol-approved").val(data[0]['protocol-approved'].S);
-        } 
-        
-
-        if (data[0]['precautions']) {
-            $(".meta-data .precautions").val(data[0]['precautions'].S);
-        } 
-
-        if (data[0]['diagnosis']) {
-            $(".meta-data .diagnosis").val(data[0]['diagnosis'].S);
-        }
-
-        if (data[0]['doctorname']) {
-            $(".meta-data .doctorname").val(data[0]['doctorname'].S);
-        }
-
-        //load the rest of the data
-        for(var i = 0; i < data.length; i++) {
-
-            if(i > global_formCount) {
-                createForm();
-            }
-
-            var inverseFormVal = data.length - i - 1;
-
-            for(var classnames in data[inverseFormVal]) {
-                if(classnames === 'apptDate') {
-
-                    $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
-                
-                } else {
-                    openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
-                }  
-            }
-        
-            attachSubmitHandler('#form-' + i);
-        }       
-
-        //loads data for prevfive/nextfive
-        currentPatient = data[0]['patient'].S;
-        firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
-        lastDateLoaded = parseInt(data[0]['apptDate'].N);   
+        //loads patient data
+        global_patientInfo.currentPatient = data[0]['patient'].S;
+        global_patientInfo.firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
+        global_patientInfo.lastDateLoaded = parseInt(data[0]['apptDate'].N);   
 
         //Binds enter key to dynamic form
         attachSubmitHandler('#form-' + global_formCount);  
 
         //Animations
-        $(".tables").fadeIn(function() {
-            console.log(requestedDate)
-            var length = Patient2Date[currentPatient].length;
-            var index = length - Patient2Date[currentPatient].indexOf(requestedDate.toString()) - 1;
-            var scroll = document.getElementById('Forms').scrollWidth/length * index;
-
-            $(".forms").animate({ scrollLeft: scroll}, 0);
-            $(".forms").animate({ scrollLeft: scroll}, 400);
-
-            //$('#form-' + global_formCount + ' .apptDate').focus();
-
-            //get the ms number for the first and last dates that exist in the db
-            var firstDateForPatient =  parseInt(Patient2Date[currentPatient][Patient2Date[currentPatient].length - 1]);
-            var lastDateForPatient =  parseInt(Patient2Date[currentPatient][0]);
-
-            if(firstDateLoaded > firstDateForPatient)
-                $('.prev-five').fadeIn();
-
-            if(lastDateLoaded < lastDateForPatient)
-                $('.next-five').fadeIn();
-        });
-        
-
-
-        $('html, body').animate({
-                scrollTop: $("#BreakOne").offset().top
-        }, 400);
+        postFormLoad();
     });
 
-    $('#staticForm :input').unbind('focus');
-
-    $('#staticForm :input').focus(function() {
-        var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
-        if (confirmBox) {
-            $('#staticForm :input').unbind('focus');
-            $('li[id^="form-"]').trigger('change');
-        }
-    });
+    bindWarning();
 }
 
 /**
@@ -239,7 +131,7 @@ function deleteForm(form) {
 
     socket.emit("clientToServer", {
         name: "formDelete",
-        patient: currentPatient,
+        patient: global_patientInfo.currentPatient,
         apptDate: apptDate, 
         userKey: global_userKey
     }, function(data, err, isAppError) {
@@ -263,7 +155,7 @@ function closePatientInjury() {
 
     socket.emit("clientToServer", {
         name: 'closeInjury',
-        patient: currentPatient,
+        patient: global_patientInfo.currentPatient,
         userKey: global_userKey
     }, function(data, err, key) {
         if(err) {
@@ -271,11 +163,7 @@ function closePatientInjury() {
             return;
         }
 
-        removeForms();
-        $('html, body').animate({
-            scrollTop: 0
-        }, 400);
-        $("#queryResetButton").click();
+        postCloseInjury();
     });
 }
 

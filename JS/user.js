@@ -6,23 +6,7 @@
 User profile functions
 */
 
-var global_username;
-var global_userEmail;
-var global_userKey;
-
 //Post Login------------------------------------------------------------------------------------------
-
-/**
-	UI function that displays the current username on top banner
-
-	@param: username; string; the name of the user
-*/
-function displayCurrentUser(username) {
-	if(username)
-		$("#CurrentLogin").html("Logged in as: " + username);
-	else
-		$("#CurrentLogin").html("Not logged in");
-}
 
 /**
 	Sets important variables on login
@@ -40,12 +24,7 @@ function login(data) {
 	localStorage.setItem("username", global_username);
 	localStorage.setItem("password", $("#PasswordField").val());
 
-	displayCurrentUser(global_username);
-	$(".prelogin-content, #landingpagebutton, .login-hide").fadeOut( function() {	
-		$(".postlogin-content").fadeIn();
-
-		$(".login-show").fadeIn().css("display","inline");
-	});
+	postLogin();
 
 	PatientDateInput(data['dataFromScan']);
 }
@@ -60,10 +39,7 @@ function logout() {
 	displayCurrentUser();
 	removeForms();
 
-	$(".postlogin-content, .login-show, #successAlert").fadeOut( function() {	
-		$(".prelogin-content, #landingpagebutton, .logout-show").fadeIn();
-		$("#queryResetButton").click();
-	});
+	postLogout();
 }
 
 /**

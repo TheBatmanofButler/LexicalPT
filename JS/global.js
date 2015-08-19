@@ -19,12 +19,19 @@ var changedFormIDs = {};
 var deletedForms = {};
 
 //Data for the current patient that is loaded
-var currentPatient = "";
-var lastDateLoaded = "";
-var firstDateLoaded = "";
+var global_patientInfo = {
+	currentPatient: "";
+	lastDateLoaded: "";
+	firstDateLoaded: "";
+}
 
 //Used to track changed forms
 var global_deferredArray = [];
 
 //Used to track default number of exercise slots
 var global_slotCount = 3;
+
+//User info
+var global_username;
+var global_userEmail;
+var global_userKey;

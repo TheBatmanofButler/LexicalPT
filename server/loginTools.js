@@ -26,12 +26,11 @@ function generateUserKey(username, password) {
 /**
 	Checks database if the current username is already taken. If so, sends newUserResponseFailure message. 
 
-	@param: socket; socket.io socket; connection to send failure message to
 	@param: table; dynamodb table; where to search for data
 	@param: username; string; the username to search for 
 	@param: callback; function; the function to call when the search is finished and successful
 */
-function checkUser(socket, table, username, callback) {
+function checkUser(table, username, callback) {
 	table.getItem({Key: {'username':{'S':username}}}, function(err, data)  {
 		if(err) {
 			callback(err);
@@ -70,14 +69,13 @@ module.exports = {
 	/**
 		Logs the user in and runs proper checks, sending info back as appropriate (either error or userkey)
 
-		@param: socket; socket.io socket; connection to send data to 
 		@param: table; dynamodb table; where to search for login info
 		@param: incomingObj; {}
 			@param: username; string; username for account login
 			@param: password; string; password for account login
 		@param: callback; function; the function to call if successfull login 
 	*/
-	loginUser: function(socket, usersTable, patientsTable, incomingObj, callback) {
+	loginUser: function(usersTable, patientsTable, incomingObj, callback) {
 
 		// Read the item from the table
 	  	usersTable.getItem({Key: {'username':{'S':incomingObj.username}}}, function(err, dataFromgetItem) {
@@ -116,7 +114,6 @@ module.exports = {
 	/**
 		Creates new account and runs proper checks, sending info back as appropriate (either error or userkey)
 
-		@param: socket; socket.io socket; connection to send data to 
 		@param: table; dynamodb table; where to search for login info
 		@param: incomingObj; {}
 			@param: username; string; username for account login

@@ -67,7 +67,7 @@ function serverHandler(socket, incomingObj, callback) {
 	//Login pipe
 	if(incomingObj.name === 'login') {
 
-		loginTools.loginUser(socket, userTable, fileTable, incomingObj, function(data, err, key) {
+		loginTools.loginUser(userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
 				callback(data, err, key);
@@ -81,22 +81,30 @@ function serverHandler(socket, incomingObj, callback) {
 	//Post login
 	else if(incomingObj.userKey) {
 
-		console.log(incomingObj)
-
 		if(!checkUserKey(socket, incomingObj.userKey)) {
 			callback(null, {name: 'loginFailure', message: "Userkey incorrect, command failed"})
 		}
 
 		//store data
 		if(incomingObj.name === 'store') {
-			storageTools.storeData(socket, incomingObj, fileTable, io, callback);
+			storageTools.storeData(incomingObj, fileTable, io, function(data, err, key) {
+				if(err) {
+					callback(null, err, key);
+				}
+				else {
+					dataObj['name'] = 'updateSearch';
+					io.sockets.emit('serverToClient', dataObj);
+					callback(dataObj);
+				}
+
+			});
 		}
 		//pull data
 		else if(incomingObj.name === 'retrieve') {
-			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
+			storageTools.retrieveData(incomingObj, fileTable, callback);
 		}
 		else if(incomingObj.name === 'formDelete') {
-			storageTools.deleteData(socket, incomingObj, fileTable, function(data, err, key) {
+			storageTools.deleteData(incomingObj, fileTable, function(data, err, key) {
 				if(err) {
 					callback(null, err, key);
 				}
@@ -113,7 +121,7 @@ function serverHandler(socket, incomingObj, callback) {
 			});
 		}
 		else if (incomingObj.name === 'closeInjury') {
-			storageTools.closePatientInjury(socket, incomingObj, fileTable, archiveTable, function(data, err, key) {
+			storageTools.closePatientInjury(incomingObj, fileTable, archiveTable, function(data, err, key) {
 				if(err) {
 					callback(null, err, key);
 				}

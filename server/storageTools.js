@@ -17,14 +17,13 @@ module.exports = {
 	/**
 		Stores patient data to dynamo. 
 
-		@param: socket; the user connection
 		@param: incomingObj
-			@param: timestamp; time in milliseconds from epoch
-			@param: '0-0', '1-5', etc.; coordinates keyed to values stored in tables
+			@param: apptTime; time in milliseconds from epoch
+			@paraM: patient; string; patientname
 		@param: table; where to store
 		@param: callback; what to do after
 	*/
-	storeData: function(socket, incomingObj, table, io, callback) {
+	storeData: function(incomingObj, table, io, callback) {
 		var dataObj = {};
 
 		for(key in incomingObj) {
@@ -47,8 +46,6 @@ module.exports = {
 			}
 			else {
 				callback(dataObj);
-				dataObj['name'] = 'updateSearch';
-				io.sockets.emit('serverToClient', dataObj);
 			}
 	    });
 	},
@@ -57,14 +54,12 @@ module.exports = {
 		Retrieves data of a specific user using table.query
 		Pulls down last 5 days in order of most recent
 
-		@param: socket; socket.io connection; 
 		@param: incomingObj; {}
 			@param: patient; string; the patient name (hash)
-			@param: apptDate; string; the date in milliseconds to search from
 		@param: table; dynamo db table; where to get data
 		@param: callback; function(data, err)
 	*/
-	retrieveData: function(socket, incomingObj, table, callback) {
+	retrieveData: function(incomingObj, table, callback) {
 		var sign = "<=";
 
 		if(incomingObj.reverseOrder) {
@@ -73,12 +68,10 @@ module.exports = {
 
 		table.query({
 			ScanIndexForward: false,
-			//Limit: 5,
 			ExpressionAttributeValues: {
 				":hashval": {"S": incomingObj['patient']}
-				//":rangeval": {"N": incomingObj['apptDate']}
 			},
-			KeyConditionExpression: "patient = :hashval" //AND apptDate " + sign + " :rangeval"
+			KeyConditionExpression: "patient = :hashval"
 		}, function(err, data)  {
 
 			if(err) {
@@ -96,14 +89,13 @@ module.exports = {
 	/**
 		Deletes data from the requested table
 
-		@param: socket; client connection
 		@param: incomingObj;
 			@param: patient; hash value for db
 			@param: apptDate; range value for db
 		@param: table; where to search
 		@param: callback; function(data, err)
 	*/
-	deleteData: function(socket, incomingObj, table, callback) {
+	deleteData: function(incomingObj, table, callback) {
 		console.log("HI")
 		table.deleteItem({
 			Key: {
@@ -123,10 +115,16 @@ module.exports = {
 
 	/**
 		Closes a patient injury and moves the data to an archive table
-	*/
-	closePatientInjury: function(socket, incomingObj, dataTable, archiveTable, callback) {
 
-		this.retrieveData(socket, incomingObj, dataTable, function(data, err) {
+		@param: incomingObj; obj;
+			@param: patient; string
+		@param: dataTable; where to delete data from
+		@param: archiveTable; where to move data to
+		@param: callback; function(data, err, key); data is always null
+	*/
+	closePatientInjury: function(incomingObj, dataTable, archiveTable, callback) {
+
+		this.retrieveData(incomingObj, dataTable, function(data, err) {
 			if(err) {
 				callback(null, err);
 			}

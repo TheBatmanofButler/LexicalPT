@@ -48,22 +48,6 @@ function finalDelete(all) {
 }
 
 /**
-    Calls for the previous set of five forms from the server
-*/
-function loadPrevFive() {
-    loadChangedFormsToDB();
-    loadFormFromDB(currentPatient, firstDateLoaded, null, true);
-}
-
-/**
-    Calls for the next set of five forms from the server
-*/
-function loadNextFive() {
-    loadChangedFormsToDB();
-    loadFormFromDB(currentPatient, lastDateLoaded, true)
-}
-
-/**
     Creates a new form for a specific patient
 */
 function createNewPatientForm() {
