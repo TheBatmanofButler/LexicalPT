@@ -61,10 +61,8 @@ $('#CancelDelete').click(function() {
     $('#DeleteAll').hide();
 
     $(".data-form").unbind( "click" );
-
-    $('.data-form').closest("li").css('background', 'white');
+    $('.data-form').closest("li").css('background', 'rgba(25, 28, 181, .25)');
     deletedForms = {};
-
 })
 
 $('#DeleteSelected').click(function() {
