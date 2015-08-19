@@ -44,10 +44,7 @@ function loadFormToDB(form) {
         }
     });
 
-    var storeDateString = values['apptDate'];
-
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
-
     values['patient'] = lastName + ', ' + firstName;
 
     currentPatient = values['patient'];

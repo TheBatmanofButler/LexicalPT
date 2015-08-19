@@ -124,7 +124,11 @@ function main() {
 
     if (localStorage.getItem("password")) {
         $("#PasswordField").val(localStorage.getItem("password"));
-    }  
+    } 
+
+    $('.meta-data .patient_first, .meta-data .patient_last').change(function() {
+        updateCurrentPatient();
+    });
 }
 
 main();

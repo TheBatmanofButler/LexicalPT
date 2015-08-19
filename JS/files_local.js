@@ -185,14 +185,12 @@ function createNewForm() {
         createForm();
         $('#staticForm :input').unbind('focus');
          
-        $(".forms").animate({ scrollLeft: scroll}, 0);
-
         $('#staticForm').change(function() {
             $('li[id^="form-"]').trigger('change');
         });
         attachSubmitHandler('#form-' + global_formCount);
         $(".tables").fadeIn(function () {
-            $("#form-" + global_formCount + " .patient_last").focus();
+            $(".forms").animate({ scrollLeft: scroll}, 400);
         });
 
         $('html, body').animate({
@@ -232,3 +230,8 @@ function createNewRow(DOMelement) {
 
     $(table).append($newRow);
  }
+
+
+function updateCurrentPatient() {
+    currentPatient = $('.meta-data .patient_last').val() + ", " + $('.meta-data .patient_first').val();
+}
