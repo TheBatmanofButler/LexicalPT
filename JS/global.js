@@ -20,9 +20,9 @@ var deletedForms = {};
 
 //Data for the current patient that is loaded
 var global_patientInfo = {
-	currentPatient: "";
-	lastDateLoaded: "";
-	firstDateLoaded: "";
+	currentPatient: "",
+	lastDateLoaded: "",
+	firstDateLoaded: ""
 }
 
 //Used to track changed forms

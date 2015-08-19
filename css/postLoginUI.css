@@ -153,11 +153,21 @@
 
                 .meta-data input {
                     margin-bottom: 2%;
+                    text-align: center;
                 }
 
                 .meta-data table {
                     width: 100%;
                 }
+
+                    .meta-data table tr {
+                        vertical-align: top;
+                        text-align: center;
+                    }
+
+                    .meta-data table input {
+                        width: 80%;
+                    }
 
             .multi-day-form-exercises-info-container {
                 text-align: center;
