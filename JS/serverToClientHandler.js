@@ -11,6 +11,7 @@ socket.on('serverToClient', function(data) {
 		errorHandler({message: 'No name, server data not sent'});
 	}
 	else {
+
 		if(data.name === 'Error') {
 			errorHandler(data.message);
 		}
@@ -22,8 +23,9 @@ socket.on('serverToClient', function(data) {
 			else if (data.name === 'removeFromSearch') {
 				removeFormData(data);
 			}
-			
+
 		}
+		
 	}
 });
 

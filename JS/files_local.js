@@ -183,6 +183,10 @@ function createForm(noDate) {
 function createNewForm() {
     removeForms(function() {
         createForm();
+        $('#staticForm :input').unbind('focus');
+         
+        $(".forms").animate({ scrollLeft: scroll}, 0);
+
         $('#staticForm').change(function() {
             $('li[id^="form-"]').trigger('change');
         });

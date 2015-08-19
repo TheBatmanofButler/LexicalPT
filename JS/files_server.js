@@ -170,8 +170,7 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
             var index = length - Patient2Date[currentPatient].indexOf(requestedDate.toString()) - 1;
             var scroll = document.getElementById('Forms').scrollWidth/length * index;
 
-            console.log(scroll)
-
+            $(".forms").animate({ scrollLeft: scroll}, 0);
             $(".forms").animate({ scrollLeft: scroll}, 400);
 
             //$('#form-' + global_formCount + ' .apptDate').focus();

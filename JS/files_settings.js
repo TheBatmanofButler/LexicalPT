@@ -43,6 +43,8 @@ function finalDelete(all) {
             deleteForm(formIDs[eachForm]);
         }
     }
+
+    $(".forms").animate({ scrollLeft: 0}, 400);
 }
 
 /**
@@ -62,7 +64,7 @@ function loadNextFive() {
 }
 
 /**
-    Creates a new form for a specific patient and copies in the patient name, precautions, and diagnosis for the new form
+    Creates a new form for a specific patient
 */
 function createNewPatientForm() {
     createForm(true);
