@@ -182,6 +182,8 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         }, 400);
     });
 
+    $('#staticForm :input').unbind('click');
+
     $('#staticForm :input').click(function() {
         var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
         if (confirmBox) {
