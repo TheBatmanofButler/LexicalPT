@@ -259,3 +259,28 @@ function addNewFormData(newData) {
 	// reset comboboxes
 	$("#queryResetButton").trigger('click');
 };
+
+/**
+	Refreshes comboboxes and removes deleted data
+*/
+function removeFormData(data, apptDate) {
+
+	if(apptDate) {
+		var index = Date2Patient[apptDate].indexOf(data.patient);
+		Date2Patient[apptDate].splice(index, 1);
+	}
+	//Remove the patient from all dates
+	else {
+		for(var i in Patient2Date[data.patient]) {
+			var date = Patient2Date[data.patient][i];
+			var index = Date2Patient[date].indexOf(data.patient);
+			Date2Patient[date].splice(index, 1);
+		}
+	}
+
+	//remove all dates from patient
+	delete Patient2Date[data.patient];
+
+	// reset comboboxes
+	$("#queryResetButton").trigger('click');
+}

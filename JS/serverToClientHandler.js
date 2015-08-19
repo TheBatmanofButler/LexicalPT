@@ -17,6 +17,9 @@ socket.on('serverToClient', function(data) {
 		else if (data.name === 'updateSearch') {
 			addNewFormData(data);
 		}
+		else if (data.name === 'removeFromSearch') {
+			removeFormData(data);
+		}
 	}
 });
 

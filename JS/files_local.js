@@ -148,7 +148,7 @@ function createForm(noDate) {
         console.log(dateTime)
         console.log(Patient2Date[currentPatient])
 
-        for(i in Patient2Date[currentPatient]) {
+        for(var i in Patient2Date[currentPatient]) {
             if(Patient2Date[currentPatient][i] === dateTime) {
                 alert("This date is already set for this patient. Please select another date.");
                 $(this).val("");

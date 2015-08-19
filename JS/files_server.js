@@ -240,7 +240,11 @@ function closePatientInjury() {
         patient: currentPatient,
         userKey: global_userKey
     }, function(data, err, key) {
-        //Update the comboboxes
+        if(err) {
+            errorHandler(err);
+            return;
+        }
+
         removeForms();
         $('html, body').animate({
             scrollTop: 0

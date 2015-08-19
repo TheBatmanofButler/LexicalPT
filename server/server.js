@@ -101,8 +101,13 @@ function serverHandler(socket, incomingObj, callback) {
 				if(err) {
 					callback(null, err, key);
 				}
-				else { 
+				else {
+					io.sockets.emit('serverToClient', {
+						name: 'removeFromSearch', 
+						patient: incomingObj.patient
+					});
 
+					callback();
 				}
 			});
 		}
