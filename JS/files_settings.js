@@ -105,7 +105,7 @@ function downloadFormsAsPDF() {
     var doctorText = "Referring Doctor: " + $('.meta-data .doctorname').val(); 
     var splitDoctorText = doc.splitTextToSize(doctorText, 80);
 
-    var approvalText = "Protocol Approved By: " + $('.meta-data .protocol-approved').val();
+    var approvalText = "Protocol Approved By: " + $('.meta-data .protocol_approved').val();
     var splitApprovalText = doc.splitTextToSize(approvalText, 80);
 
     yStart += 10; 

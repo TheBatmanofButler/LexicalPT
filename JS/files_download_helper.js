@@ -72,8 +72,8 @@ function loadMetaData(data) {
     $(".meta-data .patient_first").val(nameInfo[1]);
     $(".meta-data .patient_last").val(nameInfo[0]);
 
-    if (data[0]['protocol-approved']) {
-       $(".meta-data .protocol-approved").val(data[0]['protocol-approved'].S);
+    if (data[0]['protocol_approved']) {
+       $(".meta-data .protocol_approved").val(data[0]['protocol_approved'].S);
     } 
     
     if (data[0]['precautions']) {
