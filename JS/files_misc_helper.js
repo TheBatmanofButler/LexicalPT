@@ -63,6 +63,12 @@ function checkFormErrors(form) {
         return false;
     }
 
+    if(Patient2Date[name] && name != global_patientInfo.currentPatient) {
+       alert("Patient is already in the database. Please submit a new patient name.");
+       return false;
+    }
+
+
     return true;
 }
 
@@ -210,3 +216,6 @@ function createNewRow(DOMelement) {
     $(table).append($newRow);
  }
 
+function updateCurrentPatient() {
+    global_patientInfo.currentPatient = $('.meta-data .patient_last').val() + ", " + $('.meta-data .patient_first').val();
+}

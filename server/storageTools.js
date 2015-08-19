@@ -23,7 +23,7 @@ module.exports = {
 		@param: table; where to store
 		@param: callback; what to do after
 	*/
-	storeData: function(incomingObj, table, io, callback) {
+	storeData: function(incomingObj, table, callback) {
 		var dataObj = {};
 
 		for(key in incomingObj) {

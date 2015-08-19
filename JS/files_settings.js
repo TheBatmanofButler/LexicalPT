@@ -83,9 +83,42 @@ function copyForward() {
 function downloadFormsAsPDF() {
     var doc = new jsPDF();
 
-    var labelfontSize = 8;
     var yStart = 20;
-    var xStart = 20;
+    var xStart = 15;
+    var titleFontSize = 30;
+
+    doc.setFontSize(titleFontSize);
+
+    doc.text(xStart, yStart, "Patient Info for: " + global_patientInfo.currentPatient);
+
+    var injuryFontSize = 20;
+    doc.setFontSize(injuryFontSize);
+
+    yStart += 15;
+
+    var injuryText = "Patient Injury: " + $('.meta-data .diagnosis').val();
+    doc.text(xStart, yStart, injuryText);
+
+    var metaDataFontSize = 15;
+    doc.setFontSize(metaDataFontSize);
+
+    var doctorText = "Referring Doctor: " + $('.meta-data .doctorname').val(); 
+    var splitDoctorText = doc.splitTextToSize(doctorText, 80);
+
+    var approvalText = "Protocol Approved By: " + $('.meta-data .protocol-approved').val();
+    var splitApprovalText = doc.splitTextToSize(approvalText, 80);
+
+    yStart += 10; 
+
+    doc.text(xStart, yStart, splitDoctorText);
+    doc.text(xStart + 100, yStart, splitApprovalText);
+
+    yStart += 10; 
+
+    doc.text(xStart, yStart, "Precautions: " + $('.meta-data .precautions').val())
+
+    yStart += 10;
+
     var yDelta = 5;
     var xDelta = 45;
 
@@ -93,6 +126,7 @@ function downloadFormsAsPDF() {
 
     var yOffset = yStart;
     var xOffset = xStart;
+    var labelfontSize = 10;
 
     doc.setFontSize(labelfontSize);
 
@@ -148,7 +182,7 @@ function downloadFormsAsPDF() {
     });
 
     //$.when.apply($, deferredArray).then(function() {
-        doc.save('test.pdf');
-    //});
+        doc.output('dataurlnewwindow');
 
+    //});
 }

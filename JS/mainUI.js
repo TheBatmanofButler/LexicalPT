@@ -67,7 +67,7 @@ function postSubmit() {
 
 
 //Called after loading forms from db
-function postFormLoad() {
+function postFormLoad(requestedDate) {
     $(".tables").fadeIn(function() {
 
         var length = Patient2Date[global_patientInfo.currentPatient].length;

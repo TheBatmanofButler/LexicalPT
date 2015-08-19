@@ -27,15 +27,16 @@ function loadFormToDB(form) {
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
-		if(err) {
-			errorHandler(err, isAppError);
-		} 
-		else {
-            postSubmit();
-            var tempDeferred = changedFormIDs[form];
-            delete changedFormIDs[form];
-            tempDeferred.resolve();
-		}
+            alert()
+    		if(err) {
+    			errorHandler(err, isAppError);
+    		} 
+    		else {
+                postSubmit();
+                var tempDeferred = changedFormIDs[form];
+                delete changedFormIDs[form];
+                tempDeferred.resolve();
+    		}
 	});
 }
 
@@ -66,6 +67,7 @@ function loadChangedFormsToDB(callback) {
 
     @param: data; [] of objects like {}
     @param: noExtraForm; bool; whether or not to add a form at the end of the load
+    @param: requestedDate; int
 */
 function _loadFormFromDB(data, noExtraForm, requestedDate) {
     //delete all previous forms
@@ -87,7 +89,7 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         attachSubmitHandler('#form-' + global_formCount);  
 
         //Animations
-        postFormLoad();
+        postFormLoad(requestedDate);
     });
 
     bindWarning();

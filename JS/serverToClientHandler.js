@@ -16,7 +16,7 @@ socket.on('serverToClient', function(data) {
 			errorHandler(data.message);
 		}
 		else if(global_userKey) {
-			
+			alert();
 			if (data.name === 'updateSearch') {
 				addNewFormData(data);
 			}

@@ -87,14 +87,14 @@ function serverHandler(socket, incomingObj, callback) {
 
 		//store data
 		if(incomingObj.name === 'store') {
-			storageTools.storeData(incomingObj, fileTable, io, function(data, err, key) {
+			storageTools.storeData(incomingObj, fileTable, function(data, err, key) {
 				if(err) {
 					callback(null, err, key);
 				}
 				else {
-					dataObj['name'] = 'updateSearch';
-					io.sockets.emit('serverToClient', dataObj);
-					callback(dataObj);
+					data['name'] = 'updateSearch';
+					io.sockets.emit('serverToClient', data);
+					callback(data);
 				}
 
 			});
