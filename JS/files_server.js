@@ -49,7 +49,7 @@ function loadFormToDB(form) {
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
 
     values['patient'] = lastName + ', ' + firstName;
-    console.log(44);
+
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
 		if(err) {
@@ -141,21 +141,15 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
             }
         
             attachSubmitHandler('#form-' + i);
-        }
-
-        
+        }       
 
         //loads data for prevfive/nextfive
         currentPatient = data[0]['patient'].S;
         firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
-        lastDateLoaded = parseInt(data[0]['apptDate'].N);
-
-        
+        lastDateLoaded = parseInt(data[0]['apptDate'].N);   
 
         //Binds enter key to dynamic form
-        attachSubmitHandler('#form-' + global_formCount);
-
-        
+        attachSubmitHandler('#form-' + global_formCount);  
 
         //Animations
         $(".tables").fadeIn(function() {
@@ -195,7 +189,6 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
             $('li[id^="form-"]').trigger('change');
         }
     });
-
 }
 
 /**

@@ -67,6 +67,11 @@ function checkFormErrors(form) {
         return false;
     }
 
+    if(name === ", ") {
+        alert("There is no patient name submitted. Please submit a patient name before saving.");
+        return false;
+    }
+
     if(Patient2Date[name] && name != currentPatient) {
 
         for(var index in Patient2Date[name]) {
@@ -93,7 +98,7 @@ function checkFormErrors(form) {
     @param: callback; function()
 */
 function removeForms(callback) {
-    if(Object.keys(changedFormIDs).length > 0) {
+    if(Object.keys(changedFormIDs).length > 0 && global_userKey) {
         if(!confirm("You have unsaved changes. Do you want to continue?")) {
             return;
         }
@@ -142,11 +147,7 @@ function createForm(noDate) {
 
     $form.find(".apptDate").change(function() {
         var dateString = $(this).val();
-        console.log(dateString)
         var dateTime = new Date(dateString).getTime() + "";
-
-        console.log(dateTime)
-        console.log(Patient2Date[currentPatient])
 
         for(var i in Patient2Date[currentPatient]) {
             if(Patient2Date[currentPatient][i] === dateTime) {
