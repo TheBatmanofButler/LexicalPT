@@ -14,11 +14,15 @@ socket.on('serverToClient', function(data) {
 		if(data.name === 'Error') {
 			errorHandler(data.message);
 		}
-		else if (data.name === 'updateSearch') {
-			addNewFormData(data);
-		}
-		else if (data.name === 'removeFromSearch') {
-			removeFormData(data);
+		else if(global_userKey) {
+			
+			if (data.name === 'updateSearch') {
+				addNewFormData(data);
+			}
+			else if (data.name === 'removeFromSearch') {
+				removeFormData(data);
+			}
+			
 		}
 	}
 });
