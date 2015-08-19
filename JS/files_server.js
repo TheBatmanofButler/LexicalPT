@@ -35,7 +35,7 @@ function loadFormToDB(form) {
             }
         }
     });
-    console.log(22);
+
     //query the form, convert to object
     var $inputs = $(form +' :input');
     $inputs.each(function() {
@@ -49,6 +49,18 @@ function loadFormToDB(form) {
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
 
     values['patient'] = lastName + ', ' + firstName;
+
+    currentPatient = values['patient'];
+
+    $('#staticForm :input').unbind('click');
+
+    $('#staticForm :input').click(function() {
+        var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
+        if (confirmBox) {
+            $('#staticForm :input').unbind('click');
+            $('li[id^="form-"]').trigger('change');
+        }
+    });
 
 	socket.emit("clientToServer", values,
 		function(data, err, isAppError) {
