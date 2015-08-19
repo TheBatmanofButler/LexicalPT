@@ -141,7 +141,19 @@ function createForm(noDate) {
         $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
 
     $form.find(".apptDate").change(function() {
-        //put code for date checking here
+        var dateString = $(this).val();
+        console.log(dateString)
+        var dateTime = new Date(dateString).getTime() + "";
+
+        console.log(dateTime)
+        console.log(Patient2Date[currentPatient])
+
+        for(i in Patient2Date[currentPatient]) {
+            if(Patient2Date[currentPatient][i] === dateTime) {
+                alert("This date is already set for this patient. Please select another date.");
+                $(this).val("");
+            }
+        }
     });
 
     $form.submit(function(event) {
