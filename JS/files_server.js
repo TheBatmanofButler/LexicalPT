@@ -43,7 +43,7 @@ function loadFormToDB(form) {
             values[this.name] = $(this).val();
         }
     });
-    console.log(33);
+
     var storeDateString = values['apptDate'];
 
     values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime();
@@ -52,12 +52,12 @@ function loadFormToDB(form) {
 
     currentPatient = values['patient'];
 
-    $('#staticForm :input').unbind('click');
+    $('#staticForm :input').unbind('focus');
 
-    $('#staticForm :input').click(function() {
+    $('#staticForm :input').focus(function() {
         var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
         if (confirmBox) {
-            $('#staticForm :input').unbind('click');
+            $('#staticForm :input').unbind('focus');
             $('li[id^="form-"]').trigger('change');
         }
     });
@@ -194,12 +194,12 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         }, 400);
     });
 
-    $('#staticForm :input').unbind('click');
+    $('#staticForm :input').unbind('focus');
 
-    $('#staticForm :input').click(function() {
+    $('#staticForm :input').focus(function() {
         var confirmBox = confirm("Are you sure you want to change the patient meta-data? This is critical information.");
         if (confirmBox) {
-            $('#staticForm :input').unbind('click');
+            $('#staticForm :input').unbind('focus');
             $('li[id^="form-"]').trigger('change');
         }
     });
