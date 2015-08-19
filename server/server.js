@@ -81,6 +81,8 @@ function serverHandler(socket, incomingObj, callback) {
 	//Post login
 	else if(incomingObj.userKey) {
 
+		console.log(incomingObj)
+
 		if(!checkUserKey(socket, incomingObj.userKey)) {
 			callback(null, {name: 'loginFailure', message: "Userkey incorrect, command failed"})
 		}
@@ -94,7 +96,21 @@ function serverHandler(socket, incomingObj, callback) {
 			storageTools.retrieveData(socket, incomingObj, fileTable, callback);
 		}
 		else if(incomingObj.name === 'formDelete') {
-			storageTools.deleteData(socket, incomingObj, fileTable, callback);
+			storageTools.deleteData(socket, incomingObj, fileTable, function(data, err, key) {
+				if(err) {
+					callback(null, err, key);
+				}
+				else {
+					console.log(incomingObj.apptDate)
+					io.sockets.emit('serverToClient', {
+						name: 'removeFromSearch', 
+						patient: incomingObj.patient,
+						apptDate: incomingObj.apptDate
+					});
+
+					callback();
+				}
+			});
 		}
 		else if (incomingObj.name === 'closeInjury') {
 			storageTools.closePatientInjury(socket, incomingObj, fileTable, archiveTable, function(data, err, key) {
@@ -123,6 +139,7 @@ function serverHandler(socket, incomingObj, callback) {
 	}
 	//Error pipe
 	else {
+		console.log(incomingObj)
 		callback(null, {message: 'Login first/Name not recognized'}, 'appError');
 	}
 }

@@ -232,6 +232,29 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     });
 }
 
+/**
+    Deletes a form. 
+
+    @param: form; string; form id with hashtag
+*/
+function deleteForm(form) {
+
+    var apptDate =  new Date(Date.parse($(form + " .apptDate").val())).getTime().toString();
+
+    socket.emit("clientToServer", {
+        name: "formDelete",
+        patient: currentPatient,
+        apptDate: apptDate, 
+        userKey: global_userKey
+    }, function(data, err, isAppError) {
+        if(err) {
+            errorHandler(err, isAppError);
+        }
+        else {
+            $(form).remove();
+        }
+    });
+}
 
 
 /** 

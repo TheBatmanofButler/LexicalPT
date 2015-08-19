@@ -263,11 +263,22 @@ function addNewFormData(newData) {
 /**
 	Refreshes comboboxes and removes deleted data
 */
-function removeFormData(data, apptDate) {
+function removeFormData(data) {
 
-	if(apptDate) {
+	if(data.apptDate) {
+		var apptDate = data.apptDate
+
+		//delete patient from date
 		var index = Date2Patient[apptDate].indexOf(data.patient);
 		Date2Patient[apptDate].splice(index, 1);
+
+		//delete date from patient
+		if(Patient2Date[data.patient] === 1)
+			delete Patient2Date[data.patient];
+		else {
+			index = Patient2Date[data.patient].indexOf(apptDate);
+			Patient2Date[data.patient].splice(index, 1);
+		}
 	}
 	//Remove the patient from all dates
 	else {
@@ -276,10 +287,10 @@ function removeFormData(data, apptDate) {
 			var index = Date2Patient[date].indexOf(data.patient);
 			Date2Patient[date].splice(index, 1);
 		}
-	}
 
-	//remove all dates from patient
-	delete Patient2Date[data.patient];
+		//remove all dates from patients
+		delete Patient2Date[data.patient];
+	}
 
 	// reset comboboxes
 	$("#queryResetButton").trigger('click');

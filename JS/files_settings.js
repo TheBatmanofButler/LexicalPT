@@ -45,45 +45,6 @@ function finalDelete(all) {
     }
 }
 
-function deleteForm(form) {
-
-    var values = {};
-    var lastName = "";
-    var firstName = "";
-
-    var $inputs = $(form +' :input');
-    $inputs.each(function() {
-        if(this.name) {
-            if(this.name === 'patient_last') {
-                lastName = $(this).val().toUpperCase();
-            }
-            else if (this.name === 'patient_first') {
-                firstName = $(this).val().toUpperCase();
-            }
-            else if (this.name === 'apptDate') {
-                values['apptDate'] = $(this).val();
-                values['apptDate'] = new Date(Date.parse(values['apptDate'])).getTime().toString();
-            }
-
-        }
-    });
-
-    values['patient'] = lastName + ', ' + firstName;
-
-    socket.emit("clientToServer", {
-        name: "formDelete",
-        patient: values['patient'],
-        apptDate: values['apptDate']
-    }, function(data, err, isAppError) {
-        if(err) {
-            errorHandler(err, isAppError);
-        }
-        else {
-            $(form).remove();
-        }
-    });
-}
-
 /**
     Calls for the previous set of five forms from the server
 */
