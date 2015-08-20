@@ -143,11 +143,12 @@
 
                     .meta-data .patient-info li {
                         display: inline-block;
+                        width: 100%;
                     }
 
                     .meta-data .patient-info input {
                         margin-top: 2%;
-                        width: 49%;
+                        width: 25%;
                     }
 
                 .meta-data input {
