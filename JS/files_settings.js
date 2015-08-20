@@ -28,6 +28,10 @@ function deleteToggle() {
 function finalDelete(all) {
 
     if (all) {
+        if(!confirm("Are you sure you want to delete this patient's information?")) {
+            return;
+        }
+
         $('.data-form').each(function() {
             if ($(this).parent('li').attr('id') != 'form-default') {
                 deletedForms['#' + $(this).parent('li').attr('id')] = true;

@@ -74,7 +74,7 @@ function postFormLoad(requestedDate) {
         var index = length - Patient2Date[global_patientInfo.currentPatient].indexOf(requestedDate.toString()) - 1;
         var scroll = document.getElementById('Forms').scrollWidth/length * index;
 
-        $(".forms").animate({ scrollLeft: scroll}, 0);
+        $(".forms").animate({ scrollLeft: 0}, 0);
         $(".forms").animate({ scrollLeft: scroll}, 400);
     });
     
