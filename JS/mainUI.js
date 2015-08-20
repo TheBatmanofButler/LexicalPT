@@ -103,6 +103,18 @@ function postCreateNewForm() {
     }, 400);
 }
 
+//Called after patient deletion
+function postDeleteAll() {
+    $(".forms").animate({ scrollLeft: 0}, 400);
+
+    removeForms();
+    $('html, body').animate({
+        scrollTop: 0
+    }, 400);
+    
+    $("#queryResetButton").click();
+}
+
 //Called after user logs out
 function postLogout() {
     $(".postlogin-content, .login-show, #successAlert").fadeOut( function() {   

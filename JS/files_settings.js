@@ -48,7 +48,7 @@ function finalDelete(all) {
         }
     }
 
-    $(".forms").animate({ scrollLeft: 0}, 400);
+    postDeleteAll();
 }
 
 /**
