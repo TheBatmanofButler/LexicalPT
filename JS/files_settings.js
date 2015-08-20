@@ -16,10 +16,10 @@ function deleteToggle() {
     $('.data-form').click( function() {
         var toggleState = deletedForms['#' + $(this).attr('id')]
         if (!toggleState) {
-            $(this).closest("li").css('background', 'yellow');
+            $(this).closest("li").css('background', 'red');
             deletedForms['#' + $(this).parent('li').attr('id')] = true;
         } else if (toggleState) {
-            $(this).closest("li").css('background', 'red');
+            $(this).closest("li").css('background', 'yellow');
             deletedForms['#' + $(this).parent('li').attr('id')] = false;
         }
     });

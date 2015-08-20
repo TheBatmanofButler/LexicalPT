@@ -27,7 +27,7 @@
 
             .search .search-containers li {
                 display: inline-block;
-                width: 19%;
+                width: 24%;
                 text-align: center;
                 vertical-align: top;
             }
@@ -314,6 +314,10 @@
                 -webkit-transition: background-color .1s;
                 transition: background-color .1s;
             }
+
+                .settings #CancelDelete, .settings #DeleteAll, .settings #DeleteSelected {
+                        display: none;
+                }
 
             .settings .setting-button:hover {
                 background-color: #b5191c;

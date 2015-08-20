@@ -44,21 +44,21 @@ $("#CreateNewForm").click(function(){
 // Reveal delete form checkboxes
 $("#DeleteMode").click(function() {
 
-    $('#DeleteMode').hide();
-    $('#CancelDelete').show();
-    $('#DeleteSelected').show();
-    $('#DeleteAll').show();
+    $('#DeleteMode').animate({ opacity: 0 });
+    $('#CancelDelete').fadeIn().css({'display':'inline-block'});
+    $('#DeleteSelected').fadeIn().css({'display':'inline-block'});
+    $('#DeleteAll').fadeIn().css({'display':'inline-block'});
 
-    $('.data-form').closest("li").css('background', 'red');
+    $('.data-form').closest("li").css('background', 'yellow');
 
     deleteToggle();
 });
 
 $('#CancelDelete').click(function() {
-    $('#DeleteMode').show();
-    $('#CancelDelete').hide();
-    $('#DeleteSelected').hide();
-    $('#DeleteAll').hide();
+    $('#DeleteMode').animate({ opacity: 100 });
+    $('#CancelDelete').fadeOut();
+    $('#DeleteSelected').fadeOut();
+    $('#DeleteAll').fadeOut();
 
     $(".data-form").unbind( "click" );
     $('.data-form').closest("li").css('background', 'rgba(25, 28, 181, .25)');
