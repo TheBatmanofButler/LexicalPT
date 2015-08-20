@@ -75,6 +75,14 @@ function loadMetaData(data) {
     if (data[0]['protocol_approved']) {
        $(".meta-data .protocol_approved").val(data[0]['protocol_approved'].S);
     } 
+
+    if (data[0]['premodality']) {
+       $(".meta-data .premodality").val(data[0]['premodality'].S);
+    } 
+
+    if (data[0]['postmodality']) {
+       $(".meta-data .postmodality").val(data[0]['postmodality'].S);
+    } 
     
     if (data[0]['precautions']) {
         $(".meta-data .precautions").val(data[0]['precautions'].S);
