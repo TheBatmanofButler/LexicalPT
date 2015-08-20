@@ -37,6 +37,8 @@ function finalDelete(all) {
                 deletedForms['#' + $(this).parent('li').attr('id')] = true;
             }
         });
+        
+        postDeleteAll();
     }
     
     var formIDs = Object.keys(deletedForms);
@@ -47,8 +49,6 @@ function finalDelete(all) {
             deleteForm(formIDs[eachForm]);
         }
     }
-
-    postDeleteAll();
 }
 
 /**
