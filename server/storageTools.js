@@ -60,30 +60,61 @@ module.exports = {
 		@param: callback; function(data, err)
 	*/
 	retrieveData: function(incomingObj, table, callback) {
-		var sign = "<=";
 
-		if(incomingObj.reverseOrder) {
-			sign = ">=";
+		if (typeof incomingObj.hashval === "string") {
+			var hashvalArg = {"S": incomingObj.hashval};
+		} else if (typeof incomingObj.hashval === "int") {
+			var hashvalArg = {"N": incomingObj.hashval + ""};
 		}
 
-		table.query({
-			ScanIndexForward: false,
-			ExpressionAttributeValues: {
-				":hashval": {"S": incomingObj['patient']}
-			},
-			KeyConditionExpression: "patient = :hashval"
-		}, function(err, data)  {
+		if (typeof incomingObj.rangeval === "string") {
+			var rangevalArg = {"S": incomingObj.rangeval};
+		} else if (typeof incomingObj.hashval === "int") {
+			var rangevalArg = {"N": incomingObj.rangeval + ""};
+		}
 
-			if(err) {
-				callback(null, err);
-			}
-			else if(data.Items && data.Items.length > 0) {				
-				callback(data.Items);
-			}
-			else {
-				callback(null);
-			}
-		});
+		var keyCondExpArg = incomingObj.hashtype;
+
+		if (rangevalArg) {
+			table.query({
+				ScanIndexForward: false,
+				ExpressionAttributeValues: {
+					":hashval": hashvalArg,
+					":rangeval": rangevalArg
+				},
+				KeyConditionExpression: keyCondExpArg + " = :hashval"
+			}, function(err, data)  {
+
+				if(err) {
+					callback(null, err);
+				}
+				else if(data.Items && data.Items.length > 0) {				
+					callback(data.Items);
+				}
+				else {
+					callback(null);
+				}
+			});
+		} else {
+			table.query({
+				ScanIndexForward: false,
+				ExpressionAttributeValues: {
+					":hashval": hashvalArg,
+				},
+				KeyConditionExpression: keyCondExpArg + " = :hashval"
+			}, function(err, data)  {
+
+				if(err) {
+					callback(null, err);
+				}
+				else if(data.Items && data.Items.length > 0) {				
+					callback(data.Items);
+				}
+				else {
+					callback(null);
+				}
+			});
+		}
 	},
 
 	/**

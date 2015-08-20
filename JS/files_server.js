@@ -108,8 +108,8 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
-        patient: patient,
-        apptDate: datetime, 
+        hashval: patient,
+        hashtype: "patient",
         reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
