@@ -13,6 +13,8 @@ var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
 var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
 var archiveTable = new AWS.DynamoDB({params: {TableName: 'JAGClientArchiveData'}});
 
+var global_loggedInRoomName = 'loggedIn';
+
 //Sockets
 var io = require('socket.io').listen(4000);
 
@@ -70,6 +72,9 @@ function serverHandler(socket, incomingObj, callback) {
 		loginTools.loginUser(userTable, fileTable, incomingObj, function(data, err, key) {
 			if(data && data.userKey) {
 				socket.userKey = data.userKey.S;
+
+				socket.join(global_loggedInRoomName);
+
 				callback(data, err, key);
 			} 
 			else {
@@ -93,7 +98,7 @@ function serverHandler(socket, incomingObj, callback) {
 				}
 				else {
 					data['name'] = 'updateSearch';
-					io.sockets.emit('serverToClient', data);
+					io.to(global_loggedInRoomName).emit('serverToClient', data);
 					callback(data);
 				}
 
@@ -110,7 +115,7 @@ function serverHandler(socket, incomingObj, callback) {
 				}
 				else {
 					console.log(incomingObj.apptDate)
-					io.sockets.emit('serverToClient', {
+					io.to(global_loggedInRoomName).emit('serverToClient', {
 						name: 'removeFromSearch', 
 						patient: incomingObj.patient,
 						apptDate: incomingObj.apptDate
@@ -126,7 +131,7 @@ function serverHandler(socket, incomingObj, callback) {
 					callback(null, err, key);
 				}
 				else {
-					io.sockets.emit('serverToClient', {
+					io.to(global_loggedInRoomName).emit('serverToClient', {
 						name: 'removeFromSearch', 
 						patient: incomingObj.patient
 					});
