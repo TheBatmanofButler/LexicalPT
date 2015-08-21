@@ -43,10 +43,18 @@ function finalDelete(all) {
     
     var formIDs = Object.keys(deletedForms);
 
+
     for (var eachForm in formIDs) {
         //this is doing it the dumb way; extra calls to the server that don't need to be made
         if (deletedForms[formIDs[eachForm]] === true) {
-            deleteForm(formIDs[eachForm]);
+
+            if($(formIDs[eachForm]).find('.apptDate').val())
+                deleteForm(formIDs[eachForm]);
+            else {
+                var formID = $(formIDs[eachForm]).attr('id');
+                delete changedFormIDs['#' + formID];
+                $(formIDs[eachForm]).remove();
+            }
         }
     }
 }

@@ -50,6 +50,7 @@ function loadFormData(data) {
             if(classnames === 'apptDate') {
 
                 $("#form-" + i + " .apptDate").val(new Date(parseInt(data[inverseFormVal][classnames].N)).toISOString().substring(0, 10));
+                $("#form-" + i + " .apptDate").prop('disabled', true);
             
             } else {
                 openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);

@@ -31,6 +31,7 @@ function loadFormToDB(form) {
     			errorHandler(err, isAppError);
     		} 
     		else {
+                $(form).find('.apptDate').prop('disabled', true);
                 postSubmit();
                 var tempDeferred = changedFormIDs[form];
                 delete changedFormIDs[form];
@@ -140,6 +141,8 @@ function deleteForm(form) {
             errorHandler(err, isAppError);
         }
         else {
+            var formID = $(form).attr('id');
+            delete changedFormIDs['#' + formID];
             $(form).remove();
         }
     });
