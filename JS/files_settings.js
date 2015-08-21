@@ -14,11 +14,12 @@ File manipulation functions for settings bar specifically
 function deleteToggle() {
 
     $('.data-form').click( function() {
-        var toggleState = deletedForms['#' + $(this).attr('id')]
+        var toggleState = deletedForms['#' + $(this).parent('li').attr('id')]
+
         if (!toggleState) {
             $(this).closest("li").css('background', 'red');
             deletedForms['#' + $(this).parent('li').attr('id')] = true;
-        } else if (toggleState) {
+        } else {
             $(this).closest("li").css('background', 'yellow');
             deletedForms['#' + $(this).parent('li').attr('id')] = false;
         }
@@ -32,23 +33,29 @@ function finalDelete(all) {
             return;
         }
 
-        $('.data-form').each(function() {
-            if ($(this).parent('li').attr('id') != 'form-default') {
-                deletedForms['#' + $(this).parent('li').attr('id')] = true;
-            }
+        $('.multi-day-form-exercises-info-container .data-form').each(function() {
+            deletedForms['#' + $(this).parent('li').attr('id')] = true;
         });
+        
+        postDeleteAll();
     }
     
     var formIDs = Object.keys(deletedForms);
 
+
     for (var eachForm in formIDs) {
         //this is doing it the dumb way; extra calls to the server that don't need to be made
         if (deletedForms[formIDs[eachForm]] === true) {
-            deleteForm(formIDs[eachForm]);
+
+            if($(formIDs[eachForm]).find('.apptDate').val() && global_patientInfo.currentPatient)
+                deleteForm(formIDs[eachForm]);
+            else {
+                var formID = $(formIDs[eachForm]).attr('id');
+                delete changedFormIDs['#' + formID];
+                $(formIDs[eachForm]).remove();
+            }
         }
     }
-
-    postDeleteAll();
 }
 
 /**
@@ -84,109 +91,46 @@ function copyForward() {
 /**
     Downloads all visible forms as pdfs
 */
+/**
+    Downloads all visible forms as pdfs
+*/
 function downloadFormsAsPDF() {
-    var doc = new jsPDF();
+    var doc = new jsPDF('p', 'pt');
 
-    var yStart = 20;
-    var xStart = 15;
-    var titleFontSize = 30;
+    var formList = $('.multi-day-form-exercises-info-container .data-form').get();
 
-    doc.setFontSize(titleFontSize);
+    var formsPerPage = 3;
 
-    doc.text(xStart, yStart, "Patient Info for: " + global_patientInfo.currentPatient);
+    for(var formGroup = 0; formGroup < formList.length; formGroup+=formsPerPage) {
+        
+        var yStart = 50;
+        var xStart = 20;
 
-    var injuryFontSize = 20;
-    doc.setFontSize(injuryFontSize);
+        var pdfInfo = calculateSizes();
+        console.log(pdfInfo)
+        var metaDataInfo = addMetaDataToPDF(doc, xStart, yStart);
 
-    yStart += 15;
+        doc = metaDataInfo.doc;
+        yStart = metaDataInfo.yStart;
+        xStart = metaDataInfo.xStart;
 
-    var injuryText = "Patient Injury: " + $('.meta-data .diagnosis').val();
-    doc.text(xStart, yStart, injuryText);
+        var order = ['TableExercises', 'Stretches', 'Thera-Band', 'Machines', 'FloorExercises'];
 
-    var metaDataFontSize = 15;
-    doc.setFontSize(metaDataFontSize);
-
-    var doctorText = "Referring Doctor: " + $('.meta-data .doctorname').val(); 
-    var splitDoctorText = doc.splitTextToSize(doctorText, 80);
-
-    var approvalText = "Protocol Approved By: " + $('.meta-data .protocol_approved').val();
-    var splitApprovalText = doc.splitTextToSize(approvalText, 80);
-
-    yStart += 10; 
-
-    doc.text(xStart, yStart, splitDoctorText);
-    doc.text(xStart + 100, yStart, splitApprovalText);
-
-    yStart += 10; 
-
-    doc.text(xStart, yStart, "Precautions: " + $('.meta-data .precautions').val())
-
-    yStart += 10;
-
-    var yDelta = 5;
-    var xDelta = 45;
-
-    var xValueOffset = 10;
-
-    var yOffset = yStart;
-    var xOffset = xStart;
-    var labelfontSize = 10;
-
-    doc.setFontSize(labelfontSize);
-
-    $('.multi-day-form-exercises-info-container .data-form').each(function() {
-     
-        var text = $(this).find('label, input, tr');
-
-        var valueText = "";
-
-        for(var i = 0; i < text.length; i++) {
-
-            if($(text[i]).is("input")) {
-
-                if ($(text[i]).val()) {
-                    if(valueText)
-                        valueText = valueText + ", " + $(text[i]).val();
-                    else
-                        valueText = $(text[i]).val();
-                }
-
-            }
-            else if ($(text[i]).is("tr")) {
-                
-                if(valueText) {
-                    doc.text(xOffset + xValueOffset, yOffset, valueText);
-                    yOffset += yDelta;
-                    valueText = "";
-                }
-
-            }
-            else {
-
-                if(valueText) {
-                    doc.text(xOffset + xValueOffset, yOffset, valueText);
-                    yOffset += yDelta;
-                    valueText = "";
-                }
-
-                doc.text(xOffset, yOffset, $(text[i]).html())
-                yOffset += yDelta;
-            }
+        var createTableInfo = createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage);
+        
+        for(var form = 0; form < formsPerPage && form + formGroup < formList.length; form++) {
+               
+            fillTable(doc, $(formList[formGroup + form]), form, formsPerPage, xStart, yStart);
+            
         }
 
-        if(valueText) {
-            doc.text(xOffset + xValueOffset, yOffset, valueText);
-            yOffset += yDelta;
-            valueText = "";
-        }
-
-        yOffset = yStart;
-        xOffset = xOffset + xDelta;
-
-    });
+        doc.addPage()
+    }
 
     //$.when.apply($, deferredArray).then(function() {
         doc.output('dataurlnewwindow');
+
+        doc.output('save', "patient_data.pdf");
 
     //});
 }
