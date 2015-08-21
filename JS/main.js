@@ -49,7 +49,7 @@ $("#DeleteMode").click(function() {
     $('#DeleteSelected').fadeIn().css({'display':'inline-block'});
     $('#DeleteAll').fadeIn().css({'display':'inline-block'});
 
-    $('.data-form').closest("li").css('background', 'yellow');
+    $('.data-form').closest("li").css('background', 'rgba(25, 255, 25, .25)');
 
     deleteToggle();
 });
