@@ -103,6 +103,10 @@ function downloadFormsAsPDF() {
 
     for(var formGroup = 0; formGroup < formList.length; formGroup+=formsPerPage) {
         
+        if(formGroup > 0) {
+            doc.addPage();
+        }
+
         var yStart = 50;
         var xStart = 20;
 
@@ -124,7 +128,7 @@ function downloadFormsAsPDF() {
             
         }
 
-        doc.addPage()
+        doc.text(xStart, 820, "Powered by Diagraphic Technologies");
     }
 
     //$.when.apply($, deferredArray).then(function() {
