@@ -200,11 +200,14 @@ function fillTable(doc, form, formCount, formsPerPage, xStart, yStart) {
     yOffset += yDelta*2;
 
     for(var i = 0; i < inputs.length; i+=3) {
-        var valueText = $(inputs[i]).val() + " " + $(inputs[i + 1]).val() + " " + $(inputs[i + 2]).val();
-        doc.text(xColumnStart + xDelta*formCount, yOffset, $(inputs[i]).val());
-        doc.text(xColumnStart + xDelta*formCount + SRWOffset, yOffset, $(inputs[i + 1]).val());
-        doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, $(inputs[i + 2]).val());
-        yOffset += yDelta;
+        var valueText = $(inputs[i]).val() + "" + $(inputs[i + 1]).val() + "" + $(inputs[i + 2]).val();
+        
+        if(valueText) {
+            doc.text(xColumnStart + xDelta*formCount, yOffset, $(inputs[i]).val());
+            doc.text(xColumnStart + xDelta*formCount + SRWOffset, yOffset, $(inputs[i + 1]).val());
+            doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, $(inputs[i + 2]).val());
+            yOffset += yDelta;   
+        }
     }
 
     doc.text(xColumnStart + xDelta*formCount, yOffset, $(form).find('.supervising-pt').val());
