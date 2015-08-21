@@ -17,10 +17,10 @@ function deleteToggle() {
         var toggleState = deletedForms['#' + $(this).parent('li').attr('id')]
 
         if (!toggleState) {
-            $(this).closest("li").css('background', 'red');
+            $(this).closest("li").css('background', 'rgba(181, 25, 28, .25)');
             deletedForms['#' + $(this).parent('li').attr('id')] = true;
         } else {
-            $(this).closest("li").css('background', 'yellow');
+            $(this).closest("li").css('background', 'rgba(25, 255, 25, .25)');
             deletedForms['#' + $(this).parent('li').attr('id')] = false;
         }
     });
