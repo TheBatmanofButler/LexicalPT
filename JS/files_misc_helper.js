@@ -6,6 +6,19 @@
 File manipulation helper functions. API. 
 */
 
+String.prototype.isValidDate = function() {
+    var IsoDateRe = new RegExp("^([0-9]{4})-([0-9]{2})-([0-9]{2})$");
+    var matches = IsoDateRe.exec(this);
+    if (!matches) return false;
+
+    var composedDate = new Date(matches[1], (matches[2] - 1), matches[3]);
+
+    return ((composedDate.getMonth() == (matches[2] - 1)) &&
+          (composedDate.getDate() == matches[3]) &&
+          (composedDate.getFullYear() == matches[1]));
+
+}
+
 /**
     Binds a focus warning to the metadata
 */
@@ -50,7 +63,14 @@ function attachSubmitHandler(formId) {
 */
 function checkFormErrors(form) {
 
-    var date = new Date($(form + " .apptDate").val());
+    var dateInput = $(form + " .apptDate").val();
+
+    if(!dateInput.isValidDate()) {
+        alert('Please enter a valid date in the format YYYY-MM-DD');
+        return false;
+    }
+
+    var date = new Date(dateInput);
 
     var name = $(".meta-data .patient_last").val().toUpperCase() + ", " + $(".meta-data .patient_first").val().toUpperCase();
 
