@@ -10,6 +10,22 @@ File storage module
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 
+function incomingObjType(incomingObj) {
+
+	if (typeof incomingObj.hashval === "string") {
+		var hashvalArg = {"S": incomingObj.hashval};
+	} else if (typeof incomingObj.hashval === "number") {
+		var hashvalArg = {"N": incomingObj.hashval + ""};
+	}
+
+	if (typeof incomingObj.rangeval === "string") {
+		var rangevalArg = {"S": incomingObj.rangeval};
+	} else if (typeof incomingObj.rangeval === "number") {
+		var rangevalArg = {"N": incomingObj.rangeval + ""};
+	}
+	console.log(incomingObj, rangevalArg, hashvalArg, 23422);
+	return [hashvalArg, rangevalArg];
+}
 
 //Exposed functions
 module.exports = {
@@ -61,20 +77,10 @@ module.exports = {
 	*/
 	retrieveData: function(incomingObj, table, callback) {
 
-		if (typeof incomingObj.hashval === "string") {
-			var hashvalArg = {"S": incomingObj.hashval};
-		} else if (typeof incomingObj.hashval === "int") {
-			var hashvalArg = {"N": incomingObj.hashval + ""};
-		}
-
-		if (typeof incomingObj.rangeval === "string") {
-			var rangevalArg = {"S": incomingObj.rangeval};
-		} else if (typeof incomingObj.hashval === "int") {
-			var rangevalArg = {"N": incomingObj.rangeval + ""};
-		}
-
-		var keyCondExpArg = incomingObj.hashtype;
-
+		var valArg = incomingObjType(incomingObj);
+		var hashvalArg = valArg[0];
+		var rangevalArg = valArg[1];
+		
 		if (rangevalArg) {
 			table.query({
 				ScanIndexForward: false,
@@ -82,7 +88,7 @@ module.exports = {
 					":hashval": hashvalArg,
 					":rangeval": rangevalArg
 				},
-				KeyConditionExpression: keyCondExpArg + " = :hashval"
+				KeyConditionExpression: table['hashname'] + " = :hashval"
 			}, function(err, data)  {
 
 				if(err) {
@@ -101,7 +107,7 @@ module.exports = {
 				ExpressionAttributeValues: {
 					":hashval": hashvalArg,
 				},
-				KeyConditionExpression: keyCondExpArg + " = :hashval"
+				KeyConditionExpression: table['hashname'] + " = :hashval"
 			}, function(err, data)  {
 
 				if(err) {
@@ -127,12 +133,25 @@ module.exports = {
 		@param: callback; function(data, err)
 	*/
 	deleteData: function(incomingObj, table, callback) {
-		console.log("HI")
+
+		var valArg = incomingObjType(incomingObj);
+		var hashvalArg = valArg[0];
+		var rangevalArg = valArg[1];
+
+		var hashKey = table['hashname'];
+		var rangeKey = table['rangename'];
+		console.log(hashKey, rangeKey, hashvalArg, rangevalArg, 8765);
 		table.deleteItem({
-			Key: {
-				"patient": {"S": incomingObj.patient},
-				"apptDate": {"N": incomingObj.apptDate}
-			}
+			ExpressionAttributeNames: {
+				"#hashname": table['hashname'],
+				"#rangename": table['rangename']
+			},
+			ExpressionAttributeValues: {
+				":hashval": hashvalArg,
+				":rangeval": rangevalArg
+			},
+			ConditionExpression: table['hashname'] + " = :hashval"
+
 		}, function(err) {
 			console.log(err)
 			if(err) {

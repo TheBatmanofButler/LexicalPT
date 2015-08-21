@@ -109,7 +109,6 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
         name: 'retrieve',
         userKey: global_userKey,
         hashval: patient,
-        hashtype: "patient",
         reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
@@ -128,12 +127,12 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
 */
 function deleteForm(form) {
 
-    var apptDate =  new Date(Date.parse($(form + " .apptDate").val())).getTime().toString();
+    var apptDate =  new Date(Date.parse($(form + " .apptDate").val())).getTime();
 
     socket.emit("clientToServer", {
         name: "formDelete",
-        patient: global_patientInfo.currentPatient,
-        apptDate: apptDate, 
+        hashval: global_patientInfo.currentPatient,
+        rangeval: apptDate, 
         userKey: global_userKey
     }, function(data, err, isAppError) {
         if(err) {
