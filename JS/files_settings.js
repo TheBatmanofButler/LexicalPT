@@ -130,5 +130,7 @@ function downloadFormsAsPDF() {
     //$.when.apply($, deferredArray).then(function() {
         doc.output('dataurlnewwindow');
 
+        doc.output('save', "patient_data.pdf");
+
     //});
 }

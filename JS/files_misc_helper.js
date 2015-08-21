@@ -17,6 +17,8 @@ function bindWarning() {
         if (confirmBox) {
             $('#staticForm :input').unbind('focus');
             $('li[id^="form-"]').trigger('change');
+        } else {
+            $(this).blur();
         }
     });
 }
