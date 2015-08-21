@@ -19,7 +19,7 @@ var transporter = nodemailer.createTransport({
 
 var io = require('socket.io/node_modules/socket.io-client');
 
-var socket = io('http://54.86.173.127:4000')
+var socket = io('http://54.86.173.127:4010')
 
 socket.on('connect', function () { console.log("socket connected"); });
 socket.on('disconnect', function() { 
