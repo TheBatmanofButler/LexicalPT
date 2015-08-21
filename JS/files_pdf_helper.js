@@ -137,10 +137,11 @@ function createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage) {
     for(var i = 0; i < order.length; i++) {
         
         doc.text(xStart, yOffset, "  " + order[i]);
-        doc.rect(xOffset, yOffset - randomOffset, xOffset + pageWidth, yDelta*(pdfInfo[order[i]]/3), 'S')
+
+        doc.rect(xOffset, yOffset - randomOffset, xOffset + pageWidth, yDelta*(Math.ceil(pdfInfo[order[i]]/3)), 'S')
         
 
-        for(var j = 0; j < pdfInfo[order[i]]/3 - 1; j++) {
+        for(var j = 0; j < Math.ceil(pdfInfo[order[i]]/3) - 1; j++) {
             yOffset += yDelta;
             doc.rect(xColumnStart - randomOffset/2, yOffset - randomOffset, xOffset + pageWidth - xDelta + 70, yDelta, 'S')
         }

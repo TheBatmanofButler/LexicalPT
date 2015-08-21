@@ -14,11 +14,12 @@ File manipulation functions for settings bar specifically
 function deleteToggle() {
 
     $('.data-form').click( function() {
-        var toggleState = deletedForms['#' + $(this).attr('id')]
+        var toggleState = deletedForms['#' + $(this).parent('li').attr('id')]
+
         if (!toggleState) {
             $(this).closest("li").css('background', 'red');
             deletedForms['#' + $(this).parent('li').attr('id')] = true;
-        } else if (toggleState) {
+        } else {
             $(this).closest("li").css('background', 'yellow');
             deletedForms['#' + $(this).parent('li').attr('id')] = false;
         }
@@ -32,10 +33,8 @@ function finalDelete(all) {
             return;
         }
 
-        $('.data-form').each(function() {
-            if ($(this).parent('li').attr('id') != 'form-default') {
-                deletedForms['#' + $(this).parent('li').attr('id')] = true;
-            }
+        $('.multi-day-form-exercises-info-container .data-form').each(function() {
+            deletedForms['#' + $(this).parent('li').attr('id')] = true;
         });
         
         postDeleteAll();
@@ -43,10 +42,18 @@ function finalDelete(all) {
     
     var formIDs = Object.keys(deletedForms);
 
+
     for (var eachForm in formIDs) {
         //this is doing it the dumb way; extra calls to the server that don't need to be made
         if (deletedForms[formIDs[eachForm]] === true) {
-            deleteForm(formIDs[eachForm]);
+
+            if($(formIDs[eachForm]).find('.apptDate').val() && global_patientInfo.currentPatient)
+                deleteForm(formIDs[eachForm]);
+            else {
+                var formID = $(formIDs[eachForm]).attr('id');
+                delete changedFormIDs['#' + formID];
+                $(formIDs[eachForm]).remove();
+            }
         }
     }
 }
