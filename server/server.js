@@ -10,7 +10,7 @@ var storageTools = require('./storageTools');
 //AWS config
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
-var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
+var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData_dev'}});
 var archiveTable = new AWS.DynamoDB({params: {TableName: 'JAGClientArchiveData'}});
 
 var global_loggedInRoomName = 'loggedIn';
