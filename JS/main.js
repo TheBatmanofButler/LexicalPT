@@ -128,6 +128,11 @@ function main() {
 
     $('.meta-data .patient_first, .meta-data .patient_last').change(function() {
         updateCurrentPatient();
+
+        if(Patient2Date[global_patientInfo.currentPatient]) {
+            alert("This patient is already in the database. Please select another name.");
+            $(this).val("");
+        }
     });
 }
 
