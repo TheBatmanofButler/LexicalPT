@@ -180,7 +180,7 @@ function bindNewFormEvents($form) {
 function createForm(noDate) {
     global_formCount++;
 
-    var $form = $("#form-default").clone(true);
+    var $form = $("#form-default").clonePolyfill(true);
 
     $form.attr("id","form-" + global_formCount);
 
@@ -224,7 +224,7 @@ function createNewForm() {
     @param: DOMelement; DOM row; a row inside an HTML form - see HTML form structure
 */
 function createNewRow(DOMelement) {
-    var $newRow = $(DOMelement).clonePolyFill();
+    var $newRow = $(DOMelement).clone();
 
     $(DOMelement).removeClass("create-new-row-on-click");
     $(DOMelement).unbind( "click" );
