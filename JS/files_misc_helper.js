@@ -224,7 +224,7 @@ function createNewForm() {
     @param: DOMelement; DOM row; a row inside an HTML form - see HTML form structure
 */
 function createNewRow(DOMelement) {
-    var $newRow = $(DOMelement).clone();
+    var $newRow = $(DOMelement).clonePolyFill();
 
     $(DOMelement).removeClass("create-new-row-on-click");
     $(DOMelement).unbind( "click" );
