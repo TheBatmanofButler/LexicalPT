@@ -197,6 +197,8 @@ function createForm(noDate) {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
+
+    attachSubmitHandler('#' + $form.attr('id'));
 }
 
 

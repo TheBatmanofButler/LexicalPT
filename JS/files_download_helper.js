@@ -56,8 +56,6 @@ function loadFormData(data) {
                 openFormData(("#form-" + i), classnames, data[inverseFormVal][classnames].S);
             }  
         }
-    
-        attachSubmitHandler('#form-' + i);
     }     
 }
 

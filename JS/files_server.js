@@ -85,9 +85,6 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         global_patientInfo.firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         global_patientInfo.lastDateLoaded = parseInt(data[0]['apptDate'].N);   
 
-        //Binds enter key to dynamic form
-        attachSubmitHandler('#form-' + global_formCount);  
-
         //Animations
         postFormLoad(requestedDate);
     });

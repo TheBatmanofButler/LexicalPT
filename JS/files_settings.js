@@ -63,7 +63,6 @@ function finalDelete(all) {
 */
 function createNewPatientForm() {
     createForm(true);
-    attachSubmitHandler('#form-' + global_formCount);
 
     $(".forms").animate({ scrollLeft: document.getElementById("Forms").scrollWidth}, 400);
 }
@@ -87,12 +86,7 @@ function copyForward() {
         }
     });
 
-    var deferred = new $.Deferred();
-
-        changedFormIDs[$('#form-' + global_formCount).attr('id')] = deferred;
-
-    global_deferredArray.push(deferred);
-
+    $('#form-' + global_formCount).change();
 }
 
 /**
