@@ -7,7 +7,7 @@ Global config location for all multi-file-wide files (client side)
 */
 
 //Connection to Backend
-var socket = io('http://54.86.173.127:4010');
+var socket = io('http://54.86.173.127:4000');
 
 //Number of forms currently up
 var global_formCount = -1;
