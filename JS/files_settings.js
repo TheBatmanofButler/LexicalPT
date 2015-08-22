@@ -86,6 +86,13 @@ function copyForward() {
             }
         }
     });
+
+    var deferred = new $.Deferred();
+
+        changedFormIDs[$('#form-' + global_formCount).attr('id')] = deferred;
+
+    global_deferredArray.push(deferred);
+
 }
 
 /**
