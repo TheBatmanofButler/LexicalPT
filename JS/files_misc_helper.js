@@ -180,23 +180,23 @@ function bindNewFormEvents($form) {
 function createForm(noDate) {
     global_formCount++;
 
-    var $form = $("#form-default").clone(true);
+    var $form = $("#form-default").clonePolyfill(true);
 
     $form.attr("id","form-" + global_formCount);
 
     $form.removeClass("hidden");
 
-    if(!noDate) {
-        alert();
+    if(!noDate)
         $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
-    }
 
     $form = bindNewFormEvents($form);
 
     if(global_formCount > 0) 
         $("#CopyForward").fadeIn();
 
-    $(".multi-day-form-exercises-info-container").appendPolyfill($form);
+    $(".multi-day-form-exercises-info-container").append($form);
+
+    $(".multi-day-form-exercises-info-container").fadeIn();
 
     attachSubmitHandler('#' + $form.attr('id'));
 }
@@ -251,5 +251,5 @@ function createNewRow(DOMelement) {
  }
 
 function updateCurrentPatient() {
-    global_patientInfo.currentPatient = $('.meta-data .patient_last').val() + ", " + $('.meta-data .patient_first').val();
+    global_patientInfo.currentPatient = $('.meta-data .patient_last').val().toUpperCase() + ", " + $('.meta-data .patient_first').val().toUpperCase();
 }

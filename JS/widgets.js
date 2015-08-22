@@ -269,9 +269,14 @@ function removeFormData(data) {
 		var apptDate = data.apptDate
 
 		//delete patient from date
-		var index = Date2Patient[apptDate].indexOf(data.patient);
-		Date2Patient[apptDate].splice(index, 1);
-
+		if(Date2Patient[apptDate].length === 1) {
+			delete Date2Patient[apptDate]
+		}
+		else {
+			var index = Date2Patient[apptDate].indexOf(data.patient);
+			Date2Patient[apptDate].splice(index, 1);
+		}
+		
 		//delete date from patient
 		if(Patient2Date[data.patient].length === 1) {
 			delete Patient2Date[data.patient];	
@@ -285,8 +290,15 @@ function removeFormData(data) {
 	else {
 		for(var i in Patient2Date[data.patient]) {
 			var date = Patient2Date[data.patient][i];
-			var index = Date2Patient[date].indexOf(data.patient);
-			Date2Patient[date].splice(index, 1);
+
+			if(Date2Patient[date].length === 1) {
+				delete Date2Patient[date]
+			}
+			else {
+				var index = Date2Patient[date].indexOf(data.patient);
+				Date2Patient[date].splice(index, 1);
+			}
+			
 		}
 
 		//remove all dates from patients
