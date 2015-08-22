@@ -15,7 +15,6 @@ File manipulation functions directly related to the server
 function loadFormToDB(form) {
     //Set up basic server request
     var values = {};
-
     var values = processForm(form);
 
     values.name = "store";
@@ -25,7 +24,7 @@ function loadFormToDB(form) {
 
     bindWarning();
 
-	socket.emit("clientToServer", values,
+	socket.emit("clientToServer", values, 
 		function(data, err, isAppError) {
     		if(err) {
     			errorHandler(err, isAppError);
@@ -35,7 +34,9 @@ function loadFormToDB(form) {
                 postSubmit();
                 var tempDeferred = changedFormIDs[form];
                 delete changedFormIDs[form];
-                tempDeferred.resolve();
+
+                if(tempDeferred)
+                    tempDeferred.resolve();
     		}
 	});
 }

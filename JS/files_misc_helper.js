@@ -180,7 +180,7 @@ function bindNewFormEvents($form) {
 function createForm(noDate) {
     global_formCount++;
 
-    var $form = $("#form-default").clone(true);
+    var $form = $("#form-default").clonePolyfill(true);
 
     $form.attr("id","form-" + global_formCount);
 
