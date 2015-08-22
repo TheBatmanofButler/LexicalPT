@@ -63,7 +63,6 @@ function finalDelete(all) {
 */
 function createNewPatientForm() {
     createForm(true);
-    attachSubmitHandler('#form-' + global_formCount);
 
     $(".forms").animate({ scrollLeft: document.getElementById("Forms").scrollWidth}, 400);
 }
@@ -86,6 +85,8 @@ function copyForward() {
             }
         }
     });
+
+    $('#form-' + global_formCount).change();
 }
 
 /**
@@ -131,10 +132,11 @@ function downloadFormsAsPDF() {
         doc.text(xStart, 820, "Powered by Diagraphic Technologies");
     }
 
-    //$.when.apply($, deferredArray).then(function() {
-        doc.output('dataurlnewwindow');
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
 
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./) || /Edge\/12./i.test(navigator.userAgent))
         doc.output('save', "patient_data.pdf");
-
-    //});
+    else
+        doc.output('dataurlnewwindow');
 }

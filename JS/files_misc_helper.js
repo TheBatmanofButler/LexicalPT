@@ -186,17 +186,19 @@ function createForm(noDate) {
 
     $form.removeClass("hidden");
 
-    if(!noDate)
+    if(!noDate) {
+        alert();
         $form.find(".apptDate").val(new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().substring(0, 10));
+    }
 
     $form = bindNewFormEvents($form);
 
     if(global_formCount > 0) 
         $("#CopyForward").fadeIn();
 
-    $(".multi-day-form-exercises-info-container").append($form);
+    $(".multi-day-form-exercises-info-container").appendPolyfill($form);
 
-    $(".multi-day-form-exercises-info-container").fadeIn();
+    attachSubmitHandler('#' + $form.attr('id'));
 }
 
 
