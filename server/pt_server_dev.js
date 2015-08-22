@@ -10,13 +10,13 @@ var storageTools = require('./storageTools');
 //AWS config
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
-var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData_dev'}});
+var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
 var archiveTable = new AWS.DynamoDB({params: {TableName: 'JAGClientArchiveData'}});
 
 var global_loggedInRoomName = 'loggedIn';
 
 //Sockets
-var io = require('socket.io').listen(4010);
+var io = require('socket.io').listen(4000);
 
 /**
 	Checks an input string to make sure it is sanitized for database input
