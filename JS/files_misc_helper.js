@@ -165,7 +165,7 @@ function bindNewFormEvents($form) {
         if(!changedFormIDs['#' + $(this).attr('id')]) {
             var deferred = new $.Deferred();
 
-            $form.closest("li").css('background', 'rgba(25, 250, 181, .25)');
+            $form.closest("li").css('background', 'rgba(25, 100, 181, .25)');
 
             changedFormIDs['#' + $(this).attr('id')] = deferred;
 
