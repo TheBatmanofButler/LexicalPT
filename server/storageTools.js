@@ -80,7 +80,7 @@ module.exports = {
 		var valArg = incomingObjType(incomingObj);
 		var hashvalArg = valArg[0];
 		var rangevalArg = valArg[1];
-		
+
 		if (rangevalArg) {
 			table.query({
 				ScanIndexForward: false,
@@ -105,7 +105,7 @@ module.exports = {
 			table.query({
 				ScanIndexForward: false,
 				ExpressionAttributeValues: {
-					":hashval": hashvalArg,
+					":hashval": hashvalArg
 				},
 				KeyConditionExpression: table['hashname'] + " = :hashval"
 			}, function(err, data)  {
@@ -153,7 +153,7 @@ module.exports = {
 			ConditionExpression: tableHash + " = :hashval"
 
 		}, function(err) {
-			console.log(err)
+			console.log(err);
 			if(err) {
 				callback(null, err);
 			}
@@ -172,14 +172,15 @@ module.exports = {
 		@param: archiveTable; where to move data to
 		@param: callback; function(data, err, key); data is always null
 	*/
-	closePatientInjury: function(incomingObj, dataTable, archiveTable, callback) {
+	archiveData: function(incomingObj, dataTable, archiveTable, callback) {
 
-		this.retrieveData(incomingObj, dataTable, function(data, err) {
+		var thisInstance = this;
+
+		thisInstance.retrieveData(incomingObj, dataTable, function(data, err) {
 			if(err) {
 				callback(null, err);
 			}
 			else if(data) {
-
 				var closeTime = new Date().getTime() + "";
 
 				var promiseArray = [];
@@ -212,13 +213,12 @@ module.exports = {
 					for(var formIndex in data) {
 						promiseArray.push(new Promise(function(resolve, reject) {
 
-							dataTable.deleteItem({
-								Key: {
-									"patient": {"S": data[formIndex].patient.S},
-									"apptDate": {"N": data[formIndex].apptDate.N}
-								}
-							}, function(err) {
-								console.log(err)
+							var deleteObj = {}
+							deleteObj['hashval'] = data[formIndex].patient.S;
+							deleteObj['rangeval'] = parseInt(data[formIndex].apptDate.N);
+
+							thisInstance.deleteData(deleteObj, dataTable, function(err) {
+								console.log(err);
 								if(err) {
 									reject();
 								}

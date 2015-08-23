@@ -101,14 +101,13 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
     @param: reverseOrder; bool; whether to pull next or last 5 dates (default is previous)
     @param: noExtraForm; bool; whether to add a form at the end of the load
 */
-function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
+function loadFormFromDB(patient,apptDate, noExtraForm) {
     var datetime = new Date(apptDate).getTime() + "";
 
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         hashval: patient,
-        reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
             errorHandler(err, appError);
@@ -131,8 +130,7 @@ function deleteForm(form) {
     socket.emit("clientToServer", {
         name: "formDelete",
         hashval: global_patientInfo.currentPatient,
-        rangeval: apptDate, 
-        userKey: global_userKey
+        rangeval: apptDate
     }, function(data, err, isAppError) {
         if(err) {
             errorHandler(err, isAppError);
@@ -156,8 +154,8 @@ function closePatientInjury() {
 
     socket.emit("clientToServer", {
         name: 'closeInjury',
-        patient: global_patientInfo.currentPatient,
-        userKey: global_userKey
+        userKey: global_userKey,
+        hashval: global_patientInfo.currentPatient
     }, function(data, err, key) {
         if(err) {
             errorHandler(err);
