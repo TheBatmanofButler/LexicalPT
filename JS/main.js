@@ -32,14 +32,29 @@ $("#Logout").click(function() {
     submitLogout();
 });
 
-//Retrieve/store info (note: store is in files.js, under form.find('hidden-submit').click(), and retrieve is under widget)
-/*$("#RetrieveInfoTest").click(function() {
-    loadFormFromDB();
-});*/
 
+//minute update trigger
+$('.multi-day-form-exercises-info-container').on("change", ".min", function() {
+    var parentContainer = $(this).closest('.table-container');
+
+    var minCount = 0;
+    
+    $(parentContainer).find('.min').each(function () {
+        minCount += parseInt($(this).val()) || 0;
+    });
+
+    $(this).closest('.table-container').find('.cumulative-min').html(minCount + "");
+});
+
+
+//new form button
 $("#CreateNewForm").click(function(){
     createNewForm();
 });
+
+/**
+    Setting triggers
+*/
 
 // Reveal delete form checkboxes
 $("#DeleteMode").click(function() {

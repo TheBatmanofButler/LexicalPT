@@ -31,6 +31,8 @@ function loadFormToDB(form) {
     		} 
     		else {
                 $(form).find('.apptDate').prop('disabled', true);
+                $(form).closest('li').css('background', 'rgba(25, 28, 181, .25)');
+
                 postSubmit();
                 var tempDeferred = changedFormIDs[form];
                 delete changedFormIDs[form];
@@ -85,6 +87,9 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         global_patientInfo.currentPatient = data[0]['patient'].S;
         global_patientInfo.firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         global_patientInfo.lastDateLoaded = parseInt(data[0]['apptDate'].N);   
+
+        //Trigger minute addition
+        $('#form-' + global_formCount).find('.min').first().change();
 
         //Animations
         postFormLoad(requestedDate);

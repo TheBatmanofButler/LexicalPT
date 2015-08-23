@@ -77,8 +77,7 @@ function copyForward() {
     $('#form-' + (global_formCount - 1) + ' :input').each(function(){
 
         if($(this).val()) {
-            var classes = $(this).attr("class")     
-            classes = classes.split(" ");
+            var classes = $(this).attr("class").split(" ");
 
             if(classes[0] !== 'apptDate') {
                 openFormData("#form-" + global_formCount, classes[0], $(this).val());  
@@ -111,21 +110,23 @@ function downloadFormsAsPDF() {
         var yStart = 50;
         var xStart = 20;
 
-        var pdfInfo = calculateSizes();
-        console.log(pdfInfo)
         var metaDataInfo = addMetaDataToPDF(doc, xStart, yStart);
 
-        doc = metaDataInfo.doc;
         yStart = metaDataInfo.yStart;
         xStart = metaDataInfo.xStart;
 
-        var order = ['TableExercises', 'Stretches', 'Thera-Band', 'Machines', 'FloorExercises'];
+        var order = ['Table-Exercises', 'Stretches', 'Thera-Band', 'Machines', 'Floor-Exercises'];
+
+        var rowLabelSize = 10;
+        doc.setFontSize(rowLabelSize);
+
+        var pdfInfo = calculateSizes(doc, formGroup, formsPerPage);
 
         var createTableInfo = createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage);
         
         for(var form = 0; form < formsPerPage && form + formGroup < formList.length; form++) {
                
-            fillTable(doc, $(formList[formGroup + form]), form, formsPerPage, xStart, yStart);
+            fillTable(doc, $(formList[formGroup + form]), form, formsPerPage, pdfInfo, xStart, yStart);
             
         }
 
