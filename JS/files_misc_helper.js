@@ -235,13 +235,15 @@ function createNewRow(DOMelement) {
     var table = $(DOMelement).closest("table");
 
     $newRow.find('input').each(function(){
-        var oldId = $(this).attr('class');
+
+        var oldId =   $(this).attr("class").split(' ')[0];
         var idInfo = oldId.split('-');
 
         $(this).val("");
 
         var newId = idInfo[0] + '-' + (parseInt(idInfo[1]) + 1);
-        $(this).attr('class', newId);
+        $(this).removeClass(oldId);
+        $(this).attr('class', newId + " " + $(this).attr('class'));
         $(this).attr('name', newId);
     });
 

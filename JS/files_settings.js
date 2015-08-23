@@ -77,8 +77,7 @@ function copyForward() {
     $('#form-' + (global_formCount - 1) + ' :input').each(function(){
 
         if($(this).val()) {
-            var classes = $(this).attr("class")     
-            classes = classes.split(" ");
+            var classes = $(this).attr("class").split(" ");
 
             if(classes[0] !== 'apptDate') {
                 openFormData("#form-" + global_formCount, classes[0], $(this).val());  
