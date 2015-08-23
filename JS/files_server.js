@@ -88,6 +88,9 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         global_patientInfo.firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         global_patientInfo.lastDateLoaded = parseInt(data[0]['apptDate'].N);   
 
+        //Trigger minute addition
+        $('#form-' + global_formCount).find('.min').first().change();
+
         //Animations
         postFormLoad(requestedDate);
     });

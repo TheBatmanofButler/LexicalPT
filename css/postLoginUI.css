@@ -259,10 +259,14 @@
                             }
 
                             .form-exercises-info-container .table-container {
-                                height: 150px;
                                 overflow: auto;
                                 width: 100%;
                             }
+
+                                .form-exercises-info-container .cumulative-min-container {
+                                    margin-bottom: 2%;
+                                }
+
 
                             .form-exercises-info-container table {
                                 width: 100%;
