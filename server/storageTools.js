@@ -23,7 +23,7 @@ function incomingObjType(incomingObj) {
 	} else if (typeof incomingObj.rangeval === "number") {
 		var rangevalArg = {"N": incomingObj.rangeval + ""};
 	}
-	console.log(incomingObj, rangevalArg, hashvalArg, 23422);
+
 	return [hashvalArg, rangevalArg];
 }
 
@@ -138,19 +138,19 @@ module.exports = {
 		var hashvalArg = valArg[0];
 		var rangevalArg = valArg[1];
 
-		var hashKey = table['hashname'];
-		var rangeKey = table['rangename'];
-		console.log(hashKey, rangeKey, hashvalArg, rangevalArg, 8765);
+		var tableHash = table['hashname'];
+		var tableRange = table['rangename'];
+
+		var itemParams = {};
+		itemParams[tableHash] = hashvalArg;
+		itemParams[tableRange] = rangevalArg;
+
 		table.deleteItem({
-			ExpressionAttributeNames: {
-				"#hashname": table['hashname'],
-				"#rangename": table['rangename']
-			},
+			Key: itemParams,
 			ExpressionAttributeValues: {
 				":hashval": hashvalArg,
-				":rangeval": rangevalArg
 			},
-			ConditionExpression: table['hashname'] + " = :hashval"
+			ConditionExpression: tableHash + " = :hashval"
 
 		}, function(err) {
 			console.log(err)
