@@ -44,8 +44,11 @@ function bindWarning() {
 function attachSubmitHandler(formId) {
 
    $(formId).change(function() {
-
+        
         if(!changedFormIDs['#' + $(this).attr('id')]) {
+
+            $(formId).closest("li").css('background', 'rgba(25, 250, 181, .25)');
+
             var deferred = new $.Deferred();
 
             changedFormIDs['#' + $(this).attr('id')] = deferred;
@@ -162,6 +165,8 @@ function bindNewFormEvents($form) {
         if(!changedFormIDs['#' + $(this).attr('id')]) {
             var deferred = new $.Deferred();
 
+            $form.closest("li").css('background', 'rgba(25, 250, 181, .25)');
+
             changedFormIDs['#' + $(this).attr('id')] = deferred;
 
             global_deferredArray.push(deferred);
@@ -197,8 +202,6 @@ function createForm(noDate) {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-
-    attachSubmitHandler('#' + $form.attr('id'));
 }
 
 

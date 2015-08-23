@@ -31,6 +31,8 @@ function loadFormToDB(form) {
     		} 
     		else {
                 $(form).find('.apptDate').prop('disabled', true);
+                $(form).closest('li').css('background', 'rgba(25, 28, 181, .25)');
+
                 postSubmit();
                 var tempDeferred = changedFormIDs[form];
                 delete changedFormIDs[form];
