@@ -196,7 +196,6 @@
                     }
 
                     .multi-day-form-exercises-info-container div input {
-                        margin-top: 2%;
                         text-align: center;
                     }
 
@@ -211,6 +210,17 @@
                         .form-exercises-info-container li {
                             padding-top: 3%;
                         }
+
+                            .form-exercises-info-container .exercises {
+                            }
+
+                            .form-exercises-info-container .srw {
+                                width: 100%;
+                            }
+
+                            .form-exercises-info-container .min {
+                                width: 100%;
+                            }
 
                         #HiddenSubmitLogin {
                             display: none;
