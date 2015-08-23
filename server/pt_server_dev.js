@@ -131,7 +131,7 @@ function serverHandler(socket, incomingObj, callback) {
 			});
 		}
 		else if (incomingObj.name === 'closeInjury') {
-			storageTools.closePatientInjury(incomingObj, fileTable, archiveTable, function(data, err, key) {
+			storageTools.archiveData(incomingObj, fileTable, archiveTable, function(data, err, key) {
 				if(err) {
 					callback(null, err, key);
 				}
