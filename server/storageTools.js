@@ -10,6 +10,22 @@ File storage module
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 
+function incomingObjType(incomingObj) {
+
+	if (typeof incomingObj.hashval === "string") {
+		var hashvalArg = {"S": incomingObj.hashval};
+	} else if (typeof incomingObj.hashval === "number") {
+		var hashvalArg = {"N": incomingObj.hashval + ""};
+	}
+
+	if (typeof incomingObj.rangeval === "string") {
+		var rangevalArg = {"S": incomingObj.rangeval};
+	} else if (typeof incomingObj.rangeval === "number") {
+		var rangevalArg = {"N": incomingObj.rangeval + ""};
+	}
+
+	return [hashvalArg, rangevalArg];
+}
 
 //Exposed functions
 module.exports = {
@@ -61,19 +77,9 @@ module.exports = {
 	*/
 	retrieveData: function(incomingObj, table, callback) {
 
-		if (typeof incomingObj.hashval === "string") {
-			var hashvalArg = {"S": incomingObj.hashval};
-		} else if (typeof incomingObj.hashval === "int") {
-			var hashvalArg = {"N": incomingObj.hashval + ""};
-		}
-
-		if (typeof incomingObj.rangeval === "string") {
-			var rangevalArg = {"S": incomingObj.rangeval};
-		} else if (typeof incomingObj.hashval === "int") {
-			var rangevalArg = {"N": incomingObj.rangeval + ""};
-		}
-
-		var keyCondExpArg = incomingObj.hashtype;
+		var valArg = incomingObjType(incomingObj);
+		var hashvalArg = valArg[0];
+		var rangevalArg = valArg[1];
 
 		if (rangevalArg) {
 			table.query({
@@ -82,7 +88,7 @@ module.exports = {
 					":hashval": hashvalArg,
 					":rangeval": rangevalArg
 				},
-				KeyConditionExpression: keyCondExpArg + " = :hashval"
+				KeyConditionExpression: table['hashname'] + " = :hashval"
 			}, function(err, data)  {
 
 				if(err) {
@@ -99,9 +105,9 @@ module.exports = {
 			table.query({
 				ScanIndexForward: false,
 				ExpressionAttributeValues: {
-					":hashval": hashvalArg,
+					":hashval": hashvalArg
 				},
-				KeyConditionExpression: keyCondExpArg + " = :hashval"
+				KeyConditionExpression: table['hashname'] + " = :hashval"
 			}, function(err, data)  {
 
 				if(err) {
@@ -127,14 +133,27 @@ module.exports = {
 		@param: callback; function(data, err)
 	*/
 	deleteData: function(incomingObj, table, callback) {
-		console.log("HI")
+
+		var valArg = incomingObjType(incomingObj);
+		var hashvalArg = valArg[0];
+		var rangevalArg = valArg[1];
+
+		var tableHash = table['hashname'];
+		var tableRange = table['rangename'];
+
+		var itemParams = {};
+		itemParams[tableHash] = hashvalArg;
+		itemParams[tableRange] = rangevalArg;
+
 		table.deleteItem({
-			Key: {
-				"patient": {"S": incomingObj.patient},
-				"apptDate": {"N": incomingObj.apptDate}
-			}
+			Key: itemParams,
+			ExpressionAttributeValues: {
+				":hashval": hashvalArg,
+			},
+			ConditionExpression: tableHash + " = :hashval"
+
 		}, function(err) {
-			console.log(err)
+			console.log(err);
 			if(err) {
 				callback(null, err);
 			}
@@ -153,14 +172,15 @@ module.exports = {
 		@param: archiveTable; where to move data to
 		@param: callback; function(data, err, key); data is always null
 	*/
-	closePatientInjury: function(incomingObj, dataTable, archiveTable, callback) {
+	archiveData: function(incomingObj, dataTable, archiveTable, callback) {
 
-		this.retrieveData(incomingObj, dataTable, function(data, err) {
+		var thisInstance = this;
+
+		thisInstance.retrieveData(incomingObj, dataTable, function(data, err) {
 			if(err) {
 				callback(null, err);
 			}
 			else if(data) {
-
 				var closeTime = new Date().getTime() + "";
 
 				var promiseArray = [];
@@ -193,13 +213,12 @@ module.exports = {
 					for(var formIndex in data) {
 						promiseArray.push(new Promise(function(resolve, reject) {
 
-							dataTable.deleteItem({
-								Key: {
-									"patient": {"S": data[formIndex].patient.S},
-									"apptDate": {"N": data[formIndex].apptDate.N}
-								}
-							}, function(err) {
-								console.log(err)
+							var deleteObj = {}
+							deleteObj['hashval'] = data[formIndex].patient.S;
+							deleteObj['rangeval'] = parseInt(data[formIndex].apptDate.N);
+
+							thisInstance.deleteData(deleteObj, dataTable, function(err) {
+								console.log(err);
 								if(err) {
 									reject();
 								}

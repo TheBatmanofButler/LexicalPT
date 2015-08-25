@@ -10,8 +10,13 @@ var storageTools = require('./storageTools');
 //AWS config
 AWS.config.region = 'us-east-1';
 var userTable = new AWS.DynamoDB({params: {TableName: 'JAGUsers'}});
-var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData'}});
+
+var fileTable = new AWS.DynamoDB({params: {TableName: 'JAGClientData_dev'}});
+fileTable['hashname'] = "patient";
+fileTable['rangename'] = "apptDate";
+
 var archiveTable = new AWS.DynamoDB({params: {TableName: 'JAGClientArchiveData'}});
+
 
 var global_loggedInRoomName = 'loggedIn';
 
@@ -126,7 +131,7 @@ function serverHandler(socket, incomingObj, callback) {
 			});
 		}
 		else if (incomingObj.name === 'closeInjury') {
-			storageTools.closePatientInjury(incomingObj, fileTable, archiveTable, function(data, err, key) {
+			storageTools.archiveData(incomingObj, fileTable, archiveTable, function(data, err, key) {
 				if(err) {
 					callback(null, err, key);
 				}

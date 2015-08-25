@@ -31,6 +31,8 @@ function loadFormToDB(form) {
     		} 
     		else {
                 $(form).find('.apptDate').prop('disabled', true);
+                $(form).closest('li').css('background', 'rgba(25, 28, 181, .25)');
+
                 postSubmit();
                 var tempDeferred = changedFormIDs[form];
                 delete changedFormIDs[form];
@@ -86,6 +88,9 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
         global_patientInfo.firstDateLoaded = parseInt(data[data.length - 1]['apptDate'].N);
         global_patientInfo.lastDateLoaded = parseInt(data[0]['apptDate'].N);   
 
+        //Trigger minute addition
+        $('#form-' + global_formCount).find('.min').first().change();
+
         //Animations
         postFormLoad(requestedDate);
     });
@@ -101,15 +106,13 @@ function _loadFormFromDB(data, noExtraForm, requestedDate) {
     @param: reverseOrder; bool; whether to pull next or last 5 dates (default is previous)
     @param: noExtraForm; bool; whether to add a form at the end of the load
 */
-function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
+function loadFormFromDB(patient,apptDate, noExtraForm) {
     var datetime = new Date(apptDate).getTime() + "";
 
     socket.emit("clientToServer", {
         name: 'retrieve',
         userKey: global_userKey,
         hashval: patient,
-        hashtype: "patient",
-        reverseOrder: reverseOrder
     }, function(data, err, appError) {
         if(err) {
             errorHandler(err, appError);
@@ -127,13 +130,12 @@ function loadFormFromDB(patient,apptDate, reverseOrder, noExtraForm) {
 */
 function deleteForm(form) {
 
-    var apptDate =  new Date(Date.parse($(form + " .apptDate").val())).getTime().toString();
+    var apptDate =  new Date(Date.parse($(form + " .apptDate").val())).getTime();
 
     socket.emit("clientToServer", {
         name: "formDelete",
-        patient: global_patientInfo.currentPatient,
-        apptDate: apptDate, 
-        userKey: global_userKey
+        hashval: global_patientInfo.currentPatient,
+        rangeval: apptDate
     }, function(data, err, isAppError) {
         if(err) {
             errorHandler(err, isAppError);
@@ -157,8 +159,8 @@ function closePatientInjury() {
 
     socket.emit("clientToServer", {
         name: 'closeInjury',
-        patient: global_patientInfo.currentPatient,
-        userKey: global_userKey
+        userKey: global_userKey,
+        hashval: global_patientInfo.currentPatient
     }, function(data, err, key) {
         if(err) {
             errorHandler(err);
