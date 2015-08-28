@@ -68,40 +68,13 @@ function calculateSizes(doc, startingForm, formsPerPage) {
     var forms = $('.multi-day-form-exercises-info-container .exercise-info').get();
 
     $(forms[0]).find('label').each(function () {
-        rowObj[$(this).html().replace(/\s+/g, '')] = 0;
         sizeObj[$(this).html().replace(/\s+/g, '')] = [];
     });
 
     forms = forms.slice(startingForm, startingForm + formsPerPage);
 
-    //count the number of rows
-    $(forms).each(function () {
-        var currentLabel = "";
-        var currentCount = 0;
-
-        $(this).find('label, input').each(function () {
-
-            if($(this).is('label')) {
-                if(currentLabel)    
-                    rowObj[currentLabel] = Math.max(currentCount/3, rowObj[currentLabel]);
-                
-                currentLabel = $(this).html().replace(/\s+/g, '');
-                currentCount = 0;
-            }
-            else if ($(this).is('input') && $(this).val()) {
-                currentCount++;
-            }
-
-        });
-
-        if(currentLabel)    
-            rowObj[currentLabel] = Math.max(currentCount/3, rowObj[currentLabel]);
-                
-    });
-
     //count the size per row
     $(forms).find('label').each(function() {
-
         var currentLabel = $(this).html().replace(/\s+/g, '');
 
         var rowCount = -1;
@@ -255,26 +228,26 @@ function fillTable(doc, form, formCount, formsPerPage, pdfInfo, xStart, yStart) 
 
         if($(this).is('label')) {
             currentLabel = $(this).html().replace(/\s+/g, '');
+            console.log(currentLabel)
         }
         else if ($(this).is('input')) {
+               
+            console.log(yOffset)
 
             if(i%3 === 2) {
                 var textArray = doc.splitTextToSize($(this).val(), 25);
-                console.log(textArray)
-
                 doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, textArray);
-
+                console.log(pdfInfo[currentLabel])
                 yOffset += 13*pdfInfo[currentLabel][Math.floor(i/3)]; 
             }
             else if(i%3 === 1) {
                 var textArray = doc.splitTextToSize($(this).val(), 30);
-                console.log(textArray)
                 doc.text(xColumnStart + xDelta*formCount + SRWOffset, yOffset, textArray);
             }
             else {
                 var textArray = doc.splitTextToSize($(this).val(), 80);
-                console.log(textArray)
                 doc.text(xColumnStart + xDelta*formCount, yOffset, textArray);
+                i = 0;
             }
 
             i++;
