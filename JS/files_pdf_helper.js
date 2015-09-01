@@ -223,22 +223,21 @@ function fillTable(doc, form, formCount, formsPerPage, pdfInfo, xStart, yStart) 
     var i = 0;
 
     var currentLabel = "";
-
+    
     $(form).find('.exercise-info input, .exercise-info label').each(function () {
 
         if($(this).is('label')) {
             currentLabel = $(this).html().replace(/\s+/g, '');
-            console.log(currentLabel)
         }
         else if ($(this).is('input')) {
-               
-            console.log(yOffset)
 
             if(i%3 === 2) {
                 var textArray = doc.splitTextToSize($(this).val(), 25);
+
                 doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, textArray);
-                console.log(pdfInfo[currentLabel])
-                yOffset += 13*pdfInfo[currentLabel][Math.floor(i/3)]; 
+                
+                if(pdfInfo[currentLabel][Math.floor(i/3)])
+                    yOffset += 13*pdfInfo[currentLabel][Math.floor(i/3)]; 
             }
             else if(i%3 === 1) {
                 var textArray = doc.splitTextToSize($(this).val(), 30);
@@ -247,7 +246,6 @@ function fillTable(doc, form, formCount, formsPerPage, pdfInfo, xStart, yStart) 
             else {
                 var textArray = doc.splitTextToSize($(this).val(), 80);
                 doc.text(xColumnStart + xDelta*formCount, yOffset, textArray);
-                i = 0;
             }
 
             i++;
