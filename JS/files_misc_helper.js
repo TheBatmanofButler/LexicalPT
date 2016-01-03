@@ -44,8 +44,11 @@ function bindWarning() {
 function attachSubmitHandler(formId) {
 
    $(formId).change(function() {
-
+        
         if(!changedFormIDs['#' + $(this).attr('id')]) {
+
+            $(formId).closest("li").css('background', 'rgba(25, 250, 181, .25)');
+
             var deferred = new $.Deferred();
 
             changedFormIDs['#' + $(this).attr('id')] = deferred;
@@ -162,6 +165,8 @@ function bindNewFormEvents($form) {
         if(!changedFormIDs['#' + $(this).attr('id')]) {
             var deferred = new $.Deferred();
 
+            $form.closest("li").css('background', 'rgba(25, 100, 181, .25)');
+
             changedFormIDs['#' + $(this).attr('id')] = deferred;
 
             global_deferredArray.push(deferred);
@@ -197,8 +202,6 @@ function createForm(noDate) {
     $(".multi-day-form-exercises-info-container").append($form);
 
     $(".multi-day-form-exercises-info-container").fadeIn();
-
-    attachSubmitHandler('#' + $form.attr('id'));
 }
 
 
@@ -232,13 +235,15 @@ function createNewRow(DOMelement) {
     var table = $(DOMelement).closest("table");
 
     $newRow.find('input').each(function(){
-        var oldId = $(this).attr('class');
+
+        var oldId =   $(this).attr("class").split(' ')[0];
         var idInfo = oldId.split('-');
 
         $(this).val("");
 
         var newId = idInfo[0] + '-' + (parseInt(idInfo[1]) + 1);
-        $(this).attr('class', newId);
+        $(this).removeClass(oldId);
+        $(this).attr('class', newId + " " + $(this).attr('class'));
         $(this).attr('name', newId);
     });
 

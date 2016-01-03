@@ -6,43 +6,6 @@
 File manipulation functions for pdfs
 */
 
-function calculateSizes() {
-    var dataObj = {};
-
-    $('.multi-day-form-exercises-info-container .exercise-info').each(function() {
-     
-        var text = $(this).find('label, input');
-        
-        var currentLabel = "";
-        var currentCount = 0;
-
-        for(var i = 0; i < text.length; i++) {
-
-            if($(text[i]).is("input")) {
-                if($(text[i]).val()) {
-                    currentCount++;
-                }
-            }
-            else {
-                 
-                if(currentLabel && (!dataObj[currentLabel] || currentCount > dataObj[currentLabel])) {
-                   dataObj[currentLabel] = currentCount;
-                }
-
-                currentLabel = $(text[i]).html().replace(/ /g,'');
-                currentCount = 0;
-            }
-        }
-
-        if(!dataObj[currentLabel] || currentCount > dataObj[currentLabel]) {
-             dataObj[currentLabel] = currentCount;
-        }
-    });
-
-    return dataObj;
-}
-
-
 function addMetaDataToPDF(doc, xStart, yStart) {
 
     //load meta data
@@ -98,6 +61,69 @@ function addMetaDataToPDF(doc, xStart, yStart) {
 }
 
 
+function calculateSizes(doc, startingForm, formsPerPage) {
+    var rowObj = {};
+    var sizeObj = {};
+
+    var forms = $('.multi-day-form-exercises-info-container .exercise-info').get();
+
+    $(forms[0]).find('label').each(function () {
+        sizeObj[$(this).html().replace(/\s+/g, '')] = [];
+    });
+
+    forms = forms.slice(startingForm, startingForm + formsPerPage);
+
+    //count the size per row
+    $(forms).find('label').each(function() {
+        var currentLabel = $(this).html().replace(/\s+/g, '');
+
+        var rowCount = -1;
+
+        //traverse all of the rows per form
+        $(this).siblings('table').find('tr').each(function () {
+
+            var rowSize = 0;
+
+            var index = 0; 
+
+            $(this).find('input').each(function () {
+
+                var length = 0;
+
+                //min
+                if(index%3 === 2) {
+                    var textArray = doc.splitTextToSize($(this).val(), 25);
+                    length = textArray.length;
+                }
+                else if(index%3 === 1) {
+                    var textArray = doc.splitTextToSize($(this).val(), 30);
+                    length = textArray.length;
+                }
+                else {
+                    var textArray = doc.splitTextToSize($(this).val(), 80);
+                    length = textArray.length;
+                }
+
+                rowSize = Math.max(rowSize, length);
+
+                index++;
+            });
+
+            if(!sizeObj[currentLabel][rowCount]) {
+                sizeObj[currentLabel][rowCount] = 0;
+            }
+
+            sizeObj[currentLabel][rowCount] = Math.max(rowSize, sizeObj[currentLabel][rowCount]);
+
+            rowCount++;
+        });
+    });
+
+    console.log(sizeObj)
+
+    return sizeObj;
+}
+
 function createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage) {
 
     var yDelta = 20;
@@ -110,9 +136,6 @@ function createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage) {
     var xDelta = (pageWidth - xColumnStart + 46)/formsPerPage;
 
     var randomOffset = 13;
-
-    var rowLabelSize = 10;
-    doc.setFontSize(rowLabelSize);
 
     doc.rect(xOffset, yOffset - randomOffset, xOffset + pageWidth, yDelta, 'S')
 
@@ -136,17 +159,17 @@ function createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage) {
 
     for(var i = 0; i < order.length; i++) {
         
-        doc.text(xStart, yOffset, "  " + order[i]);
+        doc.text(xStart, yOffset, "  " + order[i]);        
 
-        doc.rect(xOffset, yOffset - randomOffset, xOffset + pageWidth, yDelta*(Math.ceil(pdfInfo[order[i]]/3)), 'S')
-        
-
-        for(var j = 0; j < Math.ceil(pdfInfo[order[i]]/3) - 1; j++) {
-            yOffset += yDelta;
-            doc.rect(xColumnStart - randomOffset/2, yOffset - randomOffset, xOffset + pageWidth - xDelta + 70, yDelta, 'S')
+        for(var j = 0; j < pdfInfo[order[i]].length; j++) {
+            doc.rect(xColumnStart - randomOffset/2, yOffset - randomOffset, xOffset + pageWidth - xDelta + 70, 13*pdfInfo[order[i]][j], 'S');
+            yOffset += 13*pdfInfo[order[i]][j];
         }
 
-        yOffset += yDelta;
+        if(pdfInfo[order[i]].length === 0) 
+                yOffset += yDelta;
+
+        doc.rect(xOffset, yColumnTop - randomOffset, xOffset + pageWidth, yOffset - yColumnTop, 'S');
     }
 
     doc.text(xOffset, yOffset, "  SupervisingPT");
@@ -178,7 +201,7 @@ function createTable(doc, pdfInfo, order, xStart, yStart, formsPerPage) {
 }
 
 
-function fillTable(doc, form, formCount, formsPerPage, xStart, yStart) {
+function fillTable(doc, form, formCount, formsPerPage, pdfInfo, xStart, yStart) {
     
     var yDelta = 20;
     var pageWidth = 524;
@@ -190,25 +213,44 @@ function fillTable(doc, form, formCount, formsPerPage, xStart, yStart) {
     var xDelta = (pageWidth - xColumnStart + 46)/formsPerPage;
 
     var randomOffset = 13;
-    var SRWOffset = 85;
-    var MinOffset = SRWOffset + 30;
+    var SRWOffset = 82;
+    var MinOffset = SRWOffset + 33;
 
     doc.text(xColumnStart + xDelta*formCount, yOffset, $(form).find('.apptDate').val());
 
-    var inputs = $(form).find('.exercise-info input').get();
-
     yOffset += yDelta*2;
 
-    for(var i = 0; i < inputs.length; i+=3) {
-        var valueText = $(inputs[i]).val() + "" + $(inputs[i + 1]).val() + "" + $(inputs[i + 2]).val();
-        
-        if(valueText) {
-            doc.text(xColumnStart + xDelta*formCount, yOffset, $(inputs[i]).val());
-            doc.text(xColumnStart + xDelta*formCount + SRWOffset, yOffset, $(inputs[i + 1]).val());
-            doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, $(inputs[i + 2]).val());
-            yOffset += yDelta;   
+    var i = 0;
+
+    var currentLabel = "";
+    
+    $(form).find('.exercise-info input, .exercise-info label').each(function () {
+
+        if($(this).is('label')) {
+            currentLabel = $(this).html().replace(/\s+/g, '');
         }
-    }
+        else if ($(this).is('input')) {
+
+            if(i%3 === 2) {
+                var textArray = doc.splitTextToSize($(this).val(), 25);
+
+                doc.text(xColumnStart + xDelta*formCount + MinOffset, yOffset, textArray);
+                
+                if(pdfInfo[currentLabel][Math.floor(i/3)])
+                    yOffset += 13*pdfInfo[currentLabel][Math.floor(i/3)]; 
+            }
+            else if(i%3 === 1) {
+                var textArray = doc.splitTextToSize($(this).val(), 30);
+                doc.text(xColumnStart + xDelta*formCount + SRWOffset, yOffset, textArray);
+            }
+            else {
+                var textArray = doc.splitTextToSize($(this).val(), 80);
+                doc.text(xColumnStart + xDelta*formCount, yOffset, textArray);
+            }
+
+            i++;
+        }
+    });
 
     doc.text(xColumnStart + xDelta*formCount, yOffset, $(form).find('.supervising-pt').val());
     yOffset += yDelta;
