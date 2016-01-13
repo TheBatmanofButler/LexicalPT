@@ -12,14 +12,14 @@ var nodemailer = require('nodemailer')
 var transporter = nodemailer.createTransport({
 	service: 'gmail',
     auth: {
-        user: 'jagservermonitor@gmail.com',
+        user: 'diagraphicservermoniter@gmail.com',
         pass: 'diagraphictech'
     }
 });
 
 var io = require('socket.io/node_modules/socket.io-client');
 
-var socket = io('http://54.86.173.127:4010')
+var socket = io('http://52.90.127.98:4000')
 
 socket.on('connect', function () { console.log("socket connected"); });
 socket.on('disconnect', function() { 
